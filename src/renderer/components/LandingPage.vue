@@ -1,128 +1,122 @@
 <template>
-  <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
-      <div class="left-side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
-        <system-information></system-information>
-      </div>
+  <div class="row">
+    <div class="col-md-4">
+      <el-card :body-style="{ padding: '0px' }" class="text-center">
 
-      <div class="right-side">
-        <div class="doc">
-          <div class="title">Getting Started</div>
-          <p>
-            electron-vue comes packed with detailed documentation that covers everything from
-            internal configurations, using the project structure, building your application,
-            and so much more.
-          </p>
-          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
+        <img class="image" src="~@/assets/icons/152-magic-wand.svg"/>
+        <div style="padding: 14px;">
+          <div class="bottom clearfix">
+            <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+                       :auto-upload="false"
+                       class="upload-demo" action="#">
+              <el-button @click="setAction('integerate')" size="large" type="primary">Integrate</el-button>
+              <div slot="tip" class="el-upload__tip">Get started with an integration</div>
+            </el-upload>
+          </div>
         </div>
-        <div class="doc">
-          <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
+      </el-card>
+    </div>
+    <div class="col-md-4">
+      <el-card :body-style="{ padding: '0px' }" class="text-center">
+        <img class="image" src="~@/assets/icons/151-hammer.svg"/>
+        <div style="padding: 14px;">
+          <div class="bottom clearfix">
+            <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+                       :auto-upload="false"
+                       class="upload-demo" action="#">
+              <el-button @click="setAction('fix')" size="large" type="primary">Fix</el-button>
+              <div slot="tip" class="el-upload__tip">Solve an integration issue</div>
+            </el-upload>
+          </div>
         </div>
-      </div>
-    </main>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation';
+
+  import {mapState} from 'vuex';
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'landing-page',
-    components: { SystemInformation },
+    data() {
+      return {}
+    },
     methods: {
+      ...mapActions(['setProjectDir', 'setSessionAction']),
       open(link) {
         this.$electron.shell.openExternal(link);
       },
+      folderSelect: function (file) {
+        var rawFile = file.raw;
+        this.setProjectDir(rawFile.path);
+        console.log("folder selected", file, arguments)
+
+        if (this.Project.action == "fix") {
+          this.$router.push({
+            name: 'SelectFix'
+          });
+          return;
+        } else {
+          this.$router.push({
+            name: 'SelectIntegration'
+          });
+          return;
+
+        }
+
+      },
+      setAction(action) {
+        console.log("Set session action")
+        this.setSessionAction(action)
+      }
+    },
+    computed: {
+      ...mapState({
+        'Project': 'Project',
+      }),
+    },
+    mounted() {
+      setTimeout(function () {
+        console.log("input file", jQuery("input[type=file]"))
+        jQuery("input[type=file]").attr("webkitdirectory", "true")
+      }, 100)
     },
   };
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
     padding: 0;
+    float: right;
   }
 
-  body { font-family: 'Source Sans Pro', sans-serif; }
-
-  #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
-    height: 100vh;
-    padding: 60px 80px;
-    width: 100vw;
+  .image {
+    width: 70%;
+    padding: 15%;
+    margin: 10%;
+    display: block;
   }
 
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
   }
 
-  main {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  main > div { flex-basis: 50%; }
-
-  .left-side {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
-  }
-
-  .title {
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
-
-  .title.alt {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
-
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
+  .clearfix:after {
+    clear: both
   }
 </style>

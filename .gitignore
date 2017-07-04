@@ -11,3 +11,6 @@ thumbs.db
 !.gitkeep
 build/
 dist/
+.idea/
+*.iml
+*.log

@@ -1,5 +1,5 @@
 const state = {
-  main: 0,
+  main: 4,
 };
 
 const mutations = {
