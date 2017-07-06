@@ -22,16 +22,14 @@ export default {
         fileSelector: '.+main/AndroidManifest.xml',
         fileType: 'xml',
         change: {
-          changeType: 'add.tag',
-          tag: '<meta-data android:name="in.sdk.lazypay" android:value="M9OZT7LFHPCK91UDVJC8"/>',
-          query: 'application',
-          action: 'append'
+          changeType: 'add.line',
+          line: '<meta-data android:name="in.sdk.lazypay" android:value="M9OZT7LFHPCK91UDVJC8"/>',
+          action: 'prepend',
+          query: '</application>'
         },
         validate: {
-          checkType: 'tag.attribute',
-          query: 'meta-data',
-          attribute: 'android:name',
-          value: 'in.sdk.lazypay'
+          checkType: 'textSearch',
+          query: 'in.sdk.lazypay'
         }
       },
       {

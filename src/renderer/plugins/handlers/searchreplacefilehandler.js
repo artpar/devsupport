@@ -3,7 +3,7 @@
  */
 var fs = require('file-system');
 
-export default function(fileType, logger) {
+export default function (fileType, logger) {
   var that = {};
   that.fileType = fileType;
 
@@ -28,7 +28,7 @@ export default function(fileType, logger) {
 
       switch (change.changeType) {
         case "add.line":
-          logger(file, "Add line to file: ", file.filepath)
+          logger(file, "Add line to file")
           var fileUpdated = false;
           var query = change.query;
           var action = change.action;
@@ -51,6 +51,9 @@ export default function(fileType, logger) {
               fileUpdated = true;
               break;
             }
+          }
+          if (!fileUpdated) {
+            logger(file, "Search query did not match " + queryRegex)
           }
           break;
         default:
