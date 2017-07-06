@@ -1,43 +1,59 @@
 <template>
-  <div class="row">
-    <div class="col-md-12">
-
-      <h4>{{Project.projectDir}}</h4>
-      <ul class="event-list">
-
-
-        <li>
-          <time datetime="2017-07-01">
-            <span class="day">1</span>
-            <span class="month">Jul</span>
-            <span class="year">2017</span>
-            <span class="time">ALL DAY</span>
-          </time>
-          <span style="font-size: 120px; float: left; width: 120px" class="devicon devicon-android-plain"></span>
-          <div class="info">
-            <h3 class="title"><a href="#" @click="chooseIntegration('lazyPayAndroid')">LazyPay Android Integration</a>
-            </h3>
-            <p class="desc">Complete payment flow</p>
+  <div class="ui one column grid">
+    <div v-if="Project" class="ui column">
+      <el-steps :space="100" direction="vertical" :active="2">
+        <el-step title="Project location">
+          <div slot="description">
+            <h5>{{Project.projectDir}}</h5>
           </div>
-        </li>
+        </el-step>
+        <el-step title="Choose integration">
+          <div slot="description">
+            <ul class="event-list">
 
-        <li>
-          <time datetime="2017-07-05">
-            <span class="day">5</span>
-            <span class="month">Jul</span>
-            <span class="year">2017</span>
-            <span class="time">ALL DAY</span>
-          </time>
-          <span style="font-size: 120px; float: left; width: 120px" class="devicon devicon-php-plain"></span>
-          <div class="info">
-            <h3 class="title"><a href="#" @click="chooseIntegration('lazyPayPHP')">LazyPay PHP Integration</a></h3>
-            <p class="desc">Credit Card Payment Integration</p>
+
+              <li>
+                <time datetime="2017-07-01">
+                  <span class="day">1</span>
+                  <span class="month">Jul</span>
+                  <span class="year">2017</span>
+                  <span class="time">ALL DAY</span>
+                </time>
+                <span style="font-size: 120px; float: left; width: 120px; color: #a4c639;" class="devicon devicon-android-plain"></span>
+                <div class="info">
+                  <h3 class="title">
+                    <router-link :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">LazyPay Android Integration
+                    </router-link>
+                  </h3>
+                  <p class="desc">Complete payment flow</p>
+                </div>
+              </li>
+
+              <li>
+                <time datetime="2017-07-05">
+                  <span class="day">5</span>
+                  <span class="month">Jul</span>
+                  <span class="year">2017</span>
+                  <span class="time">ALL DAY</span>
+                </time>
+                <span style="font-size: 120px; float: left; width: 120px; color: #8892bf;" class="devicon devicon-php-plain"></span>
+                <div class="info">
+                  <h3 class="title">
+                    <router-link :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">LazyPay PHP Integration
+                    </router-link>
+                  </h3>
+                  <p class="desc">Credit Card Payment Integration</p>
+                </div>
+              </li>
+
+
+            </ul>
           </div>
-        </li>
+        </el-step>
+      </el-steps>
 
-
-      </ul>
     </div>
+
   </div>
 </template>
 <script>
@@ -48,9 +64,15 @@
       console.log("started integration selection")
     },
     methods: {
-        ...mapActions(['setIntegration']),
+      ...mapActions(['setIntegration']),
       chooseIntegration(inte){
-        this.setIntegration(inte)
+        this.setIntegration(inte);
+        this.$router.push({
+          name: 'Integrate',
+          params: {
+            name: 'lazyPayAndroid'
+          }
+        })
       },
     },
     computed: {

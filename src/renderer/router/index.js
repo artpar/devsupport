@@ -15,6 +15,12 @@ export default new Router({
       name: 'SelectIntegration',
       component: require('@/components/IntegrationSelection')
     },
+,
+    {
+      path: '/integrate/:name',
+      name: 'Integrate',
+      component: require('@/components/Integrate')
+    },
     {
       path: '/SelectFix',
       name: 'SelectFix',

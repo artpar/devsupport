@@ -1,0 +1,410 @@
+<template>
+  <div class="ui grid">
+    <div class="sixteen wide column">
+      <h1>{{selectedIntegration.name}}</h1>
+      <span>{{Project.projectDir}}</span>
+    </div>
+
+    <div class="sixteen wide column" v-if="state == 'scanning-files'">
+      <loading v-if="loading"></loading>
+    </div>
+    <div class="sixteen wide column" v-if="!loading > 0 && state == 'scanned-files'">
+      <data-tables
+          :actions-def="actionDef"
+          :checkbox-filter-def="checkboxFilterDef"
+          :row-action-def="rowActionDef"
+          :has-action-col="false"
+          :pagination-def="{}"
+          :data='liveChanges'>
+        <el-table-column prop="change.name"
+                         label="Pending update"
+                         sortable="custom">
+        </el-table-column>
+        <el-table-column
+            prop="change.status"
+            label="Change status"
+            sortable="custom">
+        </el-table-column>
+        <el-table-column
+            prop="selectedFiles.length"
+            label="Files "
+            sortable="custom">
+        </el-table-column>
+
+      </data-tables>
+
+      <!--<table class="table table-inverse">-->
+      <!--<thead>-->
+      <!--<tr>-->
+      <!--<th>File</th>-->
+      <!--<th>Path</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+
+      <!--<tr v-for="file in selectedFiles">-->
+      <!--<td>{{file.filename}}</td>-->
+      <!--<td>{{file.relative}}</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+      <!--</table>-->
+
+
+    </div>
+    <div class="right floated six wide column" v-if="state == 'scanned-files'">
+      <el-button @click="reviewUpdates" size="large">Review updates</el-button>
+      <el-button @click="beginValidateProject" size="large">Rescan files</el-button>
+    </div>
+
+    <div class="sixteen wide column" v-if="state == 'review-files'">
+
+      <div class="ui accordion">
+
+
+        <template v-for="liveChange in liveChanges">
+
+          <div class="title active">
+            <i class="dropdown icon"></i>
+            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+          </div>
+          <div class="content active">
+            <ul class="ui list">
+              <li class="item" v-for="log in liveChange.logs">
+                {{log}}
+              </li>
+            </ul>
+          </div>
+
+        </template>
+      </div>
+
+
+    </div>
+
+    <div class="right floated four wide column" v-if="state == 'review-files'">
+      <el-button @click="listScannedFiles" size="large">Back</el-button>
+      <el-button @click="doChanges" size="large">Apply changes</el-button>
+    </div>
+  </div>
+</template>
+<script>
+  import {mapState} from 'vuex';
+  import {mapActions} from 'vuex';
+
+  import JavaParser from 'java-parser';
+  import FileProcessorFactor from '../../plugins/changehandler'
+
+
+  String.prototype.repeat = function (times) {
+    return (new Array(times + 1)).join(this);
+  };
+
+
+  //  const fs = require('fs');
+  var fs = require('file-system');
+
+
+  export default {
+    mounted() {
+      var that = this;
+      this.setIntegration(this.$route.params.name);
+      this.selectedIntegration = this.integrations[this.$route.params.name];
+      this.beginValidateProject();
+
+    },
+    data() {
+      return {
+        liveChanges: [],
+        state: "scanning-files",
+        integrations: {
+          "lazyPayAndroid": {
+            name: "LazyPay Android Integration",
+            changes: [
+              {
+                name: 'Add dependency to lazypay',
+                fileSelector: '.+build.gradle$',
+                fileType: 'gradle',
+                change: {
+                  changeType: 'add.line',
+                  line: "compile 'in.lazypay:sdk2:0.0.0'",
+                  action: 'append',
+                  query: '.+com.android.tools.+'
+                },
+                validate: {
+                  checkType: 'textSearch',
+                  query: '.+in.lazypay:sdk2.+'
+                }
+              },
+              {
+                name: 'Add key to AndroidManifest.xml',
+                fileSelector: '.+main/AndroidManifest.xml',
+                fileType: 'xml',
+                change: {
+                  changeType: 'add.tag',
+                  tag: '<meta-data android:name="in.sdk.lazypay" android:value="M9OZT7LFHPCK91UDVJC8"/>',
+                  query: 'application',
+                  action: 'append'
+                },
+                validate: {
+                  checkType: 'exist',
+                  query: 'meta-data[android:name="in.sdk.lazypay"]'
+                }
+              },
+              {
+                name: 'Add function to Main Activity',
+                fileSelector: '.+/.+Activity.java',
+                fileType: 'java',
+                change: {
+                  changeType: 'add.function',
+                  functionString: 'public statc void test(){\n\n}',
+                },
+                validate: [
+                  {
+                    validationType: 'check extends',
+                    validationValue: 'AppCompatActivity'
+                  },
+                  {
+                    validationType: 'name notequal',
+                    validationValue: 'R.java'
+                  }
+                ]
+              }
+            ],
+          }
+        },
+        loading: false,
+        selectedIntegration: null,
+        selectedFiles: [],
+        actions: [],
+        actionDef: {
+          width: 5,
+          def: []
+        },
+        checkboxFilterDef: {
+          width: 14,
+          props: 'state_code',
+          def: []
+        },
+        rowActionDef: [{
+          type: 'primary',
+          handler: function handler(row) {
+            self.$message('Edit clicked');
+            console.log('Edit in row clicked', row);
+          },
+
+          name: 'Edit'
+        }, {
+          type: 'primary',
+          handler: function handler(row) {
+            self.$message('RUA in row clicked');
+            console.log('RUA in row clicked', row);
+          },
+
+          name: 'RUA'
+        }]
+      }
+    },
+    methods: {
+      listScannedFiles(){
+        var that = this;
+        that.state = "scanned-files";
+      },
+      reviewUpdates(){
+        var that = this;
+        that.state = "review-files";
+        setTimeout(function () {
+          jQuery('.ui.accordion')
+              .accordion()
+          ;
+        }, 300)
+      },
+      doChanges() {
+        console.log(this.liveChanges);
+        this.liveChanges.map(function (liveChange) {
+          liveChange.doChanges();
+        })
+      },
+      beginValidateProject(){
+        var that = this;
+        that.loading = true;
+        that.state = "scanning-files";
+        console.log(this.Project.projectDir);
+        that.actions = [];
+        that.liveChanges = [];
+
+        this.selectedIntegration.changes.map(function (change) {
+          console.log("Push change", change);
+          that.liveChanges.push(new FileProcessorFactor.ChangeHandler(change));
+        });
+
+
+        that.files = [];
+
+
+        var filesToEdit = [{
+          matchConditions: [
+            /.*java$/
+          ],
+          nonMatchConditions: [
+            /.*R\.java$/
+          ]
+        }, {
+          matchConditions: [
+            /.*gradle$/
+          ]
+        }, {
+          matchConditions: [
+            /AndroidManifest.xml/
+          ]
+        }];
+
+        let completeTimeout = setTimeout(function () {
+          completed();
+        }, 3000);
+
+        var changes = [];
+
+
+        function completed() {
+          console.log("completed scan");
+          that.loading = false;
+          that.state = "scanned-files";
+        }
+
+        fs.recurse(this.Project.projectDir, ['**/[a-zA-Z]+Activity.java', '**/AndroidManifest.xml', '*.gradle'], function (filepath, relative, filename) {
+          if (typeof filename != "undefined") {
+            console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
+
+
+            if (completeTimeout) {
+              clearTimeout(completeTimeout);
+              completeTimeout = setTimeout(function () {
+                completed();
+              }, 1000);
+            }
+
+            that.liveChanges.map(function (liveChange) {
+              liveChange.addFile({
+                filename: filename,
+                filepath: filepath,
+                relative: relative,
+              })
+            });
+
+
+            var matched = false;
+            for (var k = 0; k < filesToEdit.length; k++) {
+
+              var conditions = filesToEdit[k];
+              var matching = true;
+              if (conditions.matchConditions) {
+
+                for (var o = 0; o < conditions.matchConditions.length; o++) {
+                  if (!filepath.match(conditions.matchConditions[o])) {
+                    matching = false;
+                    break;
+                  }
+                }
+              }
+
+              if (!matching) {
+//                console.log("no match for ", conditions.matchConditions[o], filepath)
+                break
+              }
+
+              if (conditions.nonMatchConditions) {
+                for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
+                  if (filepath.match(conditions.nonMatchConditions[o])) {
+                    matching = false;
+//                    console.log("match for ", conditions.nonMatchConditions[o], filepath)
+                    break;
+                  }
+                }
+              }
+              matched = matching;
+
+            }
+
+
+            console.log("File ", filename, matched);
+            if (matched) {
+              var file = {
+                filename: filename,
+                filepath: filepath,
+                relative: relative,
+              };
+              that.liveChanges.map(function (liveChange) {
+                console.log("add file to live change", liveChange, file);
+                liveChange.addFile(file)
+              });
+            }
+
+            // it's file
+          } else {
+            // it's folder
+          }
+        });
+
+//        fs.readdir(this.Project.projectDir, function (err, files) {
+//          if (err) {
+//            console.error(err)
+//          }
+//          console.log("files", files);
+//          files.map(function (file) {
+//            fs.stat(that.Project.projectDir + "/" + file, function (err, stats) {
+//              if (err) {
+//                console.error(err)
+//              }
+//              console.log(file, stats)
+//
+//            })
+//          })
+//        })
+      },
+      ...mapActions(['setIntegration']),
+    },
+    computed: {
+      ...mapState(['Project'])
+    }
+  }
+</script>
+<style>
+  .trash {
+    color: rgb(209, 91, 71);
+  }
+
+  .flag {
+    color: rgb(248, 148, 6);
+  }
+
+  .panel-body {
+    padding: 0px;
+  }
+
+  .panel-footer .pagination {
+    margin: 0;
+  }
+
+  .panel .glyphicon, .list-group-item .glyphicon {
+    margin-right: 5px;
+  }
+
+  .panel-body .radio, .checkbox {
+    display: inline-block;
+    margin: 0px;
+  }
+
+  .panel-body input[type=checkbox]:checked + label {
+    text-decoration: line-through;
+    color: rgb(128, 144, 160);
+  }
+
+  .list-group-item:hover, a.list-group-item:focus {
+    text-decoration: none;
+    background-color: rgb(245, 245, 245);
+  }
+
+  .list-group {
+    margin-bottom: 0px;
+  }
+</style>

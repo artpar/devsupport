@@ -1,17 +1,22 @@
 <template>
-  <div id="app" class="container">
-    <div class="header clearfix">
-      <nav>
-        <ul class="nav nav-pills float-right">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </nav>
-      <h3 class="text-muted">DevSupport.AI</h3>
-    </div>
+  <div id="app" class="ui container">
 
-    <div class="mt-1">
+    <div class="ui top attached menu">
+      <router-link to="/">
+        <div class="ui item">
+          <i class="home icon"></i>
+        </div>
+      </router-link>
+      <div class="right menu">
+        <div class="ui right aligned category search item">
+          <div class="ui transparent icon input">
+            DevSupport.AI
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ui bottom attached segment">
       <router-view></router-view>
     </div>
   </div>
@@ -26,10 +31,17 @@
 
 <style>
   /* CSS */
+
+  h1 {
+    font-weight: 900;
+    font-style: normal;
+  }
+
   body {
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    font-family: "Lato Medium";
     padding: 60px 0px;
-    background-color: rgb(220, 220, 220);
+    font-size: 20px;
+    background-color: #eceeef;
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
@@ -113,4 +125,6 @@
       border-bottom: 0;
     }
   }
+
+
 </style>

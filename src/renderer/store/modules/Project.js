@@ -12,7 +12,7 @@ const mutations = {
     state.sessionAction = action
   },
   SET_INTEGRATION(state, action){
-    state.sessionAction = action
+    state.integration = action
   },
 
 };

@@ -1,36 +1,55 @@
 <template>
-  <div class="row">
-    <div class="col-md-4">
-      <el-card :body-style="{ padding: '0px' }" class="text-center">
+  <div class="ui two column grid">
+    <div class="ui column">
 
-        <img class="image" src="~@/assets/icons/152-magic-wand.svg"/>
-        <div style="padding: 14px;">
-          <div class="bottom clearfix">
+
+      <div class="ui card">
+        <div class="image">
+          <img src="~@/assets/icons/152-magic-wand.svg">
+        </div>
+        <div class="content">
+          <a class="header">Integrate</a>
+          <div class="meta">
+            <!--<span class="date">Added in Jul 2017</span>-->
+          </div>
+          <div class="description">
             <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
                        :auto-upload="false"
                        class="upload-demo" action="#">
               <el-button @click="setAction('integerate')" size="large" type="primary">Integrate</el-button>
-              <div slot="tip" class="el-upload__tip">Get started with an integration</div>
+              <div slot="tip" class="el-upload__tip">Start a new integration</div>
             </el-upload>
+
           </div>
         </div>
-      </el-card>
+      </div>
     </div>
-    <div class="col-md-4">
-      <el-card :body-style="{ padding: '0px' }" class="text-center">
-        <img class="image" src="~@/assets/icons/151-hammer.svg"/>
-        <div style="padding: 14px;">
-          <div class="bottom clearfix">
-            <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+
+    <div class="ui column">
+
+
+      <div class="ui card">
+        <div class="image">
+          <img src="~@/assets/icons/151-hammer.svg">
+        </div>
+        <div class="content">
+          <a class="header">Fix</a>
+          <div class="meta">
+            <!--<span class="date">Added in Jul 2017</span>-->
+          </div>
+          <div class="description">
+            <el-upload :on-preview="folderSelect"
                        :auto-upload="false"
                        class="upload-demo" action="#">
               <el-button @click="setAction('fix')" size="large" type="primary">Fix</el-button>
               <div slot="tip" class="el-upload__tip">Solve an integration issue</div>
             </el-upload>
+
           </div>
         </div>
-      </el-card>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -82,7 +101,7 @@
       setTimeout(function () {
         console.log("input file", jQuery("input[type=file]"))
         jQuery("input[type=file]").attr("webkitdirectory", "true")
-      }, 100)
+      }, 500)
     },
   };
 </script>
