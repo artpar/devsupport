@@ -53,10 +53,60 @@
     </div>
     <div class="right floated six wide column" v-if="state == 'scanned-files'">
       <el-button @click="beginValidateProject" size="large">Rescan files</el-button>
-      <el-button @click="reviewUpdates" size="large">Review updates</el-button>
+      <el-button @click="reviewFiles" size="large">Review files</el-button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
+
+      <div class="ui accordion">
+
+
+        <template v-for="liveChange in liveChanges">
+
+          <div class="title active">
+            <i class="dropdown icon"></i>
+            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+          </div>
+          <div class="content active">
+
+            <div class="ui column">
+              <div class="ui form">
+                <div class="field">
+                  <el-radio-group v-model="liveChange.selectedFile">
+                    <table class="ui celled table">
+                      <tbody>
+                      <tr v-for="file in liveChange.selectedFiles">
+                        <td>
+                          <el-radio :label="file">
+                            {{file.filepath}}
+                          </el-radio>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </el-radio-group>
+
+
+                </div>
+                {{liveChange.selectedFile}}
+              </div>
+            </div>
+
+          </div>
+
+        </template>
+      </div>
+
+
+    </div>
+
+    <div class="right floated six wide column" v-if="state == 'review-files'">
+      <el-button @click="state = 'scanned-files'" size="large">Back</el-button>
+      <el-button @click="reviewUpdates" size="large">Review updates</el-button>
+    </div>
+
+
+    <div class="sixteen wide column" v-if="state == 'review-updates'">
 
       <div class="ui accordion">
 
@@ -81,10 +131,37 @@
 
     </div>
 
-    <div class="right floated four wide column" v-if="state == 'review-files'">
+    <div class="right floated four wide column" v-if="state == 'review-updates'">
       <el-button @click="listScannedFiles" size="large">Back</el-button>
       <el-button @click="doChanges" size="large">Apply changes</el-button>
     </div>
+
+    <div class="sixteen wide column" v-if="state == 'review-results'">
+
+      <div class="ui accordion">
+
+
+        <template v-for="liveChange in liveChanges">
+
+          <div class="title active">
+            <i class="dropdown icon"></i>
+            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+          </div>
+          <div class="content active">
+            <span>{{liveChange.change.status}}</span>
+          </div>
+
+        </template>
+      </div>
+
+
+    </div>
+
+    <div class="right floated four wide column" v-if="state == 'review-results'">
+      <el-button size="large">Close</el-button>
+    </div>
+
+
   </div>
 </template>
 <script>
@@ -151,13 +228,17 @@
       }
     },
     methods: {
+      reviewFiles() {
+        var that = this;
+        that.state = "review-files";
+      },
       listScannedFiles(){
         var that = this;
         that.state = "scanned-files";
       },
       reviewUpdates(){
         var that = this;
-        that.state = "review-files";
+        that.state = "review-updates";
         setTimeout(function () {
           jQuery('.ui.accordion')
               .accordion()
@@ -165,10 +246,26 @@
         }, 300)
       },
       doChanges() {
+        var that = this;
         console.log(this.liveChanges);
+        var startCount = 0;
         this.liveChanges.map(function (liveChange) {
-          liveChange.doChanges();
+          startCount += 1;
+          liveChange.doChanges().then(function () {
+            that.callbackChangeComplete();
+          }).catch(function () {
+            that.callbackChangeComplete();
+          });
         })
+      },
+      callbackChangeComplete() {
+        var that = this;
+        var remaining = this.liveChanges.filter(function (e) {
+          return e.change.status == "pending";
+        }).length;
+        if (remaining == 0) {
+          that.state = "review-results";
+        }
       },
       beginValidateProject(){
         var that = this;
@@ -189,18 +286,18 @@
 
         var filesToEdit = [{
           matchConditions: [
-            /.*java$/
+            new RegExp(".java$")
           ],
           nonMatchConditions: [
-            /.*R\.java$/
+            new RegExp("R.java")
           ]
         }, {
           matchConditions: [
-            /.*gradle$/
+            new RegExp("build.gradle")
           ]
         }, {
           matchConditions: [
-            /AndroidManifest.xml/
+            new RegExp("AndroidManifest.xml")
           ]
         }];
 
@@ -228,14 +325,14 @@
                 completed();
               }, 1000);
             }
-
-            that.liveChanges.map(function (liveChange) {
-              liveChange.addFile({
-                filename: filename,
-                filepath: filepath,
-                relative: relative,
-              })
-            });
+//
+//            that.liveChanges.map(function (liveChange) {
+//              liveChange.addFile({
+//                filename: filename,
+//                filepath: filepath,
+//                relative: relative,
+//              })
+//            });
 
 
             var matched = false;
@@ -254,21 +351,21 @@
               }
 
               if (!matching) {
-//                console.log("no match for ", conditions.matchConditions[o], filepath)
-                break
+                console.log("no match for ", conditions.matchConditions[o], filepath)
+                continue
               }
 
               if (conditions.nonMatchConditions) {
                 for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
                   if (filepath.match(conditions.nonMatchConditions[o])) {
                     matching = false;
-//                    console.log("match for ", conditions.nonMatchConditions[o], filepath)
-                    break;
+                    console.log("match for ", conditions.nonMatchConditions[o], filepath)
+                    continue;
                   }
                 }
               }
               matched = matching;
-
+              break;
             }
 
 
@@ -333,11 +430,6 @@
 
   .panel .glyphicon, .list-group-item .glyphicon {
     margin-right: 5px;
-  }
-
-  .panel-body .radio, .checkbox {
-    display: inline-block;
-    margin: 0px;
   }
 
   .panel-body input[type=checkbox]:checked + label {

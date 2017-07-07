@@ -33,23 +33,64 @@ export default {
         }
       },
       {
-        name: 'Add function to Main Activity',
+        name: 'Add function onActivityResult',
         fileSelector: '.+/.+Activity.java',
         fileType: 'java',
         change: {
-          changeType: 'add.function',
-          functionString: 'public statc void test(){\n\n}',
+          changeType: 'add.line',
+          action: 'append',
+          query: 'extends',
+          line: `
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1: {
+                switch (resultCode) {
+                    case Lazypay.LAZYPAY_SUCCESS :
+                        Toast.makeText(getApplicationContext(), "Transaction Successfull", Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    case Lazypay.LAZYPAY_FAILED:
+                        Toast.makeText(getApplicationContext(), "Transaction Failed", Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }`,
         },
-        validate: [
-          {
-            validationType: 'check extends',
-            validationValue: 'AppCompatActivity'
-          },
-          {
-            validationType: 'name notequal',
-            validationValue: 'R.java'
-          }
-        ]
+        validate: {
+          checkType: 'textSearch',
+          query: 'onActivityResult'
+        }
+      },
+      {
+        name: 'Add function callLazyPay',
+        fileSelector: '.+/.+Activity.java',
+        fileType: 'java',
+        change: {
+          changeType: 'add.line',
+          action: 'append',
+          query: 'extends',
+          line: `
+    private void callLazyPay(String email, String mobile, String amount) {
+        Intent intent = new Intent(MainActivity.this, Lazypay.class);
+
+        intent.putExtra("email", email);
+
+        intent.putExtra("mobile", mobile);
+
+        intent.putExtra("amount", amount);
+
+        startActivityForResult(intent, 1);
+    }`,
+        },
+        validate: {
+          checkType: 'textSearch',
+          query: 'callLazyPay'
+        }
       }
     ],
   }

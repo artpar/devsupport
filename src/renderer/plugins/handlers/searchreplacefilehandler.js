@@ -9,70 +9,77 @@ export default function (fileType, logger) {
 
   that.doChange = function (file, change) {
 
-    logger(file, JSON.stringify(change))
-    console.log("search and replace handler do change", change);
+    return new Promise(function (resolve, reject) {
+
+      logger(file, JSON.stringify(change))
+      console.log("search and replace handler do change", change);
 
 
-    fs.readFile(file.filepath, "utf8", function (err, data) {
-      logger(file, "Read complete");
-      if (err) {
-        logger(file, "Error in reading file");
-        return;
-      }
+      fs.readFile(file.filepath, "utf8", function (err, data) {
+        logger(file, "Read complete");
+        if (err) {
+          logger(file, "Error in reading file");
+          reject();
+          return;
+        }
 
-      var str = data.toString("utf8", 0, data.length);
-      logger(file, "Parser created");
+        var str = data.toString("utf8", 0, data.length);
+        logger(file, "Parser created");
 
-      var fileLines = str.split(/\n/);
-      logger(file, "Line count: " + fileLines.length)
+        var fileLines = str.split(/\n/);
+        logger(file, "Line count: " + fileLines.length)
 
-      switch (change.changeType) {
-        case "add.line":
-          logger(file, "Add line to file")
-          var fileUpdated = false;
-          var query = change.query;
-          var action = change.action;
-          var line = change.line;
-          var queryRegex = new RegExp(query);
-          for (var u = 0; u < fileLines.length; u++) {
-            if (fileLines[u].match(queryRegex)) {
-              logger(file, "Query matched at line number " + (u + 1))
-              var firstNonSpaceChar = fileLines[u].match(/[^ ]/).index;
+        switch (change.changeType) {
+          case "add.line":
+            logger(file, "Add line to file")
+            var fileUpdated = false;
+            var query = change.query;
+            var action = change.action;
+            var line = change.line;
+            var queryRegex = new RegExp(query);
+            for (var u = 0; u < fileLines.length; u++) {
+              if (fileLines[u].match(queryRegex)) {
+                logger(file, "Query matched at line number " + (u + 1))
+                var firstNonSpaceChar = fileLines[u].match(/[^ ]/).index;
 
-              if (action == "prepend") {
-                fileLines.splice(u, 0, " ".repeat(firstNonSpaceChar) + line);
-              } else if (action == "append") {
-                fileLines.splice(u + 1, 0, " ".repeat(firstNonSpaceChar) + line);
-              } else if (action == "replace") {
-                fileLines[u] = " ".repeat(firstNonSpaceChar) + line;
-              } else if (action == "delete") {
-                fileLines.splice(u, 1);
+                if (action == "prepend") {
+                  fileLines.splice(u, 0, " ".repeat(firstNonSpaceChar) + line);
+                } else if (action == "append") {
+                  fileLines.splice(u + 1, 0, " ".repeat(firstNonSpaceChar) + line);
+                } else if (action == "replace") {
+                  fileLines[u] = " ".repeat(firstNonSpaceChar) + line;
+                } else if (action == "delete") {
+                  fileLines.splice(u, 1);
+                }
+                fileUpdated = true;
+                break;
               }
-              fileUpdated = true;
-              break;
             }
-          }
-          if (!fileUpdated) {
-            logger(file, "Search query did not match " + queryRegex)
-          }
-          break;
-        default:
-          logger(file, "Unknown change type", change.changeType)
-      }
+            if (!fileUpdated) {
+              logger(file, "Search query did not match " + queryRegex)
+            }
+            break;
+          default:
+            logger(file, "Unknown change type", change.changeType)
+        }
 
-      if (fileUpdated) {
-        var contents = fileLines.join("\n");
-        fs.writeFile(file.filepath, contents, {}, function (err) {
-          console.log("write file response", err)
-          logger(file, "Completed writing file")
-        })
-      }
+        if (fileUpdated) {
+          var contents = fileLines.join("\n");
+          fs.writeFile(file.filepath, contents, {}, function (err) {
+            console.log("write file response", err)
+            logger(file, "Completed writing file");
+            resolve()
+          })
+        } else {
+          reject();
+        }
+
+
+      })
 
 
     })
 
-
-    return "ok"
   };
 
 

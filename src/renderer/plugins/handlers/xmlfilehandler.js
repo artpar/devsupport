@@ -10,57 +10,69 @@ export default function (fileType, logger) {
 
 
   that.doChange = function (file, change) {
-    console.log("xml file handler do change", change);
 
-    logger(file, "Begin reading file for change");
-    fs.readFile(file.filepath, "utf8", function (err, data) {
-      logger(file, "Read complete for change");
-      if (err) {
-        logger(file, "Error in reading file: ");
-        return;
-      }
+    return new Promise(function (resolve, reject) {
+      console.log("xml file handler do change", change);
 
-      console.log("begin parse xml")
-      var str = data.toString("utf8", 0, data.length);
-      var xml = jQuery('<root>' + str + '</root>');
-      that.parser = xml;
-      logger(file, "Parser created");
-      console.log("new xml parsed file", that.parser, change)
-      var contentUpdated = false;
-      switch (change.changeType) {
-        case "add.tag":
-          logger(file, "Add tag: ", change.tag);
-          switch (change.action) {
-            case "prepend":
-              that.parser.find(change.query).append(change.tag)
-              contentUpdated = true;
-              break;
-            case "append":
-            default:
-              that.parser.find(change.query).append(change.tag)
-              contentUpdated = true;
-          }
-          break;
-        default:
-          logger(file, "Unknown change type: " + change.changeType)
-      }
+      logger(file, "Begin reading file for change");
+      fs.readFile(file.filepath, "utf8", function (err, data) {
+        logger(file, "Read complete for change");
+        if (err) {
+          logger(file, "Error in reading file: ");
+          reject();
+          return;
+        }
 
-      if (contentUpdated) {
-        logger(file, "Content updated, writing to file");
-        console.log("log before xml write")
-        fs.writeFile(file.filepath, that.parser.html(), {}, function (err) {
-          if (err) {
-            logger(file, "Error on updating contents of file")
-          } else {
-            logger(file, "Contents updated")
-          }
-        })
-      } else {
-        logger(file, "No changes to write")
-      }
+        console.log("begin parse xml")
+        var str = data.toString("utf8", 0, data.length);
+        var xml = jQuery('<root>' + str + '</root>');
+        that.parser = xml;
+        logger(file, "Parser created");
+        console.log("new xml parsed file", that.parser, change)
+        var contentUpdated = false;
+        switch (change.changeType) {
+          case "add.tag":
+            logger(file, "Add tag: ", change.tag);
+            switch (change.action) {
+              case "prepend":
+                that.parser.find(change.query).append(change.tag)
+                contentUpdated = true;
+                break;
+              case "append":
+              default:
+                that.parser.find(change.query).append(change.tag)
+                contentUpdated = true;
+            }
+            break;
+          default:
+            logger(file, "Unknown change type: " + change.changeType)
+        }
+
+        if (contentUpdated) {
+          logger(file, "Content updated, writing to file");
+          console.log("log before xml write")
+          fs.writeFile(file.filepath, that.parser.html(), {}, function (err) {
+            if (err) {
+              logger(file, "Error on updating contents of file")
+              reject();
+              return;
+            } else {
+              logger(file, "Contents updated")
+              resolve();
+              return;
+            }
+          })
+        } else {
+          logger(file, "No changes to write")
+          reject();
+          return;
+        }
 
 
-    });
+      });
+
+
+    })
 
     return "ok"
   };

@@ -9,10 +9,14 @@ export default function (fileType, logger) {
   console.log("new java file handler");
 
   that.doChange = function (file, change) {
-    logger(file, JSON.stringify(change));
-    console.log("java file handler do change", change);
-    return "ok"
+    return new Promise(function (resolve, reject) {
+      logger(file, JSON.stringify(change));
+      console.log("java file handler do change", change);
+      resolve();
+      return;
+    })
   };
+
   that.validate = function (file, validation) {
     return new Promise(function (resolve, reject) {
 
@@ -25,7 +29,6 @@ export default function (fileType, logger) {
         if (err) {
           reject();
         }
-        ;
 
         var str = data.toString("utf8", 0, data.length);
 //        that.parser = new JavaParser.parse(str);
