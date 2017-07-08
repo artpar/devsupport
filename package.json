@@ -1,6 +1,6 @@
 {
   "name": "devsupport-ai",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "author": "Parth Mudgal <artpar@gmail.com>",
   "description": "AI support for developer integrations",
   "license": null,
@@ -24,7 +24,8 @@
   },
   "build": {
     "productName": "devsupport-ai",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "ai.devsupport.electron",
+    "copyright": "Copyright (c) DevSupport.AI 2017",
     "directories": {
       "output": "build"
     },
@@ -44,17 +45,40 @@
           "y": 150,
           "type": "file"
         }
+      ],
+      "publish": [
+        "github"
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "target": "zip",
+      "icon": "build/icons/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "publish": [
+        "github"
+      ]
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "publish": [
+        "github"
+      ]
     },
     "linux": {
-      "icon": "build/icons"
-    }
+      "icon": "build/icons",
+      "target": [
+        "deb",
+        "tar.gz"
+      ],
+      "publish": [
+        "github"
+      ]
+    },
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ]
   },
   "dependencies": {
     "axios": "^0.16.1",

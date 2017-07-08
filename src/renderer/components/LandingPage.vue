@@ -1,5 +1,5 @@
 <template>
-  <div class="ui two column grid">
+  <div class="ui four column grid">
     <div class="ui column">
 
 
