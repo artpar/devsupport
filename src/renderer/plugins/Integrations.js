@@ -12,10 +12,16 @@ export default {
           action: 'append',
           query: '.+com.android.tools.+'
         },
-        validate: {
-          checkType: 'textSearch',
-          query: '.+in.lazypay:sdk2.+'
-        }
+        validate: [
+          {
+            checkType: 'negative',
+            query: '.+in.lazypay:sdk2.+'
+          },
+          {
+            checkType: 'positive',
+            query: 'apply plugin: \'com.android.application\''
+          }
+        ]
       },
       {
         name: 'Add key to AndroidManifest.xml',
@@ -28,7 +34,7 @@ export default {
           query: '</application>'
         },
         validate: {
-          checkType: 'textSearch',
+          checkType: 'negative',
           query: 'in.sdk.lazypay'
         }
       },
@@ -62,7 +68,7 @@ export default {
     }`,
         },
         validate: {
-          checkType: 'textSearch',
+          checkType: 'negative',
           query: 'onActivityResult'
         }
       },
@@ -88,7 +94,7 @@ export default {
     }`,
         },
         validate: {
-          checkType: 'textSearch',
+          checkType: 'negative',
           query: 'callLazyPay'
         }
       }

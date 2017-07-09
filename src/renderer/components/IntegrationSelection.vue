@@ -1,56 +1,98 @@
 <template>
-  <div class="ui one column grid">
-    <div v-if="Project" class="ui column">
-      <el-steps :space="100" direction="vertical" :active="2">
-        <el-step title="Project location">
-          <div slot="description">
-            <h5>{{Project.projectDir}}</h5>
+  <div class="ui  grid">
+    <div v-if="Project" class="sixteen wide column">
+
+
+      <div class="ui ordered steps">
+        <div class="completed step">
+          <div class="content">
+            <div class="title">
+              Project Source
+            </div>
+            <div slot="description">
+              {{Project.projectDir}}
+            </div>
           </div>
-        </el-step>
-        <el-step title="Choose integration">
-          <div slot="description">
-            <ul class="event-list">
-
-
-              <li>
-                <time datetime="2017-07-01">
-                  <span class="day">1</span>
-                  <span class="month">Jul</span>
-                  <span class="year">2017</span>
-                  <span class="time">ALL DAY</span>
-                </time>
-                <span style="font-size: 120px; float: left; width: 120px; color: #a4c639;" class="devicon devicon-android-plain"></span>
-                <div class="info">
-                  <h3 class="title">
-                    <router-link :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">LazyPay Android Integration
-                    </router-link>
-                  </h3>
-                  <p class="desc">Complete payment flow</p>
-                </div>
-              </li>
-
-              <li>
-                <time datetime="2017-07-05">
-                  <span class="day">5</span>
-                  <span class="month">Jul</span>
-                  <span class="year">2017</span>
-                  <span class="time">ALL DAY</span>
-                </time>
-                <span style="font-size: 120px; float: left; width: 120px; color: #8892bf;" class="devicon devicon-php-plain"></span>
-                <div class="info">
-                  <h3 class="title">
-                    <router-link :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">LazyPay PHP Integration
-                    </router-link>
-                  </h3>
-                  <p class="desc">Credit Card Payment Integration</p>
-                </div>
-              </li>
-
-
-            </ul>
+        </div>
+        <div class="step" title="Choose integration">
+          <div class="content">
+            <div class="title">
+              Choose integration
+            </div>
           </div>
-        </el-step>
-      </el-steps>
+        </div>
+        <div class="step" title="Review and execute">
+          <div class="content">
+            <div class="title">
+              Review and execute
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="sixteen wide column">
+
+     <div class="ui cards">
+       <div class="ui card">
+         <div class="image">
+              <span style="float: left; color: #a4c639; font-size: 75px;"
+                    class="ui image devicon devicon-android-plain"></span>
+
+         </div>
+         <div class="content">
+
+           <a class="header">
+             LazyPay - Android
+           </a>
+           <div class="description">
+             <div class="ui list">
+               <div class="item">Credit card payment flow</div>
+               <div class="item">OTP auto read</div>
+               <div class="item">Lazypay wallet flow</div>
+             </div>
+           </div>
+         </div>
+         <div class="extra content">
+           <div class="ui one buttons">
+             <router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">
+               Begin
+             </router-link>
+           </div>
+         </div>
+
+       </div>
+
+       <div class="ui card">
+         <div class="image">
+              <span style="float: left; color: #8892bf; font-size: 75px;"
+                    class="ui image devicon devicon-php-plain"></span>
+
+         </div>
+         <div class="content">
+
+           <a class="header">
+             LazyPay - PHP
+           </a>
+           <div class="description">
+             <div class="ui list">
+               <div class="item">Server side response handler</div>
+               <div class="item">Hash verification</div>
+               <div class="item">Hash generation</div>
+             </div>
+           </div>
+         </div>
+         <div class="extra content">
+           <div class="ui one buttons">
+             <router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">
+               Begin
+             </router-link>
+           </div>
+         </div>
+
+       </div>
+
+     </div>
 
     </div>
 

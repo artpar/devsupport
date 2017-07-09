@@ -103,7 +103,24 @@ export default function (fileType, logger) {
         logger(file, "Line count: " + fileLines.length)
         logger(file, "Validation check type: " + validation.checkType)
         switch (validation.checkType) {
-          case "textSearch":
+          case "positive":
+            logger(file, "Check line: " + validation.query)
+            var fileUpdated = false;
+            var query = validation.query;
+            var queryRegex = new RegExp(query);
+            for (var u = 0; u < fileLines.length; u++) {
+              if (fileLines[u].match(queryRegex)) {
+                logger(file, "Validation success, found " + query)
+                logger(file, "Resolve from search and replace 3")
+                resolve();
+                return;
+              }
+            }
+            reject();
+            return;
+            break;
+
+          case "negative":
             logger(file, "Check line: " + validation.query)
             var fileUpdated = false;
             var query = validation.query;
@@ -117,15 +134,13 @@ export default function (fileType, logger) {
               }
             }
             break;
+
           default:
             logger(file, "Unknown validation type", validation.checkType)
         }
         logger(file, "Resolve from search and replace 2")
         resolve();
-        return
-
       })
-      return
     })
   };
 

@@ -58,42 +58,44 @@
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
 
-      <div class="ui accordion">
+      <div class="ui styled fluid accordion">
 
 
         <template v-for="liveChange in liveChanges">
-
-          <div class="title active">
+          <div class="title ">
             <i class="dropdown icon"></i>
-            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+            {{liveChange.change.name}}
+            ->
+            <span v-if="liveChange.selectedFiles.length == 0 ">No file to be modified</span>
+            <span v-if="liveChange.selectedFiles.length == 1 ">{{liveChange.selectedFile}}</span>
+            <span v-if="liveChange.selectedFiles.length > 1 ">Multiple files matched, click here and select</span>
           </div>
-          <div class="content active">
+          <div class="content ">
+            <div class="ui form">
+              <div class="grouped fields">
 
-            <div class="ui column">
-              <div class="ui form">
-                <div class="field">
-                  <el-radio-group v-model="liveChange.selectedFile">
-                    <table class="ui celled table">
-                      <tbody>
-                      <tr v-for="file in liveChange.selectedFiles">
-                        <td>
-                          <el-radio :label="file">
-                            {{file.filepath}}
-                          </el-radio>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </el-radio-group>
-
-
+                <div class="field" v-for="file in liveChange.selectedFiles">
+                  <div class="ui radio checkbox" @click="liveChange.selectedFile = file.filepath">
+                    <input class="hidden" type="radio" :name="liveChange.name" v-model="liveChange.selectedFile"
+                           :value="file.filepath">
+                    <label>{{file.relative}}</label>
+                  </div>
                 </div>
-                {{liveChange.selectedFile}}
+
               </div>
             </div>
 
           </div>
+          <div class="extra content">
+              <span v-if="liveChange.selectedFiles.length == 0 ">
+              No files matched the search, or the validation failed. <br/>
+            </span>
+            <span v-if="liveChange.selectedFiles.length > 1 ">
+              More then 1 file matched our search for the correct file to change. Choose the file you want to be modified
+              </span>
 
+
+          </div>
         </template>
       </div>
 
@@ -108,16 +110,18 @@
 
     <div class="sixteen wide column" v-if="state == 'review-updates'">
 
-      <div class="ui accordion">
+      <h2>Review changes, Apply changes to update files</h2>
+
+      <div class="ui styled fluid accordion">
 
 
         <template v-for="liveChange in liveChanges">
 
-          <div class="title active">
+          <div class="title">
             <i class="dropdown icon"></i>
-            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+            {{liveChange.change.name}}
           </div>
-          <div class="content active">
+          <div class="content">
             <ul class="ui list">
               <li class="item" v-for="log in liveChange.logs">
                 {{log}}
@@ -136,16 +140,15 @@
       <el-button @click="doChanges" size="large">Apply changes</el-button>
     </div>
 
-    <div class="sixteen wide column" v-if="state == 'review-results'">
+    <div class="sixteen wide column " v-if="state == 'review-results'">
 
-      <div class="ui accordion">
+      <h2>Results</h2>
 
-
+      <div class="ui styled fluid accordion">
         <template v-for="liveChange in liveChanges">
 
           <div class="title active">
-            <i class="dropdown icon"></i>
-            <span class="bold" style="font-size: 25px;; font-weight: 500;">{{liveChange.change.name}}</span>
+            <i class="dropdown icon"></i>{{liveChange.change.name}}
           </div>
           <div class="content active">
             <span>{{liveChange.change.status}}</span>
@@ -158,7 +161,7 @@
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
-      <el-button size="large">Close</el-button>
+      <el-button size="large" @click="reset">Close</el-button>
     </div>
 
 
@@ -228,22 +231,36 @@
       }
     },
     methods: {
+      ...mapActions(['setProjectDir', 'setSessionAction']),
+      reset() {
+        this.setProjectDir(null);
+        this.setSessionAction(null);
+        this.$router.push({
+          name: "landing-page"
+        })
+      },
       reviewFiles() {
         var that = this;
         that.state = "review-files";
+        console.log("set timeout for do accordian")
+        setTimeout(function () {
+          console.log("do accordian")
+          jQuery('.ui.accordion').accordion();
+        }, 300)
       },
       listScannedFiles(){
         var that = this;
         that.state = "scanned-files";
+
       },
       reviewUpdates(){
         var that = this;
         that.state = "review-updates";
         setTimeout(function () {
-          jQuery('.ui.accordion')
-              .accordion()
-          ;
+          console.log("do accordian")
+          jQuery('.ui.accordion').accordion();
         }, 300)
+
       },
       doChanges() {
         var that = this;
@@ -256,7 +273,10 @@
           }).catch(function () {
             that.callbackChangeComplete();
           });
-        })
+        });
+        if (this.liveChanges.length == 0) {
+          that.callbackChangeComplete();
+        }
       },
       callbackChangeComplete() {
         var that = this;
@@ -265,6 +285,10 @@
         }).length;
         if (remaining == 0) {
           that.state = "review-results";
+          setTimeout(function () {
+            console.log("do accordian")
+            jQuery('.ui.accordion').accordion();
+          }, 300);
         }
       },
       beginValidateProject(){
@@ -314,7 +338,7 @@
           that.state = "scanned-files";
         }
 
-        fs.recurse(this.Project.projectDir, ['**/[a-zA-Z]+Activity.java', '**/AndroidManifest.xml', '*.gradle'], function (filepath, relative, filename) {
+        fs.recurse(this.Project.projectDir, ['**/[a-zA-Z]+Activity.java', '**/AndroidManifest.xml', 'build.gradle', '**/build.gradle'], function (filepath, relative, filename) {
           if (typeof filename != "undefined") {
             console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
 
