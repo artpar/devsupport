@@ -1,12 +1,12 @@
 {
   "name": "devsupport-ai",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "author": "Parth Mudgal <artpar@gmail.com>",
   "description": "AI support for developer integrations",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
+    "build": "node .electron-vue/build.js && electron-builder -mwl --publish always",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
@@ -45,40 +45,26 @@
           "y": 150,
           "type": "file"
         }
-      ],
-      "publish": [
-        "github"
       ]
     },
     "mac": {
-      "target": "zip",
+      "target": [
+        "zip",
+        "7z"
+      ],
       "icon": "build/icons/icon.icns",
-      "category": "public.app-category.developer-tools",
-      "publish": [
-        "github"
-      ]
+      "category": "public.app-category.developer-tools"
     },
     "win": {
-      "icon": "build/icons/icon.ico",
-      "publish": [
-        "github"
-      ]
+      "icon": "build/icons/icon.ico"
     },
     "linux": {
       "icon": "build/icons",
       "target": [
         "deb",
         "tar.gz"
-      ],
-      "publish": [
-        "github"
       ]
-    },
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ]
+    }
   },
   "dependencies": {
     "axios": "^0.16.1",
