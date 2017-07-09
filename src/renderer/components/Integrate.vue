@@ -355,17 +355,24 @@
           that.state = "scanned-files";
         }
 
-        fs.recurse(this.Project.projectDir, ['**/[a-zA-Z]+Activity.java', '**/AndroidManifest.xml', 'build.gradle', '**/build.gradle'], function (filepath, relative, filename) {
-          if (typeof filename != "undefined") {
-            console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
+        fs.recurse(this.Project.projectDir,
+            [
+              '**/[a-zA-Z]+Activity.java',
+              '**/[a-zA-Z]+Activity.java',
+              '**/AndroidManifest.xml',
+              'build.gradle',
+              '**/build.gradle'
+            ], function (filepath, relative, filename) {
+              if (typeof filename != "undefined") {
+                console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
 
 
-            if (completeTimeout) {
-              clearTimeout(completeTimeout);
-              completeTimeout = setTimeout(function () {
-                completed();
-              }, 1000);
-            }
+                if (completeTimeout) {
+                  clearTimeout(completeTimeout);
+                  completeTimeout = setTimeout(function () {
+                    completed();
+                  }, 1000);
+                }
 //
 //            that.liveChanges.map(function (liveChange) {
 //              liveChange.addFile({
@@ -376,58 +383,58 @@
 //            });
 
 
-            var matched = false;
-            for (var k = 0; k < filesToEdit.length; k++) {
+                var matched = false;
+                for (var k = 0; k < filesToEdit.length; k++) {
 
-              var conditions = filesToEdit[k];
-              var matching = true;
-              if (conditions.matchConditions) {
+                  var conditions = filesToEdit[k];
+                  var matching = true;
+                  if (conditions.matchConditions) {
 
-                for (var o = 0; o < conditions.matchConditions.length; o++) {
-                  if (!filepath.match(conditions.matchConditions[o])) {
-                    matching = false;
-                    break;
+                    for (var o = 0; o < conditions.matchConditions.length; o++) {
+                      if (!filepath.match(conditions.matchConditions[o])) {
+                        matching = false;
+                        break;
+                      }
+                    }
                   }
-                }
-              }
 
-              if (!matching) {
-                console.log("no match for ", conditions.matchConditions[o], filepath)
-                continue
-              }
-
-              if (conditions.nonMatchConditions) {
-                for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
-                  if (filepath.match(conditions.nonMatchConditions[o])) {
-                    matching = false;
-                    console.log("match for ", conditions.nonMatchConditions[o], filepath)
-                    continue;
+                  if (!matching) {
+                    console.log("no match for ", conditions.matchConditions[o], filepath)
+                    continue
                   }
+
+                  if (conditions.nonMatchConditions) {
+                    for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
+                      if (filepath.match(conditions.nonMatchConditions[o])) {
+                        matching = false;
+                        console.log("match for ", conditions.nonMatchConditions[o], filepath)
+                        continue;
+                      }
+                    }
+                  }
+                  matched = matching;
+                  break;
                 }
+
+
+                console.log("File ", filename, matched);
+                if (matched) {
+                  var file = {
+                    filename: filename,
+                    filepath: filepath,
+                    relative: relative,
+                  };
+                  that.liveChanges.map(function (liveChange) {
+                    console.log("add file to live change", liveChange, file);
+                    liveChange.addFile(file)
+                  });
+                }
+
+                // it's file
+              } else {
+                // it's folder
               }
-              matched = matching;
-              break;
-            }
-
-
-            console.log("File ", filename, matched);
-            if (matched) {
-              var file = {
-                filename: filename,
-                filepath: filepath,
-                relative: relative,
-              };
-              that.liveChanges.map(function (liveChange) {
-                console.log("add file to live change", liveChange, file);
-                liveChange.addFile(file)
-              });
-            }
-
-            // it's file
-          } else {
-            // it's folder
-          }
-        });
+            });
 
 //        fs.readdir(this.Project.projectDir, function (err, files) {
 //          if (err) {

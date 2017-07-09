@@ -25,7 +25,7 @@ export default {
       },
       {
         name: 'Add key to AndroidManifest.xml',
-        fileSelector: '.+main/AndroidManifest.xml',
+        fileSelector: '.+main[\\/]AndroidManifest.xml',
         fileType: 'xml',
         change: {
           changeType: 'add.line',
@@ -40,7 +40,7 @@ export default {
       },
       {
         name: 'Add function onActivityResult',
-        fileSelector: '.+/.+Activity.java',
+        fileSelector: '.+[\\/].+Activity.java',
         fileType: 'java',
         change: {
           changeType: 'add.line',
@@ -74,7 +74,7 @@ export default {
       },
       {
         name: 'Add function callLazyPay',
-        fileSelector: '.+/.+Activity.java',
+        fileSelector: '.+[\\/].+Activity.java',
         fileType: 'java',
         change: {
           changeType: 'add.line',
@@ -100,7 +100,7 @@ export default {
       },
       {
         name: 'Add import statements for intent and LazyPay',
-        fileSelector: '.+/.+Activity.java',
+        fileSelector: '.+[\\/].+Activity.java',
         fileType: 'java',
         change: {
           changeType: 'add.line',
