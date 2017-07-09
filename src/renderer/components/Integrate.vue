@@ -266,17 +266,34 @@
         var that = this;
         console.log(this.liveChanges);
         var startCount = 0;
-        this.liveChanges.map(function (liveChange) {
-          startCount += 1;
-          liveChange.doChanges().then(function () {
+
+        function doIndex(ith, doIndex) {
+          if (that.liveChanges.length == ith) {
             that.callbackChangeComplete();
+            return;
+          }
+          that.liveChanges[ith].doChanges().then(function () {
+            doIndex(ith + 1, doIndex);
           }).catch(function () {
-            that.callbackChangeComplete();
+            doIndex(ith + 1, doIndex);
           });
-        });
-        if (this.liveChanges.length == 0) {
-          that.callbackChangeComplete();
         }
+
+        doIndex(0, doIndex);
+//
+//        this.liveChanges.forEach(function (liveChange) {
+//          startCount += 1;
+//          liveChange.doChanges().then(function () {
+//            that.callbackChangeComplete();
+//          }).catch(function () {
+//            that.callbackChangeComplete();
+//          });
+//        });
+//
+//
+//        if (this.liveChanges.length == 0) {
+//          that.callbackChangeComplete();
+//        }
       },
       callbackChangeComplete() {
         var that = this;

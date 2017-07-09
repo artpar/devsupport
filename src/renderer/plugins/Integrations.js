@@ -8,9 +8,9 @@ export default {
         fileType: 'gradle',
         change: {
           changeType: 'add.line',
-          line: "compile 'in.lazypay:sdk2:0.0.0'",
+          line: "    classpath 'in.lazypay:sdk2:0.0.0'",
           action: 'append',
-          query: '.+com.android.tools.+'
+          query: '.+dependencies \{'
         },
         validate: [
           {
@@ -82,7 +82,7 @@ export default {
           query: 'extends',
           line: `
     private void callLazyPay(String email, String mobile, String amount) {
-        Intent intent = new Intent(MainActivity.this, Lazypay.class);
+        Intent intent = new Intent(this.getApplicationContext(), Lazypay.class);
 
         intent.putExtra("email", email);
 
@@ -96,6 +96,24 @@ export default {
         validate: {
           checkType: 'negative',
           query: 'callLazyPay'
+        }
+      },
+      {
+        name: 'Add import statements for intent and LazyPay',
+        fileSelector: '.+/.+Activity.java',
+        fileType: 'java',
+        change: {
+          changeType: 'add.line',
+          action: 'append',
+          query: 'import',
+          line: `
+import lazypay.app.Lazypay;
+import android.content.Intent;
+`,
+        },
+        validate: {
+          checkType: 'negative',
+          query: 'lazypay.app.Lazypay'
         }
       }
     ],
