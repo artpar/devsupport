@@ -58,6 +58,7 @@ var FileProcessorFactor = {
       }
 
       if (!nameMatch) {
+        console.log("File path didnt match regex", file.filepath, that.change.fileSelector, reg)
         return;
       }
 

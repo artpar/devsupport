@@ -344,7 +344,7 @@
 
         let completeTimeout = setTimeout(function () {
           completed();
-        }, 3000);
+        }, 2000);
 
         var changes = [];
 
@@ -355,34 +355,20 @@
           that.state = "scanned-files";
         }
 
-        fs.recurse(this.Project.projectDir,
-            [
-              '**/[a-zA-Z]+Activity.java',
-              '**/[a-zA-Z]+Activity.java',
-              '**/AndroidManifest.xml',
-              'build.gradle',
-              '**/build.gradle'
-            ], function (filepath, relative, filename) {
+        console.log("begin recurse dir for ",that.Project.projectDir)
+        fs.recurseSync(that.Project.projectDir,
+            ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
+              // console.log("callback point 1")
               if (typeof filename != "undefined") {
-                console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
+                // console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
 
 
                 if (completeTimeout) {
                   clearTimeout(completeTimeout);
                   completeTimeout = setTimeout(function () {
                     completed();
-                  }, 1000);
+                  }, 700);
                 }
-//
-//            that.liveChanges.map(function (liveChange) {
-//              liveChange.addFile({
-//                filename: filename,
-//                filepath: filepath,
-//                relative: relative,
-//              })
-//            });
-
-
                 var matched = false;
                 for (var k = 0; k < filesToEdit.length; k++) {
 
@@ -399,7 +385,7 @@
                   }
 
                   if (!matching) {
-                    console.log("no match for ", conditions.matchConditions[o], filepath)
+                    // console.log("no match for ", conditions.matchConditions[o], filepath)
                     continue
                   }
 
@@ -407,7 +393,7 @@
                     for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
                       if (filepath.match(conditions.nonMatchConditions[o])) {
                         matching = false;
-                        console.log("match for ", conditions.nonMatchConditions[o], filepath)
+                        // console.log("match for ", conditions.nonMatchConditions[o], filepath)
                         continue;
                       }
                     }
@@ -417,7 +403,7 @@
                 }
 
 
-                console.log("File ", filename, matched);
+                // console.log("File ", filename, matched);
                 if (matched) {
                   var file = {
                     filename: filename,
@@ -425,7 +411,7 @@
                     relative: relative,
                   };
                   that.liveChanges.map(function (liveChange) {
-                    console.log("add file to live change", liveChange, file);
+                    // console.log("add file to live change", liveChange, file);
                     liveChange.addFile(file)
                   });
                 }
