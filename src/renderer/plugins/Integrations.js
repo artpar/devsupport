@@ -10,7 +10,7 @@ export default {
           changeType: 'add.line',
           line: "    classpath 'in.lazypay:sdk2:0.0.0'",
           action: 'append',
-          query: '.+dependencies \{'
+          query: '.+dependencies'
         },
         validate: [
           {
