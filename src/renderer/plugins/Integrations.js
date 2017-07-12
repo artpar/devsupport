@@ -8,7 +8,7 @@ export default {
         fileType: 'gradle',
         change: {
           changeType: 'add.line',
-          line: "    classpath 'in.lazypay:sdk2:0.0.0'",
+          line: "    complie 'in.lazypay:sdk2:0.0.0'",
           action: 'append',
           query: '.*dependencies'
         },

@@ -4,7 +4,7 @@
     <div class="ui top attached menu">
       <router-link to="/">
         <div class="ui item">
-          <i class="home icon"></i>
+          <i class="home icon large"></i>
         </div>
       </router-link>
       <div class="right menu">
