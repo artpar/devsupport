@@ -36,7 +36,7 @@
      <div class="ui cards">
        <div class="ui card">
          <div class="image">
-              <span style="float: left; color: #a4c639; font-size: 75px;"
+              <span style="float: left; color: #1fa67a; font-size: 75px;"
                     class="ui image devicon devicon-android-plain"></span>
 
          </div>
@@ -65,7 +65,7 @@
 
        <div class="ui card">
          <div class="image">
-              <span style="float: left; color: #8892bf; font-size: 75px;"
+              <span style="float: left; color: #5C6BC0; font-size: 75px;"
                     class="ui image devicon devicon-php-plain"></span>
 
          </div>

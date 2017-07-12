@@ -1,17 +1,19 @@
 <template>
+
   <div class="ui four column grid">
 
-    <div class="ui column">
+    <div class="ui column ">
 
     </div>
 
-    <div class="ui column">
+    <div class="ui column ">
 
 
-      <div class="ui card">
-        <div class="image">
+      <div class="ui card hoverZoom1 hoverColor1">
+        <div class="image ">
           <img src="~@/assets/icons/152-magic-wand.svg">
         </div>
+
         <div class="content">
           <a class="header">Integrate</a>
           <div class="meta">
@@ -26,16 +28,18 @@
             </el-upload>
 
           </div>
+          <!--</div>-->
         </div>
       </div>
+
     </div>
 
     <div class="ui column">
 
 
-      <div class="ui card">
+      <div class="ui card hoverZoom1 hoverColor2">
         <div class="image">
-          <img src="~@/assets/icons/151-hammer.svg">
+          <img src="~@/assets/icons/146-wrench.svg">
         </div>
         <div class="content">
           <a class="header">Fix</a>
@@ -112,6 +116,8 @@
 </script>
 
 <style>
+
+
   .time {
     font-size: 13px;
     color: #999;
