@@ -214,7 +214,7 @@
         </div>
       </div>
 
-      <h2>Review changes, Apply changes to update files</h2>
+      <h2>Review validations, Apply changes to update files</h2>
 
       <div class="ui styled fluid accordion">
 
