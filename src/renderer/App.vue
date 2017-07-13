@@ -32,6 +32,40 @@
 <style>
   /* CSS */
 
+
+  /* scales 5 precent slowly on hover*/
+  .hoverZoom1{
+    transition: transform 400ms;
+  }
+  .hoverZoom1:hover {
+    transition: transform 400ms;
+    transform: scale(1.05);
+  }
+
+  .hoverColor1:hover{
+    background-color: rgba(62, 171, 26, 0.5);
+    transition: background-color 500ms;
+  }
+
+  .hoverColor2:hover{
+    background-color: rgba(255, 218, 0, 0.5);
+    transition: background-color 500ms;
+  }
+
+  .hoverColor3:hover{
+    background-color: rgba(255, 0, 12, 0.5);
+    transition: background-color 500ms;
+  }
+
+  .fillgray{
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .fillgray:hover{
+    background-color: rgba(0, 0, 0, 0.36);
+    transition: background-color 500ms;
+  }
+
   h1 {
     font-weight: 900;
     font-style: normal;
