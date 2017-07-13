@@ -41,9 +41,10 @@
     <div class="sixteen wide column">
 
      <div class="ui cards">
-       <div class="ui card">
-         <div class="image">
-              <span style="float: left; color: #1fa67a; font-size: 75px;"
+       <div @click="android" class="ui card hoverZoom1 hoverColor1">
+
+         <div class="image" style="background-color: rgba(0,0,0,0);">
+              <span style="float: bottom; color: #21ba45; font-size: 120px;"
                     class="ui image devicon devicon-android-plain"></span>
 
          </div>
@@ -62,17 +63,18 @@
          </div>
          <div class="extra content">
            <div class="ui one buttons">
-             <router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">
-               Begin
-             </router-link>
+             <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">-->
+               <!--Begin-->
+             <!--</router-link>-->
            </div>
          </div>
 
        </div>
 
-       <div class="ui card">
-         <div class="image">
-              <span style="float: left; color: #5C6BC0; font-size: 75px;"
+       <div @click="php" class="ui card hoverZoom1">
+
+         <div class="image " style="background-color: rgba(0,0,0,0);">
+              <span style="float: bottom; color: #5C6BC0; font-size: 120px;"
                     class="ui image devicon devicon-php-plain"></span>
 
          </div>
@@ -91,12 +93,11 @@
          </div>
          <div class="extra content">
            <div class="ui one buttons">
-             <router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">
-               Begin
-             </router-link>
+             <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">-->
+               <!--Begin-->
+             <!--</router-link>-->
            </div>
          </div>
-
        </div>
 
      </div>
@@ -113,6 +114,16 @@
       console.log("started integration selection")
     },
     methods: {
+      android() {
+        console.log("take me somwewhere");
+        this.$router.push({name: 'Integrate', params: {name: 'lazyPayAndroid'}
+
+        })
+      },
+      php(){
+        console.log("selected php integration");
+        this.$router.push({name: 'Integrate', params: {name: 'lazyPayPHP'}})
+      },
       ...mapActions(['setIntegration']),
       chooseIntegration(inte){
         this.setIntegration(inte);

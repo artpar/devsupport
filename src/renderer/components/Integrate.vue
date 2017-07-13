@@ -241,7 +241,7 @@
 
     <div class="right floated four wide column" v-if="state == 'review-updates'">
       <el-button @click="listScannedFiles" size="large">Back</el-button>
-      <el-button @click="doChanges" size="large">Apply changes</el-button>
+      <el-button @click="doChanges" size="large">Apply</el-button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">

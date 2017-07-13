@@ -63,7 +63,7 @@
 
   .fillgray:hover{
     background-color: rgba(0, 0, 0, 0.36);
-    transition: background-color 200ms;
+    transition: background-color 500ms;
   }
 
   h1 {
