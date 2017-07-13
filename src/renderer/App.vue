@@ -57,6 +57,15 @@
     transition: background-color 500ms;
   }
 
+  .fillgray{
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .fillgray:hover{
+    background-color: rgba(0, 0, 0, 0.36);
+    transition: background-color 200ms;
+  }
+
   h1 {
     font-weight: 900;
     font-style: normal;
