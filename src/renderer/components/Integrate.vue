@@ -85,7 +85,7 @@
     </div>
     <div class="right floated six wide column" v-if="state == 'scanned-files'">
       <el-button @click="beginValidateProject" size="large">Rescan files</el-button>
-      <el-button @click="reviewFiles" size="large">Review files</el-button>
+      <el-button @click="reviewUpdates" size="large">Review validations</el-button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -172,7 +172,7 @@
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
       <el-button @click="state = 'scanned-files'" size="large">Back</el-button>
-      <el-button @click="reviewUpdates" size="large">Review updates</el-button>
+      <el-button @click="reviewFiles" size="large">Review files</el-button>
     </div>
 
 
@@ -382,9 +382,9 @@
       reviewFiles() {
         var that = this;
         that.state = "review-files";
-        console.log("set timeout for do accordian")
+        console.log("set timeout for do accordian");
         setTimeout(function () {
-          console.log("do accordian")
+          console.log("do accordian");
           jQuery('.ui.accordion').accordion();
         }, 300)
       },
@@ -397,7 +397,7 @@
         var that = this;
         that.state = "review-updates";
         setTimeout(function () {
-          console.log("do accordian")
+          console.log("do accordian");
           jQuery('.ui.accordion').accordion();
         }, 300)
 
@@ -443,7 +443,7 @@
         if (remaining == 0) {
           that.state = "review-results";
           setTimeout(function () {
-            console.log("do accordian")
+            console.log("do accordian");
             jQuery('.ui.accordion').accordion();
           }, 300);
         }
@@ -495,7 +495,7 @@
           that.state = "scanned-files";
         }
 
-        console.log("begin recurse dir for ",that.Project.projectDir)
+        console.log("begin recurse dir for ",that.Project.projectDir);
         fs.recurseSync(that.Project.projectDir,
             ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
               // console.log("callback point 1")
@@ -534,7 +534,7 @@
                       if (filepath.match(conditions.nonMatchConditions[o])) {
                         matching = false;
                         // console.log("match for ", conditions.nonMatchConditions[o], filepath)
-                        continue;
+
                       }
                     }
                   }

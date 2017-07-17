@@ -8,11 +8,11 @@ export default {
         fileType: 'gradle',
         change: {
           changeType: 'add.line',
-          line: "    complie 'in.lazypay:sdk2:0.0.0'",
+          line: "    compile 'in.lazypay:sdk2:0.0.0'",
           action: 'append',
           query: '.*dependencies'
         },
-        validate: [
+        validations: [
           {
             checkType: 'negative',
             query: '.+in.lazypay:sdk2.+'
@@ -33,27 +33,28 @@ export default {
           action: 'prepend',
           query: '</application>'
         },
-        validate: {
+        validations: {
           checkType: 'negative',
           query: 'in.sdk.lazypay'
         }
       },
       {
-        name: 'Add function onActivityResult',
+        name: 'Add functions to some Activity.java for Initiate Pay and Handle Response',
         fileSelector: '.+Activity.java',
         fileType: 'java',
-        change: {
-          changeType: 'add.line',
-          action: 'append',
-          query: 'extends',
-          line: `
+        change: [
+          {
+            changeType: 'add.line',
+            action: 'append',
+            query: '{',
+            line: `
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 1: {
                 switch (resultCode) {
                     case Lazypay.LAZYPAY_SUCCESS :
-                        Toast.makeText(getApplicationContext(), "Transaction Successfull", Toast.LENGTH_LONG)
+                        Toast.makeText(getApplicationContext(), "Transaction Successful", Toast.LENGTH_LONG)
                                 .show();
                         break;
                     case Lazypay.LAZYPAY_FAILED:
@@ -66,21 +67,16 @@ export default {
             }
         }
     }`,
-        },
-        validate: {
-          checkType: 'negative',
-          query: 'onActivityResult'
-        }
-      },
-      {
-        name: 'Add function callLazyPay',
-        fileSelector: '.+Activity.java',
-        fileType: 'java',
-        change: {
-          changeType: 'add.line',
-          action: 'append',
-          query: 'extends',
-          line: `
+            validations: [{
+              checkType: 'negative',
+              query: 'onActivityResult'
+            }],
+          },
+          {
+            changeType: 'add.line',
+            action: 'append',
+            query: '{',
+            line: `
     private void callLazyPay(String email, String mobile, String amount) {
         Intent intent = new Intent(this.getApplicationContext(), Lazypay.class);
 
@@ -92,29 +88,41 @@ export default {
 
         startActivityForResult(intent, 1);
     }`,
-        },
-        validate: {
-          checkType: 'negative',
-          query: 'callLazyPay'
-        }
-      },
-      {
-        name: 'Add import statements for intent and LazyPay',
-        fileSelector: '.+Activity.java',
-        fileType: 'java',
-        change: {
-          changeType: 'add.line',
-          action: 'append',
-          query: 'import',
-          line: `
+            validations: [{
+              checkType: 'negative',
+              query: 'callLazyPay'
+            }],
+          },
+          {
+            changeType: 'add.line',
+            action: 'append',
+            query: 'import',
+            line: `
 import lazypay.app.Lazypay;
 import android.content.Intent;
 `,
-        },
-        validate: {
-          checkType: 'negative',
-          query: 'lazypay.app.Lazypay'
-        }
+            validations: [
+              {
+                checkType: 'negative',
+                query: 'lazypay.app.Lazypay'
+              }
+            ]
+          },
+          {
+            changeType: 'add.line',
+            action: 'append',
+            query: 'import',
+            line: `
+import android.widget.Toast;
+`,
+            validations: [{
+              checkType: 'negative',
+              query: 'android.widget.Toast'
+            }
+            ],
+          }
+        ],
+        validations: []
       }
     ],
   }

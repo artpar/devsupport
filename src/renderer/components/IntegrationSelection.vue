@@ -40,67 +40,67 @@
     </div>
     <div class="sixteen wide column">
 
-     <div class="ui cards">
-       <div @click="android" class="ui card hoverZoom1 hoverColor1">
+      <div class="ui cards">
+        <div @click="android" class="ui card hoverZoom1 hoverColor1" style="cursor: pointer;">
 
-         <div class="image" style="background-color: rgba(0,0,0,0);">
+          <div class="image" style="background-color: rgba(0,0,0,0);">
               <span style="float: bottom; color: #21ba45; font-size: 120px;"
                     class="ui image devicon devicon-android-plain"></span>
 
-         </div>
-         <div class="content">
+          </div>
+          <div class="content">
 
-           <a class="header">
-             LazyPay - Android
-           </a>
-           <div class="description">
-             <div class="ui list">
-               <div class="item">Credit card payment flow</div>
-               <div class="item">OTP auto read</div>
-               <div class="item">Lazypay wallet flow</div>
-             </div>
-           </div>
-         </div>
-         <div class="extra content">
-           <div class="ui one buttons">
-             <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">-->
-               <!--Begin-->
-             <!--</router-link>-->
-           </div>
-         </div>
+            <a class="header">
+              LazyPay - Android
+            </a>
+            <div class="description">
+              <div class="ui list">
+                <div class="item">Credit card payment flow</div>
+                <div class="item">OTP auto read</div>
+                <div class="item">Lazypay wallet flow</div>
+              </div>
+            </div>
+          </div>
+          <div class="extra content">
+            <div class="ui one buttons">
+              <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayAndroid'}}">-->
+              <!--Begin-->
+              <!--</router-link>-->
+            </div>
+          </div>
 
-       </div>
+        </div>
 
-       <div @click="php" class="ui card hoverZoom1">
+        <div @click="php" class="ui card hoverZoom1 " style="cursor: pointer;">
 
-         <div class="image " style="background-color: rgba(0,0,0,0);">
+          <div class="image " style="background-color: rgba(0,0,0,0);">
               <span style="float: bottom; color: #5C6BC0; font-size: 120px;"
                     class="ui image devicon devicon-php-plain"></span>
 
-         </div>
-         <div class="content">
+          </div>
+          <div class="content">
 
-           <a class="header">
-             LazyPay - PHP
-           </a>
-           <div class="description">
-             <div class="ui list">
-               <div class="item">Server side response handler</div>
-               <div class="item">Hash verification</div>
-               <div class="item">Hash generation</div>
-             </div>
-           </div>
-         </div>
-         <div class="extra content">
-           <div class="ui one buttons">
-             <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">-->
-               <!--Begin-->
-             <!--</router-link>-->
-           </div>
-         </div>
-       </div>
+            <a class="header">
+              LazyPay - PHP
+            </a>
+            <div class="description">
+              <div class="ui list">
+                <div class="item">Server side response handler</div>
+                <div class="item">Hash verification</div>
+                <div class="item">Hash generation</div>
+              </div>
+            </div>
+          </div>
+          <div class="extra content">
+            <div class="ui one buttons">
+              <!--<router-link class="ui basic green button" :to="{name: 'Integrate', params: {name: 'lazyPayPHP'}}">-->
+              <!--Begin-->
+              <!--</router-link>-->
+            </div>
+          </div>
+        </div>
 
-     </div>
+      </div>
 
     </div>
 
@@ -116,7 +116,8 @@
     methods: {
       android() {
         console.log("take me somwewhere");
-        this.$router.push({name: 'Integrate', params: {name: 'lazyPayAndroid'}
+        this.$router.push({
+          name: 'Integrate', params: {name: 'lazyPayAndroid'}
 
         })
       },

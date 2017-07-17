@@ -9,10 +9,10 @@ export default function (fileType, logger) {
   that.parser = {};
 
 
-  that.doChange = function (file, change) {
+  that.doChange = function (file, changes) {
 
     return new Promise(function (resolve, reject) {
-      console.log("xml file handler do change", change);
+      console.log("xml file handler do change", changes);
 
       logger(file, "Begin reading file for change");
       fs.readFile(file.filepath, "utf8", function (err, data) {
@@ -23,56 +23,82 @@ export default function (fileType, logger) {
           return;
         }
 
-        console.log("begin parse xml")
+        console.log("begin parse xml");
         var str = data.toString("utf8", 0, data.length);
         var xml = jQuery('<root>' + str + '</root>');
         that.parser = xml;
         logger(file, "Parser created");
-        console.log("new xml parsed file", that.parser, change)
+        console.log("new xml parsed file", that.parser, changes);
         var contentUpdated = false;
-        switch (change.changeType) {
-          case "add.tag":
-            logger(file, "Add tag: ", change.tag);
-            switch (change.action) {
-              case "prepend":
-                that.parser.find(change.query).append(change.tag)
-                contentUpdated = true;
+
+        if (changes instanceof Array) {
+          for (var i = 0; i < changes.length; i++) {
+            var change = changes[i];
+            switch (change.changeType) {
+              case "add.tag":
+                logger(file, "Add tag: ", change.tag);
+                switch (change.action) {
+                  case "prepend":
+                    that.parser.find(change.query).append(change.tag);
+                    contentUpdated = true;
+                    break;
+                  case "append":
+                  default:
+                    that.parser.find(change.query).append(change.tag);
+                    contentUpdated = true;
+                }
                 break;
-              case "append":
               default:
-                that.parser.find(change.query).append(change.tag)
-                contentUpdated = true;
+                logger(file, "Unknown change type: " + change.changeType)
             }
-            break;
-          default:
-            logger(file, "Unknown change type: " + change.changeType)
+          }
+        } else {
+          change = changes;
+          switch (change.changeType) {
+            case "add.tag":
+              logger(file, "Add tag: ", change.tag);
+              switch (change.action) {
+                case "prepend":
+                  that.parser.find(change.query).append(change.tag);
+                  contentUpdated = true;
+                  break;
+                case "append":
+                default:
+                  that.parser.find(change.query).append(change.tag);
+                  contentUpdated = true;
+              }
+              break;
+            default:
+              logger(file, "Unknown change type: " + change.changeType)
+          }
         }
+
 
         if (contentUpdated) {
           logger(file, "Content updated, writing to file");
-          console.log("log before xml write")
+          console.log("log before xml write");
           fs.writeFile(file.filepath, that.parser.html(), {}, function (err) {
             if (err) {
-              logger(file, "Error on updating contents of file")
+              logger(file, "Error on updating contents of file");
               reject();
-              return;
+
             } else {
-              logger(file, "Contents updated")
+              logger(file, "Contents updated");
               resolve();
-              return;
+
             }
           })
         } else {
-          logger(file, "No changes to write")
+          logger(file, "No changes to write");
           reject();
-          return;
+
         }
 
 
       });
 
 
-    })
+    });
 
     return "ok"
   };
@@ -94,37 +120,37 @@ export default function (fileType, logger) {
         var str = data.toString("utf8", 0, data.length);
         that.parser = jQuery(str);
         logger(file, "Parser created");
-        console.log("xml check do validate", file, validation)
+        console.log("xml check do validate", file, validation);
 
         switch (checkType) {
           case "tag.attribute":
-            logger(file, "Find query " + validation.query)
-            var res = that.parser.find(validation.query)
+            logger(file, "Find query " + validation.query);
+            var res = that.parser.find(validation.query);
             if (res && res.length > 0) {
 
               for (var i = 0; i < res.length; i++) {
                 var ele = res[i];
-                var attrValue = jQuery(ele).attr(validation.attribute)
-                logger(file, "Compare attribute value with " + attrValue)
+                var attrValue = jQuery(ele).attr(validation.attribute);
+                logger(file, "Compare attribute value with " + attrValue);
                 if (attrValue == validation.value) {
-                  logger(file, "Validation failed, already found: " + validation.value)
+                  logger(file, "Validation failed, already found: " + validation.value);
                   reject();
                   return;
                 }
               }
-              logger(file, "Validation success, no elements has same attribute")
+              logger(file, "Validation success, no elements has same attribute");
               resolve();
               return;
 
             } else {
-              logger(file, "Validation success, query returned no results")
+              logger(file, "Validation success, query returned no results");
               resolve();
               return;
 
             }
             break;
           default:
-            logger(file, "Invalid check type")
+            logger(file, "Invalid check type");
             reject();
             return;
         }

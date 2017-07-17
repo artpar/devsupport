@@ -7,7 +7,7 @@ var FileProcessorFactor = {
     console.log("return new file processor for ", fileType);
     switch (fileType) {
       case "gradle":
-        return NewSearchAndReplace(fileType, logger);
+        return NewSearchAndReplace(fileType, console.log);
       case "java":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
@@ -27,7 +27,7 @@ var FileProcessorFactor = {
     that.logs = [];
 
     that.log = function (file, message) {
-      that.logs.push("[" + file.filepath + "] " + message)
+      that.logs.push("[" + file.relative + "] " + message)
     };
 
     that.getFileCount = function () {
@@ -51,82 +51,47 @@ var FileProcessorFactor = {
       var reg = new RegExp(that.change.fileSelector);
       var nameMatch = false;
       if (file.filename.match(reg)) {
+        console.log("File Name matches the regex", file.filepath, that.change.fileSelector, reg)
         nameMatch = true;
       }
       if (!nameMatch && file.filepath.match(reg)) {
+        console.log("File path matches the regex", file.filepath, that.change.fileSelector, reg)
         nameMatch = true;
       }
 
       if (!nameMatch) {
-        console.log("File path didnt match regex", file.filepath, that.change.fileSelector, reg)
         return;
       }
 
-      if (that.change.validate instanceof Array) {
-
-        var totalValidations = that.change.validate.length;
-        var failedValidations = 0;
-        var passedValidations = 0;
-
-        that.change.validate.map(function (val) {
-          that.fileProcessor.validate(file, val).then(function () {
-            var validationResult = true;
-            that.log(file, "Validation successful: " + validationResult);
-
-            if (!validationResult) {
-              console.log("not valid Check validate file before add ", file, that.change.fileSelector, that.change.validate);
-              return;
+      var validations = that.change.validations;
+      if (!(validations instanceof Array)) {
+        validations = [validations];
+      }
+      var totalValidations = validations.length;
+      if (validations.length == 0) {
+        that.log(file, "No validations");
+        that.selectedFiles.push(file);
+        if (!that.selectedFile) {
+          that.selectedFile = file.filepath;
+        }
+        return;
+      }
+      that.fileProcessor.validate(file, validations).then(function (res) {
+        var failedValidations = res.failed;
+        var passedValidations = res.success;
+        if (failedValidations + passedValidations == totalValidations) {
+          if (failedValidations == 0) {
+            that.selectedFiles.push(file);
+            if (!that.selectedFile) {
+              that.selectedFile = file.filepath;
             }
-
-            console.log("add file to change handler", file, that.change.validate);
-            completedValidation(true)
-          }).catch(function () {
-            that.log(file, "Validation failed seriously");
-            completedValidation(false)
-          });
-        });
-
-        function completedValidation(status) {
-          if (status) {
-            passedValidations += 1;
           } else {
-            failedValidations += 1;
-          }
-
-          if (failedValidations + passedValidations == totalValidations) {
-            if (failedValidations == 0) {
-              that.selectedFiles.push(file);
-              if (!that.selectedFile) {
-                that.selectedFile = file.filepath;
-              }
-            } else {
-              that.log(file, "Failed " + failedValidations + " validation.")
-            }
+            that.log(file, "Failed " + failedValidations + " validation.")
           }
         }
-
-
-      } else {
-        that.fileProcessor.validate(file, that.change.validate).then(function () {
-          var validationResult = true;
-          that.log(file, "Validation successful: " + validationResult);
-
-          if (!validationResult) {
-            console.log("not valid Check validate file before add ", file, that.change.fileSelector, that.change.validate);
-            return;
-          }
-
-          console.log("add file to change handler", file, that.change.validate);
-
-          that.selectedFiles.push(file);
-          if (!that.selectedFile) {
-            that.selectedFile = file.filepath;
-          }
-        }).catch(function () {
-          that.log(file, "Validation failed seriously")
-        })
-      }
-
+      }, function () {
+        that.log(file, "Failed validation")
+      })
 
     };
 
@@ -135,6 +100,10 @@ var FileProcessorFactor = {
 
       return new Promise(function (resolve, reject) {
 
+        var change = that.change.change;
+        if (!(change instanceof Array)) {
+          change = [change];
+        }
 
         if (!that.selectedFile) {
           that.logs.push("No selected file for " + that.change.change)
@@ -143,7 +112,7 @@ var FileProcessorFactor = {
         } else {
           that.fileProcessor.doChange({
             filepath: that.selectedFile,
-          }, that.change.change).then(resolve, reject);
+          }, change).then(resolve, reject);
           that.change.status = "Completed"
         }
 

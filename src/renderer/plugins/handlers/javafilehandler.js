@@ -8,6 +8,12 @@ export default function (fileType, logger) {
   that.fileType = fileType;
   console.log("new java file handler");
 
+  /**
+   * Apply one or a set of changes to a file
+   * @param file file which is to be edited
+   * @param change Single Instance or Array of Change
+   * @returns {Promise}
+   */
   that.doChange = function (file, change) {
     return new Promise(function (resolve, reject) {
       logger(file, JSON.stringify(change));
@@ -17,22 +23,56 @@ export default function (fileType, logger) {
     })
   };
 
-  that.validate = function (file, validation) {
-    return new Promise(function (resolve, reject) {
+  that.applyAllValidations = function (file, validations) {
 
-      if (!validation) {
+
+  };
+
+  that.validate = function (file, validations) {
+    return new Promise(function (resolve, reject) {
+      resolve();
+
+      if (!validations) {
         return resolve();
       }
-      console.log("check validation java file handler", validation, file);
+
+      if (!(validations instanceof Array)) {
+        validations = [validations];
+      }
+
+      console.log("check validation java file handler", validations, file);
 
       fs.readFile(file.filepath, "utf8", function (err, data) {
         if (err) {
           reject();
         }
 
+
         var str = data.toString("utf8", 0, data.length);
 //        that.parser = new JavaParser.parse(str);
-        console.log("new java parsed file", that.parser, validation)
+        console.log("new java parsed file", that.parser, validations)
+
+
+        function completedValidation(status) {
+          if (status) {
+            passedValidations += 1;
+          } else {
+            failedValidations += 1;
+          }
+
+          if (failedValidations + passedValidations == totalValidations) {
+            if (failedValidations == 0) {
+              that.selectedFiles.push(file);
+              if (!that.selectedFile) {
+                that.selectedFile = file.filepath;
+              }
+            } else {
+              that.log(file, "Failed " + failedValidations + " validation.")
+            }
+          }
+        }
+
+
       });
       resolve();
 
