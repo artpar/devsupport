@@ -26,6 +26,11 @@ export default new Router({
       component: require('@/components/IntegrationSelection')
     },
     {
+      path: '/chooseIntegration',
+      name: 'ChooseSP',
+      component: require('@/components/ChooseSP')
+    },
+    {
       path: '*',
       redirect: '/',
     },
