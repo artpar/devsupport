@@ -385,7 +385,7 @@
         this.setProjectDir(null);
         this.setSessionAction(null);
         this.$router.push({
-          name: "landing-page"
+          name: "select-project"
         })
       },
       reviewFiles() {

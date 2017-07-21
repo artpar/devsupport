@@ -7,8 +7,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
-      component: require('@/components/LandingPage'),
+      name: 'select-project',
+      component: require('@/components/SelectProject'),
+    },
+    {
+      path: '/action',
+      name: 'select-action',
+      component: require('@/components/SelectAction'),
     },
     {
       path: '/integrate',

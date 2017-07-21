@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import LandingPage from '@/components/LandingPage';
 
-describe('LandingPage.vue', () => {
+describe('SelectProject.vue', () => {
   it('should render correct contents', () => {
     const vm = new Vue({
       el: document.createElement('div'),

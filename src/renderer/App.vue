@@ -2,19 +2,28 @@
   <div id="app" class="ui container fluid">
 
     <div class="ui grid">
-
       <recent-projects></recent-projects>
 
-      <div class="twelve wide column">
-        <div class="row">
-          <div class="ui menu">
-            <div class="right menu">
-              <a @click="goHome" class="item">Back</a>
+
+      <div class="eleven wide column">
+        <div class="ui vertical masthead center aligned segment">
+
+          <div class="ui container" v-if="Project.projectDir != null">
+            <div class="ui large secondary pointing menu">
+              <div class="right item">
+                <a class="item" @click="goHome">Home</a>
+              </div>
             </div>
           </div>
+
+          <div class="ui text container">
+            <router-view></router-view>
+          </div>
+
         </div>
-        <router-view></router-view>
       </div>
+
+
     </div>
 
 
@@ -23,21 +32,30 @@
 
 <script>
 
-  import RecentProjects from './components/RecentProjects.vue'
-
+  import RecentProjects from './components/RecentProjects.vue';
+  import {mapState, mapActions} from 'vuex';
   export default {
     components: {
       'recent-projects': RecentProjects
     },
+    computed: {
+      ...mapState({
+        'Project': 'Project',
+      }),
+    },
     methods: {
+      ...mapActions([
+        'setProjectDir'
+      ]),
       goHome() {
+        this.setProjectDir(null);
         this.$router.push({
-          name: 'landing-page'
+          name: 'select-project'
         })
       },
     },
     mounted() {
-      console.log("projects",  app.getPath)
+      console.log("projects", app.getPath)
     },
     name: 'devsupport-ai',
   };
@@ -49,7 +67,19 @@
     padding: 20px;
   }
 
-  h1, h2, h3, h4 {
+  h2, h3, h4 {
     color: #3d668d;
   }
+
+  .devcolor {
+    background-color: #fff !important;
+    color: #3d668d !important;
+  }
+
+  .inverted.devcolor {
+    background-color: #3d668d !important;
+    color: #fff !important;
+  }
+
+
 </style>

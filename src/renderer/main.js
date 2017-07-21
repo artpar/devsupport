@@ -20,11 +20,58 @@ require('lato-font/css/lato-font.css');
 require('glyphicons');
 require('semantic-ui/dist/semantic.min.css');
 require('semantic-ui/dist/semantic.min.js');
+import Vue2Filters from 'vue2-filters'
+
+Vue.use(Vue2Filters)
 
 Vue.use(Element, {locale});
 Vue.component("loading", Loading);
 Vue.use(DataTables);
 
+
+var DURATION_IN_SECONDS = {
+  epochs: ['year', 'month', 'day', 'hour', 'minute', 'second'],
+  year: 31536000,
+  month: 2592000,
+  day: 86400,
+  hour: 3600,
+  minute: 60,
+  second: 1,
+};
+
+function getDuration(seconds) {
+  var epoch, interval;
+
+  for (var i = 0; i < DURATION_IN_SECONDS.epochs.length; i++) {
+    epoch = DURATION_IN_SECONDS.epochs[i];
+    interval = Math.floor(seconds / DURATION_IN_SECONDS[epoch]);
+    if (interval >= 1) {
+      return {
+        interval: interval,
+        epoch: epoch
+      };
+    }
+  }
+
+};
+
+function timeSince(date) {
+  if (!date) {
+    return "sometime";
+  }
+  var seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+  if (seconds < 1) {
+    return "0 second";
+  }
+
+  var duration = getDuration(seconds);
+  var suffix = (duration.interval > 1 || duration.interval === 0) ? 's' : '';
+  return duration.interval + ' ' + duration.epoch + suffix;
+};
+
+
+Vue.filter('timeSinceNow', timeSince);
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.http = Vue.prototype.$http = axios;
