@@ -2,22 +2,17 @@
   <div id="app" class="ui container fluid">
 
     <div class="ui grid">
-      <div class="four wide column">
 
-        <h1>Recent Projects</h1>
+      <recent-projects></recent-projects>
 
-        <div class="column">
-          <div class="ui block header">
-            <i class="folder icon"></i>
-            <div class="content">
-              My awesome project
-              <div class="sub header">Android - LazyPay</div>
+      <div class="twelve wide column">
+        <div class="row">
+          <div class="ui menu">
+            <div class="right menu">
+              <a @click="goHome" class="item">Back</a>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="twelve wide column">
         <router-view></router-view>
       </div>
     </div>
@@ -28,7 +23,22 @@
 
 <script>
 
+  import RecentProjects from './components/RecentProjects.vue'
+
   export default {
+    components: {
+      'recent-projects': RecentProjects
+    },
+    methods: {
+      goHome() {
+        this.$router.push({
+          name: 'landing-page'
+        })
+      },
+    },
+    mounted() {
+      console.log("projects",  app.getPath)
+    },
     name: 'devsupport-ai',
   };
 </script>
