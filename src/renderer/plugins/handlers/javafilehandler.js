@@ -63,8 +63,8 @@ export default function (fileType, logger) {
           if (failedValidations + passedValidations == totalValidations) {
             if (failedValidations == 0) {
               that.selectedFiles.push(file);
-              if (!that.selectedFile) {
-                that.selectedFile = file.filepath;
+              if (!that.selectedFilePath) {
+                that.selectedFilePath = file.filepath;
               }
             } else {
               that.log(file, "Failed " + failedValidations + " validation.")

@@ -71,22 +71,22 @@ export default function (fileType, logger) {
 
   that.doChange = function (file, changes) {
     return new Promise(function (resolve, reject) {
-      logger(file, JSON.stringify(changes));
+      // logger(file, JSON.stringify(changes));
       console.log("search and replace handler do change", changes);
 
       fs.readFile(file.filepath, "utf8", function (err, data) {
-        logger(file, "Read complete");
+        logger(file, "Reading file ");
         if (err) {
           logger(file, "Error in reading file");
-          reject();
+          reject("Error in reading file");
           return;
         }
 
         var str = data.toString("utf8", 0, data.length);
-        logger(file, "Parser created");
+        // logger(file, "Parser created");
 
         var fileLines = str.split(/\n/);
-        logger(file, "Line count: " + fileLines.length);
+        // logger(file, "Line count: " + fileLines.length);
 
         var fileModified = false;
 
@@ -157,15 +157,15 @@ export default function (fileType, logger) {
 
 
   that.validateSingle = function (file, validation, fileLines) {
+    logger(file, "Check line: " + validation.query);
     switch (validation.checkType) {
       case "positive":
-        logger(file, "Check line: " + validation.query);
         var fileUpdated = false;
         var query = validation.query;
         var queryRegex = new RegExp(query);
         for (var u = 0; u < fileLines.length; u++) {
           if (fileLines[u].match(queryRegex)) {
-            logger(file, "Validation success, found " + query);
+            logger(file, "Validation success, found <b>" + query + "</b>");
             logger(file, "SearchAndReplace, Validation Failed [Positive]" + query);
             return true;
           }
@@ -174,7 +174,6 @@ export default function (fileType, logger) {
         break;
 
       case "negative":
-        logger(file, "Check line: " + validation.query);
         var fileUpdated = false;
         var query = validation.query;
         var queryRegex = new RegExp(query);
@@ -203,21 +202,22 @@ export default function (fileType, logger) {
       if (!(validations instanceof Array)) {
         validations = [validations];
       }
+      logger(file, "Validate file against " +  validations.length + " validations");
 
       fs.readFile(file.filepath, "utf8", function (err, data) {
-        logger(file, "Read complete for validation");
+        // logger(file, "Read complete for validation");
         if (err) {
           logger(file, "Error in reading file");
 
-          reject();
+          reject("Error in reading file");
           return;
         }
 
         var str = data.toString("utf8", 0, data.length);
-        logger(file, "Parser created");
+        // logger(file, "Parser created");
 
         var fileLines = str.split(/\n/);
-        logger(file, "Line count: " + fileLines.length);
+        // logger(file, "Line count: " + fileLines.length);
 
 
         var goodCount = 0;
@@ -229,7 +229,7 @@ export default function (fileType, logger) {
           var res = that.validateSingle(file, validation, fileLines);
           if (!res) {
             badCount += 1;
-            reject("Validation failed");
+            reject("Validation failed [" + validation.checkType + "]: " + validation.query);
             return;
           } else {
             goodCount += 1;

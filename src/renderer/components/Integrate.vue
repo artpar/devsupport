@@ -135,7 +135,7 @@
             {{liveChange.change.name}}
             ->
             <span v-if="liveChange.selectedFiles.length == 0 ">No file to be modified</span>
-            <span v-if="liveChange.selectedFiles.length == 1 ">{{liveChange.selectedFile}}</span>
+            <span v-if="liveChange.selectedFiles.length == 1 ">{{liveChange.selectedFilePath}}</span>
             <span v-if="liveChange.selectedFiles.length > 1 ">Multiple files matched, click here and select</span>
           </div>
           <div class="content ">
@@ -143,8 +143,8 @@
               <div class="grouped fields">
 
                 <div class="field" v-for="file in liveChange.selectedFiles">
-                  <div class="ui radio checkbox" @click="liveChange.selectedFile = file.filepath">
-                    <input class="hidden" type="radio" :name="liveChange.name" v-model="liveChange.selectedFile"
+                  <div class="ui radio checkbox" @click="liveChange.selectedFilePath = file.filepath">
+                    <input class="hidden" type="radio" :name="liveChange.name" v-model="liveChange.selectedFilePath"
                            :value="file.filepath">
                     <label>{{file.relative}}</label>
                   </div>
@@ -240,8 +240,9 @@
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-updates'">
-      <el-button @click="listScannedFiles" size="large">Back</el-button>
-      <el-button @click="doChanges" size="large">Apply</el-button>
+      <el-button @click="listScannedFiles" v-if="!doneChanges" size="large">Back</el-button>
+      <el-button @click="doChanges" v-if="!doneChanges" size="large">Apply</el-button>
+      <el-button @click="viewResult" v-if="doneChanges" size="large">Next</el-button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -314,7 +315,7 @@
 
   import JavaParser from 'java-parser';
   import FileProcessorFactor from '@/plugins/changehandler'
-//  import Integrations from '@/plugins/Integrations'
+  //  import Integrations from '@/plugins/Integrations'
 
 
   String.prototype.repeat = function (times) {
@@ -342,6 +343,7 @@
     },
     data() {
       return {
+        doneChanges: false,
         liveChanges: [],
         state: "scanning-files",
 //        integrations: Integrations,
@@ -409,6 +411,14 @@
         }, 300)
 
       },
+      viewResult() {
+        var that = this;
+        that.state = "review-results";
+        setTimeout(function () {
+          console.log("do accordian");
+          jQuery('.ui.accordion').accordion();
+        }, 300);
+      },
       doChanges() {
         var that = this;
         console.log(this.liveChanges);
@@ -448,11 +458,7 @@
           return e.change.status == "pending";
         }).length;
         if (remaining == 0) {
-          that.state = "review-results";
-          setTimeout(function () {
-            console.log("do accordian");
-            jQuery('.ui.accordion').accordion();
-          }, 300);
+          that.doneChanges = true;
         }
       },
       beginValidateProject(){

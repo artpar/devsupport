@@ -7,7 +7,7 @@ var FileProcessorFactor = {
     console.log("return new file processor for ", fileType);
     switch (fileType) {
       case "gradle":
-        return NewSearchAndReplace(fileType, console.log);
+        return NewSearchAndReplace(fileType, logger);
       case "java":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
@@ -21,7 +21,8 @@ var FileProcessorFactor = {
 
     that.change = change;
     that.selectedFiles = [];
-    that.selectedFile = null;
+    that.selectedFilePath = null;
+    that.chosenFile = null;
     that.change.status = "pending";
 
     that.logs = [];
@@ -71,26 +72,28 @@ var FileProcessorFactor = {
       if (validations.length == 0) {
         that.log(file, "No validations");
         that.selectedFiles.push(file);
-        if (!that.selectedFile) {
-          that.selectedFile = file.filepath;
+        if (!that.selectedFilePath) {
+          that.selectedFilePath = file.filepath;
+          that.chosenFile = file;
         }
         return;
       }
       that.fileProcessor.validate(file, validations).then(function (res) {
-        var failedValidations = res.failed;
-        var passedValidations = res.success;
+        const failedValidations = res.failed;
+        const passedValidations = res.success;
         if (failedValidations + passedValidations == totalValidations) {
           if (failedValidations == 0) {
             that.selectedFiles.push(file);
-            if (!that.selectedFile) {
-              that.selectedFile = file.filepath;
+            if (!that.selectedFilePath) {
+              that.selectedFilePath = file.filepath;
+              that.chosenFile = file;
             }
           } else {
             that.log(file, "Failed " + failedValidations + " validation.")
           }
         }
-      }, function () {
-        that.log(file, "Failed validation")
+      }, function (reason) {
+        that.log(file, "Failed validation: " + reason)
       })
 
     };
@@ -105,13 +108,14 @@ var FileProcessorFactor = {
           change = [change];
         }
 
-        if (!that.selectedFile) {
+        if (!that.selectedFilePath) {
           that.logs.push("No selected file for " + that.change.change);
           that.change.status = "N/A";
           resolve();
         } else {
           that.fileProcessor.doChange({
-            filepath: that.selectedFile,
+            filepath: that.selectedFilePath,
+            relative: that.chosenFile.relative,
           }, change).then(resolve, reject);
           that.change.status = "Completed"
         }

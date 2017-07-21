@@ -1,27 +1,68 @@
 <template>
-  <div class="content-wpr">
-    <div class="super-coder">
-      <img src="~@/images/batman-full.png" alt="image?">
+  <div class="ui column centered grid">
+    <div class="row">
+      <div class="ten wide column">
+        <img style="width: 100%;" src="~@/images/batman-full.png" alt="image?">
+      </div>
     </div>
-    <div class="get-source-folder">
-      <div class="heading">What do you want to do?</div>
-      <!--<div class="box">-->
-        <!--<div class="message">Drop your source folder here <br> or <br> Click here to locate the folder</div>-->
+
+    <div class="row">
+      <div class="eight wide column">
+        <!--<div class="heading">Start by selecting your source code folder</div>-->
+        <h2>
+          Start by selecting your source code folder
+        </h2>
+      </div>
+
+    </div>
+    <div class="row">
+      <!--<div class="four wide column">-->
+      <!--<el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"-->
+      <!--:auto-upload="false"-->
+      <!--action="#" style="margin: 12.25px">-->
+      <!--<div @click="setAction('integrate')" class="pull-left c-pointer">-->
+      <!--<img src="~@/images/investigate.png" alt="image?" class="ui small rounded image">-->
+      <!--Integrate-->
       <!--</div>-->
-    </div>
-    <div class="task-list">
-      <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
-                 :auto-upload="false"
-                 action="#" style="margin: 12.25px">
-      <div @click="setAction('integrate')" class="pull-left c-pointer">
-        <img src="~@/images/investigate.png" alt="image?">
-        Integrate
+      <!--</el-upload>-->
+      <!--</div>-->
+      <!--<div class="four wide column">-->
+      <!--<i class="bordered inverted devcolor massive users icon"></i>-->
+      <!--</div>-->
+      <div class="four wide column">
+        <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+                   :auto-upload="false"
+                   action="#">
+          <div @click="setAction('integrate')">
+            <i class="material-icons inverted devcolor" style="font-size: 150px; border-radius: 5%">widgets</i> <br/>
+            Integrate
+          </div>
+        </el-upload>
+
       </div>
-      </el-upload>
-      <div @click="setAction('fix')" class="pull-right c-pointer">
-        <img src="~@/images/fix.png" alt="image?">
-        Fix
+
+      <div class="four wide column">
+        <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+                   :auto-upload="false"
+                   action="#">
+          <div @click="setAction('fix')">
+            <i class="material-icons inverted devcolor" style="font-size: 150px; border-radius: 5%">build</i> <br/>
+            Fix
+          </div>
+        </el-upload>
       </div>
+
+      <!--<div class="four wide column">-->
+
+      <!--<el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"-->
+      <!--:auto-upload="false"-->
+      <!--action="#" style="margin: 12.25px">-->
+      <!--<div @click="setAction('fix')" class="pull-right c-pointer">-->
+      <!--<img class="ui small rounded image" src="~@/images/fix.png" alt="image?">-->
+      <!--Fix-->
+      <!--</div>-->
+      <!--</el-upload>-->
+      <!--</div>-->
     </div>
   </div>
 
@@ -84,37 +125,15 @@
 </script>
 
 <style>
-
-
-  .time {
-    font-size: 13px;
-    color: #999;
+  .devcolor {
+    background-color: #fff !important;
+    color: #3d668d !important;
   }
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
+  .inverted.devcolor {
+    background-color: #3d668d !important;
+    color: #fff !important;
   }
 
-  .button {
-    padding: 0;
-    float: right;
-  }
 
-  .image {
-    width: 70%;
-    padding: 15%;
-    margin: 10%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-
-  .clearfix:after {
-    clear: both
-  }
 </style>
