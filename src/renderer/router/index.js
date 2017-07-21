@@ -15,9 +15,8 @@ export default new Router({
       name: 'SelectIntegration',
       component: require('@/components/IntegrationSelection')
     },
-,
     {
-      path: '/integrate/:name',
+      path: '/integrate/:id',
       name: 'Integrate',
       component: require('@/components/Integrate')
     },

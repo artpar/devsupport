@@ -1,0 +1,99 @@
+{
+  "name": "LazyPay Android Integration",
+  "changes": [
+    {
+      "name": "Add dependency to lazypay",
+      "fileSelector": ".+build.gradle$",
+      "fileType": "gradle",
+      "change": [
+        {
+          "changeType": "add.line",
+          "line": "    compile 'in.lazypay:sdk2:0.0.0'",
+          "action": "append",
+          "query": ".*dependencies"
+        }
+      ],
+      "validations": [
+        {
+          "checkType": "negative",
+          "query": ".+in.lazypay:sdk2.+"
+        },
+        {
+          "checkType": "positive",
+          "query": "apply plugin: 'com.android.application'"
+        }
+      ]
+    },
+    {
+      "name": "Add key to AndroidManifest.xml",
+      "fileSelector": ".+main[\\\\/]AndroidManifest.xml",
+      "fileType": "xml",
+      "change": {
+        "changeType": "add.line",
+        "line": "<meta-data android:name=\"in.sdk.lazypay\" android:value=\"M9OZT7LFHPCK91UDVJC8\"/>",
+        "action": "prepend",
+        "query": "</application>"
+      },
+      "validations": {
+        "checkType": "negative",
+        "query": "in.sdk.lazypay"
+      }
+    },
+    {
+      "name": "Add functions to some Activity.java for Initiate Pay and Handle Response",
+      "fileSelector": ".+Activity.java",
+      "fileType": "java",
+      "change": [
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "{",
+          "line": "    @Override\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\n        switch (requestCode) {\n            case 1: {\n                switch (resultCode) {\n                    case Lazypay.LAZYPAY_SUCCESS :\n                        Toast.makeText(getApplicationContext(), \"Transaction Successful\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    case Lazypay.LAZYPAY_FAILED:\n                        Toast.makeText(getApplicationContext(), \"Transaction Failed\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    default:\n                        break;\n                }\n            }\n        }\n    }",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "onActivityResult"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "{",
+          "line": "    private void callLazyPay(String email, String mobile, String amount) {\n        Intent intent = new Intent(this.getApplicationContext(), Lazypay.class);\n\n        intent.putExtra(\"email\", email);\n\n        intent.putExtra(\"mobile\", mobile);\n\n        intent.putExtra(\"amount\", amount);\n\n        startActivityForResult(intent, 1);\n    }",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "callLazyPay"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "import",
+          "line": "import lazypay.app.Lazypay;\nimport android.content.Intent;\n",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "lazypay.app.Lazypay"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "import",
+          "line": "\nimport android.widget.Toast;\n",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "android.widget.Toast"
+            }
+          ]
+        }
+      ],
+      "validations": []
+    }
+  ]
+}

@@ -47,15 +47,15 @@ var FileProcessorFactor = {
     that.fileProcessor = FileProcessorFactor.ForType(change.fileType, that.log);
 
     that.addFile = function (file) {
-      console.log("Call add file for ", file.filepath)
+      console.log("Call add file for ", file.filepath);
       var reg = new RegExp(that.change.fileSelector);
       var nameMatch = false;
       if (file.filename.match(reg)) {
-        console.log("File Name matches the regex", file.filepath, that.change.fileSelector, reg)
+        console.log("File Name matches the regex", file.filepath, that.change.fileSelector, reg);
         nameMatch = true;
       }
       if (!nameMatch && file.filepath.match(reg)) {
-        console.log("File path matches the regex", file.filepath, that.change.fileSelector, reg)
+        console.log("File path matches the regex", file.filepath, that.change.fileSelector, reg);
         nameMatch = true;
       }
 
@@ -106,7 +106,7 @@ var FileProcessorFactor = {
         }
 
         if (!that.selectedFile) {
-          that.logs.push("No selected file for " + that.change.change)
+          that.logs.push("No selected file for " + that.change.change);
           that.change.status = "N/A";
           resolve();
         } else {

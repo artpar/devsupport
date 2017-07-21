@@ -310,10 +310,11 @@
 <script>
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex';
+  import jsonApi from '../plugins/jsonApi'
 
   import JavaParser from 'java-parser';
   import FileProcessorFactor from '@/plugins/changehandler'
-  import Integrations from '@/plugins/Integrations'
+//  import Integrations from '@/plugins/Integrations'
 
 
   String.prototype.repeat = function (times) {
@@ -328,16 +329,22 @@
   export default {
     mounted() {
       var that = this;
-      this.setIntegration(this.$route.params.name);
-      this.selectedIntegration = this.integrations[this.$route.params.name];
-      this.beginValidateProject();
+      this.setIntegration(this.$route.params.id);
+
+      jsonApi.find('integration', this.$route.params.id).then(function (obj) {
+        console.log("found integration", obj);
+        var changeSet = JSON.parse(obj.change_set);
+        that.selectedIntegration = changeSet;
+        that.beginValidateProject();
+      });
+
 
     },
     data() {
       return {
         liveChanges: [],
         state: "scanning-files",
-        integrations: Integrations,
+//        integrations: Integrations,
         loading: false,
         selectedIntegration: null,
         selectedFiles: [],
@@ -495,7 +502,7 @@
           that.state = "scanned-files";
         }
 
-        console.log("begin recurse dir for ",that.Project.projectDir);
+        console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurseSync(that.Project.projectDir,
             ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
               // console.log("callback point 1")

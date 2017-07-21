@@ -8,20 +8,20 @@
 
       <el-upload :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
                  :auto-upload="false"
-                  action="#" style="margin: 12.25px">
-      <div @click="setAction('integerate')" class="ui card hoverZoom1 hoverColor1">
-        <div class="image" style="background-color: rgba(0,0,0,0);">
-          <img src="~@/assets/icons/152-magic-wand.svg">
-        </div>
+                 action="#" style="margin: 12.25px">
+        <div @click="setAction('integerate')" class="ui card hoverZoom1 hoverColor1">
+          <div class="image" style="background-color: rgba(0,0,0,0); padding: 40px;">
+            <img src="~@/assets/icons/152-magic-wand.svg">
+          </div>
 
-        <div class="content">
-          <a class="header">Integrate</a>
-          <div class="meta">
-            <!--<span class="date">Added in Jul 2017</span>-->
-          </div>
-          <div class="description">
-            Start a new integration
-          </div>
+          <div class="content">
+            <a class="header">Integrate</a>
+            <div class="meta">
+              <!--<span class="date">Added in Jul 2017</span>-->
+            </div>
+            <div class="description">
+              Start a new integration
+            </div>
           </div>
         </div>
       </el-upload>
@@ -31,7 +31,7 @@
                  :auto-upload="false"
                  action="#" style="margin: 12.25px">
         <div @click="setAction('integerate')" class="ui card hoverZoom1 hoverColor2">
-          <div class="image" style="background-color: rgba(0,0,0,0);">
+          <div class="image" style="background-color: rgba(0,0,0,0); padding: 40px;">
             <img src="~@/assets/icons/146-wrench.svg">
           </div>
 
@@ -42,7 +42,7 @@
             </div>
             <div class="description">
 
-                Fix an existing issue
+              Fix an existing issue
 
             </div>
           </div>
@@ -51,34 +51,32 @@
     </div>
   </div>
 
-    <!--<div class="ui column" style="margin: 20px">-->
-    <!--</div>-->
-    <!--<div class="ui column">-->
+  <!--<div class="ui column" style="margin: 20px">-->
+  <!--</div>-->
+  <!--<div class="ui column">-->
 
 
-      <!--<div  class="ui card hoverZoom1 hoverColor2">-->
-        <!--<div class="image" style="background-color: rgba(0,0,0,0);">-->
-          <!--<img src="~@/assets/icons/146-wrench.svg">-->
-        <!--</div>-->
-        <!--<div class="content">-->
-          <!--<a class="header">Fix</a>-->
-          <!--<div class="meta">-->
-            <!--&lt;!&ndash;<span class="date">Added in Jul 2017</span>&ndash;&gt;-->
-          <!--</div>-->
-          <!--<div class="description">-->
-            <!--<el-upload :on-preview="folderSelect"-->
-                       <!--:auto-upload="false"-->
-                       <!--class="upload-demo" action="#">-->
-              <!--<el-button @click="setAction('fix')" size="large" type="primary">Fix</el-button>-->
-              <!--<div slot="tip" class="el-upload__tip">Solve an integration issue</div>-->
-            <!--</el-upload>-->
+  <!--<div  class="ui card hoverZoom1 hoverColor2">-->
+  <!--<div class="image" style="background-color: rgba(0,0,0,0);">-->
+  <!--<img src="~@/assets/icons/146-wrench.svg">-->
+  <!--</div>-->
+  <!--<div class="content">-->
+  <!--<a class="header">Fix</a>-->
+  <!--<div class="meta">-->
+  <!--&lt;!&ndash;<span class="date">Added in Jul 2017</span>&ndash;&gt;-->
+  <!--</div>-->
+  <!--<div class="description">-->
+  <!--<el-upload :on-preview="folderSelect"-->
+  <!--:auto-upload="false"-->
+  <!--class="upload-demo" action="#">-->
+  <!--<el-button @click="setAction('fix')" size="large" type="primary">Fix</el-button>-->
+  <!--<div slot="tip" class="el-upload__tip">Solve an integration issue</div>-->
+  <!--</el-upload>-->
 
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-  </div>
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
 </template>
 
 <script>
@@ -139,36 +137,4 @@
 
 <style>
 
-
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
-
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    float: right;
-  }
-
-  .image {
-    width: 70%;
-    padding: 15%;
-    margin: 10%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-
-  .clearfix:after {
-    clear: both
-  }
 </style>
