@@ -114,7 +114,7 @@ var FileProcessorFactor = {
 
       return new Promise(function (resolve, reject) {
 
-        debugger
+        // debugger
 
         if (!that.selectedFilePath) {
           that.logs.push("No selected file for " + that.change.change);

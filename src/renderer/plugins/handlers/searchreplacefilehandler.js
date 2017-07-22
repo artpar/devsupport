@@ -70,7 +70,7 @@ export default function (fileType, logger) {
   }
 
   that.doChange = function (file, changes) {
-    debugger;
+    // debugger;
 
 
     return new Promise(function (resolve, reject) {

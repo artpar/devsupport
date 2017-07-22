@@ -319,7 +319,7 @@
             that.callbackChangeComplete();
             return;
           }
-          debugger
+//          debugger
           that.liveChanges[ith].doChanges(contextMap).then(function () {
             doIndex(ith + 1, doIndex);
           }).catch(function () {
