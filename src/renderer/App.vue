@@ -5,25 +5,26 @@
       <recent-projects></recent-projects>
 
 
-      <div class="eleven wide column">
+      <div class="ten wide column">
         <div class="ui vertical masthead segment">
 
           <div class="ui container" v-if="Project.projectDir != null">
             <div class="ui large secondary pointing menu">
+              <div class="item" v-if="Project.stack != null">
+                <i style="font-size: 50px;" class="material-icons">{{Project.stack}}</i>
+              </div>
               <div class="right item">
                 <a class="item" @click="goHome">Home</a>
               </div>
             </div>
           </div>
 
-          <div class="ui text">
+          <div class="ui text" style="margin-top: 3em;">
             <router-view></router-view>
           </div>
 
         </div>
       </div>
-
-
     </div>
 
 
@@ -77,9 +78,8 @@
 
   .background.devcolor {
     background-color: #3d668d !important;
-    color: #fff  !important;
+    color: #fff !important;
   }
-
 
   .devcolordark {
     color: #383a63 !important;
@@ -87,10 +87,8 @@
 
   .background.devcolordark {
     background-color: #383a63 !important;
-    color: #fff  !important;
+    color: #fff !important;
   }
-
-
 
 
 </style>

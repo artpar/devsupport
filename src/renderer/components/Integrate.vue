@@ -10,22 +10,20 @@
           :actions-def="actionDef"
           :checkbox-filter-def="checkboxFilterDef"
           :row-action-def="rowActionDef"
+          :search-def="searchDef"
           :has-action-col="false"
           :pagination-def="{}"
           :data='liveChanges'>
         <el-table-column prop="change.name"
-                         label="Pending update"
-                         sortable="custom">
+                         label="Pending update">
         </el-table-column>
         <el-table-column
             prop="change.status"
-            label="Change status"
-            sortable="custom">
+            label="Change status">
         </el-table-column>
         <el-table-column
             prop="selectedFiles.length"
-            label="Files "
-            sortable="custom">
+            label="Files ">
         </el-table-column>
 
       </data-tables>
@@ -33,8 +31,8 @@
 
     </div>
     <div class="right floated six wide column" v-if="state == 'scanned-files'">
-      <el-button @click="beginValidateProject" size="large">Rescan files</el-button>
-      <el-button @click="reviewUpdates" size="large">Review validations</el-button>
+      <el-button type="warning" @click="beginValidateProject" size="large">Rescan files</el-button>
+      <el-button type="primary" @click="reviewUpdates" size="large">Review Inputs</el-button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -89,35 +87,25 @@
 
 
     <div class="sixteen wide column" v-if="state == 'review-updates'">
-      <h2>Review validations, Apply changes to update files</h2>
 
-      <div class="ui styled fluid accordion">
-
-
-        <template v-for="liveChange in liveChanges">
-
-          <div class="title">
-            <i class="dropdown icon"></i>
-            {{liveChange.change.name}}
-          </div>
-          <div class="content">
-            <ul class="ui list">
-              <li class="item" v-for="log in liveChange.logs">
-                {{log}}
-              </li>
-            </ul>
-          </div>
-
-        </template>
+      <h1>Please enter the following details</h1>
+      <br><br>
+      <div class="ui massive form">
+        <div class="sixteen wide required field" v-for="variable in variables">
+          <h2>{{variable.label}}</h2>
+          <input :placeholder="variable.label" v-model="variable.value" type="text">
+          <p>
+            <small>{{variable.description}}</small>
+          </p>
+        </div>
       </div>
-
 
     </div>
 
-    <div class="right floated four wide column" v-if="state == 'review-updates'">
-      <el-button @click="listScannedFiles" v-if="!doneChanges" size="large">Back</el-button>
-      <el-button @click="doChanges" v-if="!doneChanges" size="large">Apply</el-button>
-      <el-button @click="viewResult" v-if="doneChanges" size="large">Next</el-button>
+    <div class="right floated six wide column" v-if="state == 'review-updates'">
+      <el-button type="warning" @click="listScannedFiles" v-if="!doneChanges" size="large">Back</el-button>
+      <el-button type="primary" @click="viewResult" v-if="doneChanges" size="large">Next</el-button>
+      <el-button type="primary" @click="doChanges" v-if="!doneChanges" size="large">Apply changes</el-button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -187,6 +175,7 @@
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex';
   import jsonApi from '../plugins/jsonApi'
+  import {Notification} from 'element-ui';
 
   import JavaParser from 'java-parser';
   import FileProcessorFactor from '@/plugins/changehandler'
@@ -218,7 +207,11 @@
     },
     data() {
       return {
+        variables: [],
         doneChanges: false,
+        searchDef: {
+          show: false
+        },
         liveChanges: [],
         state: "scanning-files",
 //        integrations: Integrations,
@@ -255,6 +248,9 @@
       }
     },
     methods: {
+      variableUpdate(){
+        console.log("variable update", arguments);
+      },
       ...mapActions(['setProjectDir', 'setSessionAction']),
       reset() {
         this.setProjectDir(null);
@@ -299,12 +295,32 @@
         console.log(this.liveChanges);
         var startCount = 0;
 
+        console.log("variables", that.variables);
+        var contextMap = {};
+
+        var invalidFields = that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
+        if (invalidFields.length > 0) {
+          Notification.error({
+            message: invalidFields[0].label + " is left empty."
+          });
+          return
+        }
+
+        console.log("start doing changes")
+
+
         function doIndex(ith, doIndex) {
+          console.log("do change", ith);
           if (that.liveChanges.length == ith) {
             that.callbackChangeComplete();
             return;
           }
-          that.liveChanges[ith].doChanges().then(function () {
+          debugger
+          that.liveChanges[ith].doChanges(contextMap).then(function () {
             doIndex(ith + 1, doIndex);
           }).catch(function () {
             doIndex(ith + 1, doIndex);
@@ -333,7 +349,7 @@
           return e.change.status == "pending";
         }).length;
         if (remaining == 0) {
-          that.doneChanges = true;
+//          that.doneChanges = true;
         }
       },
       beginValidateProject(){
@@ -343,13 +359,20 @@
         console.log(this.Project.projectDir);
         that.actions = [];
         that.liveChanges = [];
+        that.variables = [];
 
         this.selectedIntegration.changes.map(function (change) {
           console.log("Push change", change);
           that.liveChanges.push(new FileProcessorFactor.ChangeHandler(change));
+
+          console.log("variables from changes");
+          if (change.variables && change.variables.length > 0) {
+            change.variables.map(function (variable) {
+              variable.value = null;
+              that.variables.push(variable);
+            })
+          }
         });
-
-
         that.files = [];
 
 

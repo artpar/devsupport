@@ -1,6 +1,8 @@
 import NewSearchAndReplace from './handlers/searchreplacefilehandler'
 import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
+import dot from 'dot';
+
 
 var FileProcessorFactor = {
   ForType: function (fileType, logger) {
@@ -18,6 +20,15 @@ var FileProcessorFactor = {
   },
   ChangeHandler: function (change) {
     var that = {};
+
+
+    // poor naming choice thats all
+    var change1 = change.change;
+    if (!(change1 instanceof Array)) {
+      change1 = [change1];
+      change.change = change1;
+    }
+
 
     that.change = change;
     that.selectedFiles = [];
@@ -99,24 +110,32 @@ var FileProcessorFactor = {
     };
 
 
-    that.doChanges = function () {
+    that.doChanges = function (contextMap) {
 
       return new Promise(function (resolve, reject) {
 
-        var change = that.change.change;
-        if (!(change instanceof Array)) {
-          change = [change];
-        }
+        debugger
 
         if (!that.selectedFilePath) {
           that.logs.push("No selected file for " + that.change.change);
           that.change.status = "N/A";
           resolve();
         } else {
+
+          for (var i = 0; i < change.change.length; i++) {
+
+            console.log("dot is not defined", dot.template);
+            let line = change.change[i].line;
+            console.log("line is ", line);
+            var tempFn = dot.template(line);
+            change.change[i].line = tempFn(contextMap);
+            console.log("evaluated template: ", change.change[i])
+          }
+
           that.fileProcessor.doChange({
             filepath: that.selectedFilePath,
             relative: that.chosenFile.relative,
-          }, change).then(resolve, reject);
+          }, change.change).then(resolve, reject);
           that.change.status = "Completed"
         }
 

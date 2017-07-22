@@ -52,8 +52,10 @@
     },
     mounted() {
       console.log("loaded recent projects", this.recentProjects);
+//      debugger
       this.Project.recentProjects.map(function (e) {
         if (!e || !e.location) {
+          console.log("not e or e location, so no name");
           return;
         }
         let parts = e.location.split("/");

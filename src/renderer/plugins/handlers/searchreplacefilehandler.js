@@ -70,6 +70,9 @@ export default function (fileType, logger) {
   }
 
   that.doChange = function (file, changes) {
+    debugger;
+
+
     return new Promise(function (resolve, reject) {
       // logger(file, JSON.stringify(changes));
       console.log("search and replace handler do change", changes);

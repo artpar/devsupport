@@ -2,7 +2,8 @@
 
   <div class="ui centered grid" style="    margin-top: 10em;">
     <div class="sixteen wide column">
-      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote placeholder="What do you want to integrate"
+      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote
+                 placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
             v-for="item in options4"
@@ -12,7 +13,7 @@
         </el-option>
       </el-select>
     </div>
-    <div  class="four wide column">
+    <div class="four wide column">
       <button @click="integrate()" class="ui huge button background devcolordark">INTEGRATE</button>
     </div>
 
@@ -22,6 +23,7 @@
 </template>
 <script>
   import jsonApi from '../plugins/jsonApi';
+  import {Notification} from 'element-ui';
 
   export default {
     data(){
@@ -41,6 +43,13 @@
         let that = this;
         console.log("clicked button");
         console.log(this.message);
+
+        if (that.selectedSP == "") {
+          Notification.error({
+            message: "Please select a merchant to integrate"
+          });
+          return
+        }
 
         this.$router.push({
           name: 'SelectIntegration',

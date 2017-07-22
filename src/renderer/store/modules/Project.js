@@ -26,7 +26,11 @@ const mutations = {
     state.integration = action
   },
   ADD_PROJECT(state, projectPath) {
-
+    // debugger
+    if (!projectPath) {
+      return
+    }
+    console.log("add project", projectPath);
     for (var i = 0; i < state.recentProjects.length; i++) {
       var rp = state.recentProjects[i];
       if (rp.location == projectPath) {
@@ -36,9 +40,14 @@ const mutations = {
       }
     }
 
+    let parts = projectPath.split("/");
+    var name = parts[parts.length - 1];
+
+
     state.recentProjects.unshift({
       location: projectPath,
-      lastAccess: new Date()
+      lastAccess: new Date(),
+      name: name,
     });
     store.set("projects.recent", state.recentProjects)
 
