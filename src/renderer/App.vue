@@ -9,12 +9,12 @@
         <div class="ui vertical masthead segment">
 
           <div class="ui container" v-if="Project.projectDir != null">
-            <div class="ui large secondary pointing menu">
+            <div class="ui large secondary menu">
               <div class="item" v-if="Project.stack != null">
                 <i style="font-size: 50px;" class="material-icons">{{Project.stack}}</i>
               </div>
               <div class="right item">
-                <a class="item" @click="goHome">Home</a>
+                <a @click="goHome"><i class="circular large home link inverted icon"></i></a>
               </div>
             </div>
           </div>

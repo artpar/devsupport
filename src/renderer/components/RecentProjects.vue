@@ -2,12 +2,12 @@
 
   <div class="five wide column">
 
-    <div class="ui segment background devcolordark" v-if="Project.projectDir != null" >
+    <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null" >
       <h2 class="light">{{Project.name}}</h2>
       <p>{{Project.projectDir}}</p>
     </div>
 
-    <div class="ui segment">
+    <div class="ui raised segment">
     <h1>Recent Projects</h1>
 
     <!--<div class="ui dividing header">-->

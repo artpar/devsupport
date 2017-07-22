@@ -1,22 +1,23 @@
 <template>
 
-  <div class="ui centered grid" style="    margin-top: 10em;">
-    <div class="six wide column">
+  <div class="ui centered grid" style="margin-top: 20em;">
+    <div class="four wide column">
       <a class="ui button">
         <div @click="setAction('integrate')">
-          <i class="material-icons inverted devcolordark" style="font-size: 150px; border-radius: 5%">widgets</i> <br/>
-          <h1 style="text-transform: uppercase">Integrate</h1>
+          <i class="massive settings icon"></i>
+          <!--<i class="material-icons inverted devcolordark" style="font-size: 150px; border-radius: 5%">widgets</i> <br/>-->
+          <h1>Integrate</h1>
         </div>
       </a>
 
 
     </div>
 
-    <div class="six wide column">
+    <div class="four wide column">
       <a class="ui button">
         <div @click="setAction('fix')">
-          <i class="material-icons inverted devcolordark" style="font-size: 150px; border-radius: 5%">build</i> <br/>
-          <h1 style="text-transform: uppercase">Fix</h1>
+          <i class="massive configure icon"></i>
+          <h1>Fix</h1>
         </div>
       </a>
     </div>
