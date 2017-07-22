@@ -2,11 +2,12 @@
 
   <div class="five wide column">
 
-    <div class="ui ignored warning message" v-if="Project.projectDir != null">
-      <h2 class="primary">{{Project.name}}</h2>
+    <div class="ui segment background devcolordark" v-if="Project.projectDir != null" >
+      <h2 class="light">{{Project.name}}</h2>
       <p>{{Project.projectDir}}</p>
     </div>
 
+    <div class="ui segment">
     <h1>Recent Projects</h1>
 
     <!--<div class="ui dividing header">-->
@@ -24,7 +25,7 @@
 
         <div class="content">
           <a class="header" @click="setProject(project)">
-            <h3 class="primary">{{project.name}}</h3>
+            <h3>{{project.name}}</h3>
           </a>
           <div class="description">
             <p>{{project.location}}</p>
@@ -33,6 +34,7 @@
         </div>
 
       </div>
+    </div>
 
 
     </div>

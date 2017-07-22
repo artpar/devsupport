@@ -68,6 +68,17 @@
     padding: 20px;
   }
 
+ h1{
+   color: #383A63;
+ }
+ h2, h3, h4 {
+    color: #383A63;
+  }
+
+
+  .light{
+    color: #FFFFFF;
+  }
   .devcolor {
     color: #3d668d !important;
   }

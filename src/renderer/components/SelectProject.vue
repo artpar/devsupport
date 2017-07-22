@@ -7,12 +7,9 @@
     </div>
 
     <div class="row">
-      <div class="twelve wide column">
-        <!--<div class="heading">Start by selecting your source code folder</div>-->
         <h2>
           Start by selecting your source code folder
         </h2>
-      </div>
 
     </div>
     <div class="row">
