@@ -6,33 +6,51 @@
     </div>
     <div class="sixteen wide column" v-if="!loading > 0 && state == 'scanned-files'">
 
-      <data-tables
-          :actions-def="actionDef"
-          :checkbox-filter-def="checkboxFilterDef"
-          :row-action-def="rowActionDef"
-          :search-def="searchDef"
-          :has-action-col="false"
-          :pagination-def="{}"
-          :data='liveChanges'>
-        <el-table-column prop="change.name"
-                         label="Pending update">
-        </el-table-column>
-        <el-table-column
-            prop="change.status"
-            label="Change status">
-        </el-table-column>
-        <el-table-column
-            prop="selectedFiles.length"
-            label="Files ">
-        </el-table-column>
 
-      </data-tables>
+      <table class="ui selectable celled table">
+        <thead>
+        <tr>
+          <th>Pending update</th>
+          <th>Change status</th>
+          <th>Files</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="change in liveChanges">
+          <td>{{change.change.name}}</td>
+          <td>{{change.change.status}}</td>
+          <td>{{change.selectedFiles.length}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!--<data-tables-->
+      <!--:actions-def="actionDef"-->
+      <!--:checkbox-filter-def="checkboxFilterDef"-->
+      <!--:row-action-def="rowActionDef"-->
+      <!--:search-def="searchDef"-->
+      <!--:has-action-col="false"-->
+      <!--:pagination-def="{}"-->
+      <!--:data='liveChanges'>-->
+      <!--<el-table-column prop="change.name"-->
+      <!--label="Pending update">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="change.status"-->
+      <!--label="Change status">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="selectedFiles.length"-->
+      <!--label="Files ">-->
+      <!--</el-table-column>-->
+
+      <!--</data-tables>-->
 
 
     </div>
-    <div class="right floated six wide column" v-if="state == 'scanned-files'">
-      <el-button type="warning" @click="beginValidateProject" size="large">Rescan files</el-button>
-      <el-button type="primary" @click="reviewUpdates" size="large">Review Inputs</el-button>
+    <div class="right floated eight wide column" v-if="state == 'scanned-files'">
+      <button class="ui huge orange button" @click="beginValidateProject">Rescan files</button>
+      <button class="ui huge primary button" @click="reviewUpdates">Review Inputs</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -81,8 +99,8 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <el-button type="warning" @click="state = 'scanned-files'" size="large">Back</el-button>
-      <el-button type="primary" @click="doChanges" v-if="!doneChanges" size="large">Apply changes</el-button>
+      <button class="ui huge orange button" @click="state = 'scanned-files'">Back</button>
+      <button class="ui huge primary button" @click="doChanges" v-if="!doneChanges">Apply changes</button>
     </div>
 
 
@@ -103,9 +121,8 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-updates'">
-      <el-button type="warning" @click="listScannedFiles" v-if="!doneChanges" size="large">Back</el-button>
-      <!--<el-button type="primary" @click="viewResult" v-if="doneChanges" size="large">Next</el-button>-->
-      <el-button type="primary" @click="reviewFiles" size="large">Review files</el-button>
+      <button class="ui huge orange button" @click="listScannedFiles" v-if="!doneChanges">Back</button>
+      <button class="ui huge primary button" @click="reviewFiles">Review files</button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -165,7 +182,7 @@
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
-      <el-button size="large" @click="reset">Close</el-button>
+      <button class="ui huge primary button" @click="reset">Close</button>
     </div>
 
 

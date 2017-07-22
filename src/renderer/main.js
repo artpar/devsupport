@@ -2,7 +2,6 @@ import Vue from 'vue';
 import axios from 'axios';
 import Element from 'element-ui';
 
-import DataTables from 'vue-data-tables'
 
 import 'element-ui/lib/theme-default/index.css';
 import locale from 'element-ui/lib/locale/lang/en';
@@ -10,23 +9,23 @@ import App from './App';
 import router from './router';
 import store from './store';
 import Loading from './components/Loading.vue'
-import jsonApi from './plugins/jsonApi'
 
 global.jQuery = require('jquery');
 import _Tether from 'tether';
 window.Tether = _Tether;
 require('@/assets/icons.css');
 require('lato-font/css/lato-font.css');
+require('material-design-icons-iconfont/dist/material-design-icons.css');
 require('glyphicons');
-require('semantic-ui/dist/semantic.min.css');
-require('semantic-ui/dist/semantic.min.js');
+require('material-icons');
+require('@/assets/semantic/semantic.min.css');
+require('@/assets/semantic/semantic.min.js');
 import Vue2Filters from 'vue2-filters'
 
 Vue.use(Vue2Filters)
 
 Vue.use(Element, {locale});
 Vue.component("loading", Loading);
-Vue.use(DataTables);
 
 
 var DURATION_IN_SECONDS = {
