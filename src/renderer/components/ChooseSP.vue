@@ -1,8 +1,8 @@
 <template>
 
-  <div class="content-wpr">
-    <div class="form-input-wpr">
-      <el-select v-model="selectedSP" filterable remote placeholder="What do you want to integrate"
+  <div class="ui centered grid" style="    margin-top: 10em;">
+    <div class="sixteen wide column">
+      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
             v-for="item in options4"
@@ -12,11 +12,12 @@
         </el-option>
       </el-select>
     </div>
-    <div @click="integrate()" class="form-submit-wpr text-center">
-      <div class="cust-btn md">INTEGRATE</div>
+    <div  class="four wide column">
+      <button @click="integrate()" class="ui huge button background devcolordark">INTEGRATE</button>
     </div>
-    <p>selected sp: {{selectedSP}}</p>
+
   </div>
+
 
 </template>
 <script>

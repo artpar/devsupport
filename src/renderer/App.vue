@@ -6,7 +6,7 @@
 
 
       <div class="eleven wide column">
-        <div class="ui vertical masthead center aligned segment">
+        <div class="ui vertical masthead segment">
 
           <div class="ui container" v-if="Project.projectDir != null">
             <div class="ui large secondary pointing menu">
@@ -16,7 +16,7 @@
             </div>
           </div>
 
-          <div class="ui text container">
+          <div class="ui text">
             <router-view></router-view>
           </div>
 
@@ -72,14 +72,25 @@
   }
 
   .devcolor {
-    background-color: #fff !important;
     color: #3d668d !important;
   }
 
-  .inverted.devcolor {
+  .background.devcolor {
     background-color: #3d668d !important;
-    color: #fff !important;
+    color: #fff  !important;
   }
+
+
+  .devcolordark {
+    color: #383a63 !important;
+  }
+
+  .background.devcolordark {
+    background-color: #383a63 !important;
+    color: #fff  !important;
+  }
+
+
 
 
 </style>

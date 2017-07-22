@@ -5,42 +5,7 @@
       <loading v-if="loading"></loading>
     </div>
     <div class="sixteen wide column" v-if="!loading > 0 && state == 'scanned-files'">
-      <div class="ui ordered steps mini ">
-        <div class="completed step">
-          <div class="content">
-            <div class="title">
-              Project Source
-            </div>
-            <div slot="description">
-              {{Project.projectDir}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Choose integration">
-          <div class="content">
-            <div class="title">
-              Choose integration
-            </div>
-            <div slot="description">
-              {{selectedIntegration.name}}
-            </div>
-          </div>
-        </div>
-        <div class="active step" title="Review">
-          <div class="content">
-            <div class="title">
-              Review
-            </div>
-          </div>
-        </div>
-        <div class="step" title="Execute">
-          <div class="content">
-            <div class="title">
-              Execute
-            </div>
-          </div>
-        </div>
-      </div>
+
       <data-tables
           :actions-def="actionDef"
           :checkbox-filter-def="checkboxFilterDef"
@@ -65,22 +30,6 @@
 
       </data-tables>
 
-      <!--<table class="table table-inverse">-->
-      <!--<thead>-->
-      <!--<tr>-->
-      <!--<th>File</th>-->
-      <!--<th>Path</th>-->
-      <!--</tr>-->
-      <!--</thead>-->
-      <!--<tbody>-->
-
-      <!--<tr v-for="file in selectedFiles">-->
-      <!--<td>{{file.filename}}</td>-->
-      <!--<td>{{file.relative}}</td>-->
-      <!--</tr>-->
-      <!--</tbody>-->
-      <!--</table>-->
-
 
     </div>
     <div class="right floated six wide column" v-if="state == 'scanned-files'">
@@ -89,43 +38,6 @@
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div class="ui ordered steps mini ">
-        <div class="completed step">
-          <div class="content">
-            <div class="title">
-              Project Source
-            </div>
-            <div slot="description">
-              {{Project.projectDir}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Choose integration">
-          <div class="content">
-            <div class="title">
-              Choose integration
-            </div>
-            <div slot="description">
-              {{selectedIntegration.name}}
-            </div>
-          </div>
-        </div>
-        <div class="active step" title="Review">
-          <div class="content">
-            <div class="title">
-              Review
-            </div>
-          </div>
-        </div>
-        <div class="step" title="Execute">
-          <div class="content">
-            <div class="title">
-              Execute
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="ui styled fluid accordion">
 
 
@@ -177,43 +89,6 @@
 
 
     <div class="sixteen wide column" v-if="state == 'review-updates'">
-      <div class="ui ordered steps mini ">
-        <div class="completed step">
-          <div class="content">
-            <div class="title">
-              Project Source
-            </div>
-            <div slot="description">
-              {{Project.projectDir}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Choose integration">
-          <div class="content">
-            <div class="title">
-              Choose integration
-            </div>
-            <div slot="description">
-              {{selectedIntegration.name}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Review">
-          <div class="content">
-            <div class="title">
-              Review
-            </div>
-          </div>
-        </div>
-        <div class="active step" title="Execute">
-          <div class="content">
-            <div class="title">
-              Execute
-            </div>
-          </div>
-        </div>
-      </div>
-
       <h2>Review validations, Apply changes to update files</h2>
 
       <div class="ui styled fluid accordion">
