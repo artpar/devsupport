@@ -311,7 +311,13 @@
       doChanges() {
         var that = this;
         console.log(this.liveChanges);
-        var startCount = 0;
+        var contextMap = {};
+
+        var invalidFields = that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
 
         console.log("start doing changes")
 

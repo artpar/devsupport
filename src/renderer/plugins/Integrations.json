@@ -34,12 +34,6 @@
           "label": "LazyPay Production Access Key",
           "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
           "help": "You can find this in the welcome email from lazypay"
-        },
-        {
-          "name": "redirectUrl",
-          "label": "Redirect Url",
-          "description": "The user will be taken to this page after payment.",
-          "help": "Make sure the redirect page handled the url variables and updates payment details in your database"
         }
       ],
       "change": {
