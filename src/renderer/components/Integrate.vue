@@ -81,8 +81,8 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <el-button @click="state = 'scanned-files'" size="large">Back</el-button>
-      <el-button @click="reviewFiles" size="large">Review files</el-button>
+      <el-button type="warning" @click="state = 'scanned-files'" size="large">Back</el-button>
+      <el-button type="primary" @click="doChanges" v-if="!doneChanges" size="large">Apply changes</el-button>
     </div>
 
 
@@ -104,8 +104,8 @@
 
     <div class="right floated six wide column" v-if="state == 'review-updates'">
       <el-button type="warning" @click="listScannedFiles" v-if="!doneChanges" size="large">Back</el-button>
-      <el-button type="primary" @click="viewResult" v-if="doneChanges" size="large">Next</el-button>
-      <el-button type="primary" @click="doChanges" v-if="!doneChanges" size="large">Apply changes</el-button>
+      <!--<el-button type="primary" @click="viewResult" v-if="doneChanges" size="large">Next</el-button>-->
+      <el-button type="primary" @click="reviewFiles" size="large">Review files</el-button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -261,6 +261,24 @@
       },
       reviewFiles() {
         var that = this;
+
+
+        console.log("variables", that.variables);
+        var contextMap = {};
+
+        var invalidFields = that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
+        if (invalidFields.length > 0) {
+          Notification.error({
+            message: invalidFields[0].label + " is left empty."
+          });
+          return
+        }
+
+
         that.state = "review-files";
         console.log("set timeout for do accordian");
         setTimeout(function () {
@@ -294,21 +312,6 @@
         var that = this;
         console.log(this.liveChanges);
         var startCount = 0;
-
-        console.log("variables", that.variables);
-        var contextMap = {};
-
-        var invalidFields = that.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return variable.value == null || variable.value.length < 2;
-        });
-
-        if (invalidFields.length > 0) {
-          Notification.error({
-            message: invalidFields[0].label + " is left empty."
-          });
-          return
-        }
 
         console.log("start doing changes")
 
