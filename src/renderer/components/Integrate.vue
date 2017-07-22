@@ -349,7 +349,8 @@
           return e.change.status == "pending";
         }).length;
         if (remaining == 0) {
-//          that.doneChanges = true;
+          that.doneChanges = true;
+          that.viewResult();
         }
       },
       beginValidateProject(){
