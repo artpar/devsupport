@@ -68,10 +68,6 @@
     padding: 20px;
   }
 
-  h2, h3, h4 {
-    color: #3d668d;
-  }
-
   .devcolor {
     color: #3d668d !important;
   }
