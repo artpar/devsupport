@@ -28,9 +28,12 @@
       ...mapActions(['setSessionAction']),
       setAction(act){
         this.setSessionAction(act);
+
         this.$router.push({
-          name: 'SelectIntegration'
-        })
+          name: 'ChooseSP'
+        });
+
+
       }
     },
 

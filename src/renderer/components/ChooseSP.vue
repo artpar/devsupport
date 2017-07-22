@@ -5,10 +5,10 @@
       <el-select v-model="selectedSP" filterable remote placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
-          v-for="item in options4"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+            v-for="item in options4"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
         </el-option>
       </el-select>
     </div>
@@ -30,7 +30,7 @@
         list: [],
         loading: false,
         newsp: [],
-        newspId:[],
+        newspId: [],
         message: "",
       }
     },
@@ -40,22 +40,26 @@
         let that = this;
         console.log("clicked button");
         console.log(this.message);
+
         this.$router.push({
-          name: 'Integrate', params: {id: this.selectedSP}
+          name: 'SelectIntegration',
+          params: {
+            id: that.selectedSP
+          }
         })
+
 
       },
       remoteMethod(query) {
         console.log("input box active");
         if (query !== '') {
           this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            this.options4 = this.list.filter(item => {
-              return item.label.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
+          this.options4 = this.list.filter(item => {
+            return item.name.toLowerCase()
+                    .indexOf(query.toLowerCase()) > -1;
+          });
+          this.loading = false;
+
         } else {
           this.options4 = [];
         }
@@ -67,24 +71,8 @@
       jsonApi.findAll("merchant", {
         page: {number: 1, size: 50}
       }).then(function (r) {
-        let newsp = [];
-        let newspId=[];
-        for (let i = 0; i < r.length; i++) {
-          newsp[i] = r[i];
-          console.log("in the loop");
-        }
-        console.log(r[0].name, "what");
-        console.log("value of i and r", r.length, r);
 
-        that.newsp = newsp;
-        console.log("something", newsp, that.newsp);
-      }).then(function () {
-        that.list = that.newsp.map(item => {
-          return {value: item.reference_id, label: item.name};
-
-
-        })
-
+        that.list = r;
       });
 
 

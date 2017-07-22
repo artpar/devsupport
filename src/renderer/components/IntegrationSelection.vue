@@ -85,7 +85,7 @@
     },
     mounted() {
       var that = this;
-      console.log("started integration selection")
+      console.log("started integration selection", this.$route.params.id);
 
 
       jsonApi.findAll("integration", {
