@@ -3,7 +3,8 @@ const AppConfig = function () {
   const that = this;
 
   console.log("define app config", window.location.protocol, window.location.hostname);
-  that.apiRoot = "http://devsupport-server:8080";
+
+  that.apiRoot = "https://devsupport.devsupport.authme.host";
 
   that.location = {
     protocol: window.location.protocol,
