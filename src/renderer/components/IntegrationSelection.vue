@@ -53,8 +53,7 @@
 
             </div>
             <div class="content">
-
-              <a class="header">
+              <a class="primary header">
                 {{integration.name}}
               </a>
               <div class="description">
