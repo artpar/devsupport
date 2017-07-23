@@ -48,9 +48,9 @@
 
 
     </div>
-    <div class="right floated eight wide column" v-if="state == 'scanned-files'">
-      <button class="ui huge orange button" @click="beginValidateProject">Rescan files</button>
-      <button class="ui huge primary button" @click="reviewUpdates">Review Inputs</button>
+    <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
+      <button class="ui huge primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui huge orange button right floated" @click="beginValidateProject">Rescan files</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -120,9 +120,9 @@
 
     </div>
 
-    <div class="right floated six wide column" v-if="state == 'review-updates'">
-      <button class="ui huge orange button" @click="listScannedFiles" v-if="!doneChanges">Back</button>
-      <button class="ui huge primary button" @click="reviewFiles">Review files</button>
+    <div class="right floated sixteen wide column" v-if="state == 'review-updates'">
+      <button class="ui huge primary button right floated " @click="reviewFiles">Review files</button>
+      <button class="ui huge orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -147,7 +147,7 @@
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
-      <button class="ui huge primary button" @click="reset">Close</button>
+      <button class="ui huge primary button right floated" @click="reset">Close</button>
     </div>
 
 
@@ -254,7 +254,9 @@
         });
 
         if (invalidFields.length > 0) {
-          Notification.error({
+          that.$alert({
+            type: 'error',
+            title: 'Missing value',
             message: invalidFields[0].label + " is left empty."
           });
           return
@@ -399,7 +401,7 @@
         }
 
         console.log("begin recurse dir for ", that.Project.projectDir);
-        fs.recurseSync(that.Project.projectDir,
+        fs.recurse(that.Project.projectDir,
             ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
               // console.log("callback point 1")
               if (typeof filename != "undefined") {

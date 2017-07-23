@@ -7,9 +7,9 @@
     </div>
 
     <div class="row">
-        <h2>
-          Start by selecting your source code folder
-        </h2>
+      <h2>
+        Start by selecting your source code folder
+      </h2>
 
     </div>
     <div class="row">
@@ -34,10 +34,23 @@
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex'
 
+  var fs = require('file-system');
+
   export default {
     name: 'select-project',
     data() {
-      return {}
+      return {
+        ProjectIdentificationRules: [
+          {
+            "checkType": "fileNameIs",
+            "value": "AndroidManifest.xml",
+            "result": {
+              "language": "java",
+              "stack": "android",
+            }
+          }
+        ]
+      }
     },
     methods: {
 //      processFile: function (file, filelist) {
@@ -46,17 +59,62 @@
       print() {
         console.log("take me somwewhere");
       },
-      ...mapActions(['setProjectDir', 'setSessionAction', 'addProject']),
+      ...mapActions(['setProjectDir', 'setSessionAction', 'addProject', 'setProjectIdentification']),
       open(link) {
         this.$electron.shell.openExternal(link);
       },
       folderSelect: function (file) {
+        var that = this;
+
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-        this.setProjectDir(rawFile.path);
-        this.$router.push({
+        that.setProjectIdentification(null);
+
+        let identification = null;
+
+        fs.recurseSync(
+            that.Project.projectDir,
+            ['**/build.gradle', '**/AndroidManifest.xml'],
+            function (filepath, relative, filename) {
+              console.log("matched file ", filepath);
+
+              for (let i = 0; i < that.ProjectIdentificationRules.length && identification == null; i++) {
+                let rule = that.ProjectIdentificationRules[i];
+
+                switch (rule.checkType) {
+                  case "fileNameIs":
+                    console.log("rule file name check", filename, rule.value)
+                    if (filename == rule.value) {
+                      identification = rule.result;
+                    }
+                    break;
+                  default:
+                    console.error("Unidentified check type", rule);
+                }
+
+
+              }
+
+            }
+        );
+
+
+        if (identification == null) {
+          that.$alert('Unable to identify project', 'Unknown project type', {
+            confirmButtonText: 'Try something else',
+            callback: action => {
+            }
+          });
+          return;
+        }
+        this.setProjectDir(rawFile.path, identification);
+
+
+        that.$router.push({
           name: 'select-action'
         });
+
+
         return;
 
         if (this.Project.action == "fix") {
