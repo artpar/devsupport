@@ -81,7 +81,6 @@
     "jquery": "^3.2.1",
     "material-design-icons-iconfont": "^3.0.3",
     "mustache": "^2.3.0",
-    "semantic-ui": "^2.2.10",
     "tether": "^1.4.0",
     "vue": "^2.3.3",
     "vue-data-tables": "^1.1.1",

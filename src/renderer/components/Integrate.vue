@@ -126,44 +126,9 @@
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
-      <div class="ui ordered steps mini ">
-        <div class="completed step">
-          <div class="content">
-            <div class="title">
-              Project Source
-            </div>
-            <div slot="description">
-              {{Project.projectDir}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Choose integration">
-          <div class="content">
-            <div class="title">
-              Choose integration
-            </div>
-            <div slot="description">
-              {{selectedIntegration.name}}
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Review">
-          <div class="content">
-            <div class="title">
-              Review
-            </div>
-          </div>
-        </div>
-        <div class="completed step" title="Execute">
-          <div class="content">
-            <div class="title">
-              Execute
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <h2>Results</h2>
+
+      <h1>Results</h1>
 
       <div class="ui styled fluid accordion">
         <template v-for="liveChange in liveChanges">
