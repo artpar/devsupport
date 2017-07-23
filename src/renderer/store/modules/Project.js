@@ -6,6 +6,7 @@ const state = {
   projectDir: null,
   sessionAction: null,
   integration: null,
+  identification: null,
   recentProjects: store.get("projects.recent", [])
 };
 
@@ -22,10 +23,13 @@ const mutations = {
   SET_ACTION(state, action){
     state.sessionAction = action
   },
+  SET_PROJECT_IDENTIFICATION(state, identification){
+    state.identification = identification
+  },
   SET_INTEGRATION(state, action){
     state.integration = action
   },
-  ADD_PROJECT(state, projectPath) {
+  ADD_PROJECT(state, projectPath, identification) {
     // debugger
     if (!projectPath) {
       return
@@ -35,6 +39,9 @@ const mutations = {
       var rp = state.recentProjects[i];
       if (rp.location == projectPath) {
         state.recentProjects[i].lastAccess = new Date();
+        if (state.recentProjects.length > 6) {
+          state.recentProjects = state.recentProjects.slice(0, 6);
+        }
         store.set("projects.recent", state.recentProjects);
         return
       }
@@ -48,6 +55,7 @@ const mutations = {
       location: projectPath,
       lastAccess: new Date(),
       name: name,
+      identification: identification,
     });
     store.set("projects.recent", state.recentProjects)
 
@@ -56,10 +64,13 @@ const mutations = {
 };
 
 const actions = {
-  setProjectDir({commit}, projectDir) {
+  setProjectDir({commit}, projectDir, identification) {
     console.log("set project dir", projectDir);
     commit('SET_PROJECT_DIR', projectDir);
-    commit('ADD_PROJECT', projectDir);
+    commit('ADD_PROJECT', projectDir, identification);
+  },
+  setProjectIdentification({commit}, identification) {
+    console.log("set project identification", identification);
   },
   setSessionAction({commit}, action) {
     console.log("action set ", action);

@@ -45,7 +45,8 @@
         console.log(this.message);
 
         if (that.selectedSP == "") {
-          Notification.error({
+          that.$alert({
+            type: 'error',
             message: "Please select a merchant to integrate"
           });
           return

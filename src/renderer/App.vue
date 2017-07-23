@@ -7,14 +7,21 @@
 
       <div class="ten wide column">
         <div class="ui vertical masthead segment">
-
           <div class="ui container" v-if="Project.projectDir != null">
             <div class="ui large secondary menu">
-              <div class="item" v-if="Project.stack != null">
-                <i style="font-size: 50px;" class="material-icons">{{Project.stack}}</i>
+
+              <div class="item" v-if="Project.identification.language != null">
+                <i class="circular big icon"><i
+                    :class="'devicon devicon-'+Project.identification.language+'-plain'"></i></i>
               </div>
+
+              <div class="item" v-if="Project.identification.stack != null">
+                <i class="circular big icon"><i
+                    :class="'devicon devicon-'+Project.identification.stack+'-plain'"></i></i>
+              </div>
+
               <div class="right item">
-                <a @click="goHome"><i class="circular large home link inverted icon"></i></a>
+                <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
               </div>
             </div>
           </div>
@@ -68,17 +75,18 @@
     padding: 20px;
   }
 
- h1{
-   color: #383A63;
- }
- h2, h3, h4 {
+  h1 {
     color: #383A63;
   }
 
+  h2, h3, h4 {
+    color: #383A63;
+  }
 
-  .light{
+  .light {
     color: #FFFFFF;
   }
+
   .devcolor {
     color: #3d668d !important;
   }
