@@ -7,17 +7,19 @@
 
       <div class="ten wide column">
         <div class="ui vertical masthead segment">
-          <div class="ui container" v-if="Project.projectDir != null">
+          <div class="ui container" v-if="Project.currentProject != null">
             <div class="ui large secondary menu">
 
-              <div class="item" v-if="Project.identification.language != null">
+              <div class="item"
+                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
                 <i class="circular big icon"><i
-                    :class="'devicon devicon-'+Project.identification.language+'-plain'"></i></i>
+                    :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
               </div>
 
-              <div class="item" v-if="Project.identification.stack != null">
+              <div class="item"
+                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
                 <i class="circular big icon"><i
-                    :class="'devicon devicon-'+Project.identification.stack+'-plain'"></i></i>
+                    :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
               </div>
 
               <div class="right item">
@@ -56,7 +58,9 @@
         'setProjectDir'
       ]),
       goHome() {
-        this.setProjectDir(null);
+        this.setProjectDir({
+          projectDir: null
+        });
         this.$router.push({
           name: 'select-project'
         })

@@ -235,7 +235,9 @@
       },
       ...mapActions(['setProjectDir', 'setSessionAction']),
       reset() {
-        this.setProjectDir(null);
+        this.setProjectDir({
+          projectDir: null
+        });
         this.setSessionAction(null);
         this.$router.push({
           name: "select-project"
