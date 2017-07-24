@@ -59,7 +59,7 @@
       print() {
         console.log("take me somwewhere");
       },
-      ...mapActions(['setProjectDir', 'setSessionAction', 'addProject', 'setProjectIdentification']),
+      ...mapActions(['setProjectDir', 'setSessionAction', 'addProject']),
       open(link) {
         this.$electron.shell.openExternal(link);
       },
@@ -68,12 +68,11 @@
 
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-        that.setProjectIdentification(null);
 
         let identification = null;
 
         fs.recurseSync(
-            that.Project.projectDir,
+            rawFile.path,
             ['**/build.gradle', '**/AndroidManifest.xml'],
             function (filepath, relative, filename) {
               console.log("matched file ", filepath);
@@ -107,7 +106,10 @@
           });
           return;
         }
-        this.setProjectDir(rawFile.path, identification);
+        this.setProjectDir({
+          projectDir: rawFile.path,
+          identification: identification
+        });
 
 
         that.$router.push({

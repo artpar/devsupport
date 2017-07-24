@@ -7,6 +7,7 @@ const state = {
   sessionAction: null,
   integration: null,
   identification: null,
+  currentProject: null,
   recentProjects: store.get("projects.recent", [])
 };
 
@@ -14,6 +15,7 @@ const mutations = {
   SET_PROJECT_DIR(state, dir){
     state.projectDir = dir;
     if (dir == null) {
+      state.currentProject = null;
       state.name = null;
       return;
     }
@@ -29,15 +31,19 @@ const mutations = {
   SET_INTEGRATION(state, action){
     state.integration = action
   },
-  ADD_PROJECT(state, projectPath, identification) {
+  ADD_PROJECT(state, projectProperties) {
     // debugger
-    if (!projectPath) {
+    if (!projectProperties.projectDir) {
       return
     }
-    console.log("add project", projectPath);
+    console.log("add project", projectProperties.projectDir);
     for (var i = 0; i < state.recentProjects.length; i++) {
       var rp = state.recentProjects[i];
-      if (rp.location == projectPath) {
+      if (rp.location == projectProperties.projectDir) {
+        state.currentProject = rp;
+        if (projectProperties.identification) {
+          rp.identification = projectProperties.identification;
+        }
         state.recentProjects[i].lastAccess = new Date();
         if (state.recentProjects.length > 6) {
           state.recentProjects = state.recentProjects.slice(0, 6);
@@ -47,16 +53,18 @@ const mutations = {
       }
     }
 
-    let parts = projectPath.split("/");
+    let parts = projectProperties.projectDir.split("/");
     var name = parts[parts.length - 1];
 
 
-    state.recentProjects.unshift({
-      location: projectPath,
+    let newProject = {
+      location: projectProperties.projectPath,
       lastAccess: new Date(),
       name: name,
-      identification: identification,
-    });
+      identification: projectProperties.identification,
+    };
+    state.recentProjects.unshift(newProject);
+    state.currentProject = newProject;
     store.set("projects.recent", state.recentProjects)
 
   }
@@ -64,13 +72,10 @@ const mutations = {
 };
 
 const actions = {
-  setProjectDir({commit}, projectDir, identification) {
-    console.log("set project dir", projectDir);
-    commit('SET_PROJECT_DIR', projectDir);
-    commit('ADD_PROJECT', projectDir, identification);
-  },
-  setProjectIdentification({commit}, identification) {
-    console.log("set project identification", identification);
+  setProjectDir({commit}, projectProperties) {
+    console.log("set project dir", projectProperties.projectDir);
+    commit('SET_PROJECT_DIR', projectProperties.projectDir);
+    commit('ADD_PROJECT', projectProperties);
   },
   setSessionAction({commit}, action) {
     console.log("action set ", action);
@@ -82,7 +87,9 @@ const actions = {
   },
   addProject({commit}, projectLocation) {
     console.log("Add project to recent projects", projectLocation);
-    commit('ADD_PROJECT', projectLocation);
+    commit('ADD_PROJECT', {
+      projectPath: projectLocation,
+    });
   },
 };
 

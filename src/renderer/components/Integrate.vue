@@ -157,7 +157,6 @@
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex';
   import jsonApi from '../plugins/jsonApi'
-  import {Notification} from 'element-ui';
 
   import JavaParser from 'java-parser';
   import FileProcessorFactor from '@/plugins/changehandler'
@@ -235,7 +234,9 @@
       },
       ...mapActions(['setProjectDir', 'setSessionAction']),
       reset() {
-        this.setProjectDir(null);
+        this.setProjectDir({
+          projectDir: null
+        });
         this.setSessionAction(null);
         this.$router.push({
           name: "select-project"
@@ -254,11 +255,7 @@
         });
 
         if (invalidFields.length > 0) {
-          that.$alert({
-            type: 'error',
-            title: 'Missing value',
-            message: invalidFields[0].label + " is left empty."
-          });
+          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
           return
         }
 
