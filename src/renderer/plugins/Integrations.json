@@ -34,7 +34,7 @@
       "change": [
         {
           "changeType": "download.file",
-          "line": "<?php\n $variable1 = \"A value\";\necho \"Php works\" ?>"
+          "line": "<?php\n $variable1 = \"A value\";\necho \"Php works\";\n ?>"
         }
       ]
     },
