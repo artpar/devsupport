@@ -54,12 +54,11 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
-      </button>
+      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
       <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
-    <div class="sixteen wide column" v-if="state == 'review-files'" >
+    <div class="sixteen wide column" v-if="state == 'review-files'">
       <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">
 
 
@@ -133,7 +132,8 @@
     </div>
 
     <div class="right floated sixteen wide column" v-if="state == 'review-updates'">
-      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
+      </button>
       <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
@@ -294,20 +294,6 @@
         var that = this;
 
 
-        console.log("variables", that.variables);
-        var contextMap = {};
-
-        var invalidFields = that.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return variable.value == null || variable.value.length < 2;
-        });
-
-        if (invalidFields.length > 0) {
-          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
-          return
-        }
-
-
         that.state = "review-updates";
         setTimeout(function () {
           console.log("do accordian");
@@ -327,12 +313,16 @@
         var that = this;
         console.log(this.liveChanges);
         var contextMap = {};
-
+        
         var invalidFields = that.variables.filter(function (variable) {
           contextMap[variable.name] = variable.value;
           return variable.value == null || variable.value.length < 2;
         });
 
+        if (invalidFields.length > 0) {
+          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
+          return
+        }
 
         console.log("start doing changes")
 
