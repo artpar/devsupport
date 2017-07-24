@@ -260,7 +260,7 @@
       },
       downloadAsFile(liveChange) {
         console.log("download file as contents", liveChange);
-        this.downloadURI(liveChange.change.change[0].line, liveChange.change.fileName)
+        this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName)
       },
       variableUpdate() {
         console.log("variable update", arguments);
