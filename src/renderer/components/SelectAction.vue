@@ -14,8 +14,8 @@
 
 
     <div class="ui massive primary buttons">
-      <button class="ui button">
-        <div @click="setAction('integrate')">
+      <button class="ui button" @click="setAction('integrate')">
+        <div>
           <i class="huge settings icon"></i>
           <!--<i class="material-icons inverted devcolordark" style="font-size: 150px; border-radius: 5%">widgets</i> <br/>-->
           <h3 class="light">Integrate</h3>
