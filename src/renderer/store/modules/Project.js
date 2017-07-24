@@ -57,15 +57,17 @@ const mutations = {
     var name = parts[parts.length - 1];
 
 
+    console.log("New project name", name);
     let newProject = {
-      location: projectProperties.projectPath,
+      location: projectProperties.projectDir,
       lastAccess: new Date(),
       name: name,
       identification: projectProperties.identification,
     };
     state.recentProjects.unshift(newProject);
     state.currentProject = newProject;
-    store.set("projects.recent", state.recentProjects)
+    store.set("projects.recent", state.recentProjects);
+    console.log("Updated recent projects");
 
   }
 
