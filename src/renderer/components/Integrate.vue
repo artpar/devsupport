@@ -59,8 +59,8 @@
       <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
-    <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div class="ui styled fluid accordion">
+    <div class="sixteen wide column" v-if="state == 'review-files'" >
+      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">
 
 
         <template v-for="liveChange in liveChanges">
@@ -86,7 +86,7 @@
 
             </div>
             <template v-if="liveChange.change.changeType == 'fileDownload'">
-              <button class="ui green button right floated" @click="downloadAsFile(liveChange)">
+              <button class="ui orange button right floated" @click="downloadAsFile(liveChange)">
                 Download content as file
               </button>
               <br>

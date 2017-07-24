@@ -23,7 +23,7 @@
               </div>
 
               <div class="right item">
-                <a @click="goHome"><i class="circular large home link inverted orange icon"></i></a>
+                <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
               </div>
             </div>
           </div>
