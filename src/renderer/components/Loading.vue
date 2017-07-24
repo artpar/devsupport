@@ -1,35 +1,6 @@
 <template>
-  <div class='contain'>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
-    <svg height='80' width='210'>
-      <ellipse cx='25' cy='20' fill='none' rx='10' ry='10'></ellipse>
-    </svg>
+  <div class="cssload-container">
+    <div class="cssload-zenith"></div>
   </div>
 </template>
 <script>
@@ -40,190 +11,47 @@
   }
 </script>
 <style>
-  .contain {
-    position: relative;
-    margin: 155px auto;
-    width: 200px;
+  .cssload-container {
+    width: 100%;
+    height: 69px;
+    text-align: center;
   }
 
-  svg {
-    position: absolute;
-  }
-  svg ellipse {
-    -webkit-transform-origin: center;
-    transform-origin: center;
-  }
-  svg:nth-of-type(1) ellipse {
-    stroke: #F1725D;
-    cx: 25px;
-    stroke-width: 3px;
-    -webkit-animation: jump 600ms infinite ease-in-out;
-    animation: jump 600ms infinite ease-in-out;
-    opacity: .7;
-    -webkit-animation-delay: 0ms;
-    animation-delay: 0ms;
-  }
-  svg:nth-of-type(2) ellipse {
-    stroke: #38BDAB;
-    cx: 65px;
-    stroke-width: 3px;
-    -webkit-animation: jump 600ms infinite ease-in-out;
-    animation: jump 600ms infinite ease-in-out;
-    opacity: .7;
-    -webkit-animation-delay: 75ms;
-    animation-delay: 75ms;
-  }
-  svg:nth-of-type(3) ellipse {
-    stroke: #9D30A5;
-    cx: 105px;
-    stroke-width: 3px;
-    -webkit-animation: jump 600ms infinite ease-in-out;
-    animation: jump 600ms infinite ease-in-out;
-    opacity: .7;
-    -webkit-animation-delay: 150ms;
-    animation-delay: 150ms;
-  }
-  svg:nth-of-type(4) ellipse {
-    stroke: #B779E2;
-    cx: 145px;
-    stroke-width: 3px;
-    -webkit-animation: jump 600ms infinite ease-in-out;
-    animation: jump 600ms infinite ease-in-out;
-    opacity: .7;
-    -webkit-animation-delay: 225ms;
-    animation-delay: 225ms;
-  }
-  svg:nth-of-type(5) ellipse {
-    stroke: #683893;
-    cx: 185px;
-    stroke-width: 3px;
-    -webkit-animation: jump 600ms infinite ease-in-out;
-    animation: jump 600ms infinite ease-in-out;
-    opacity: .7;
-    -webkit-animation-delay: 300ms;
-    animation-delay: 300ms;
-  }
-  svg:nth-of-type(6) ellipse {
-    fill: #333333;
-    opacity: .05;
-    rx: 0;
-    ry: 0;
-    cx: 25px;
-    cy: 48px;
-    -webkit-animation: shadow 600ms infinite ease-in-out;
-    animation: shadow 600ms infinite ease-in-out;
-    -webkit-animation-delay: 0ms;
-    animation-delay: 0ms;
-  }
-  svg:nth-of-type(7) ellipse {
-    fill: #333333;
-    opacity: .05;
-    rx: 0;
-    ry: 0;
-    cx: 65px;
-    cy: 48px;
-    -webkit-animation: shadow 600ms infinite ease-in-out;
-    animation: shadow 600ms infinite ease-in-out;
-    -webkit-animation-delay: 75ms;
-    animation-delay: 75ms;
-  }
-  svg:nth-of-type(8) ellipse {
-    fill: #333333;
-    opacity: .05;
-    rx: 0;
-    ry: 0;
-    cx: 105px;
-    cy: 48px;
-    -webkit-animation: shadow 600ms infinite ease-in-out;
-    animation: shadow 600ms infinite ease-in-out;
-    -webkit-animation-delay: 150ms;
-    animation-delay: 150ms;
-  }
-  svg:nth-of-type(9) ellipse {
-    fill: #333333;
-    opacity: .05;
-    rx: 0;
-    ry: 0;
-    cx: 145px;
-    cy: 48px;
-    -webkit-animation: shadow 600ms infinite ease-in-out;
-    animation: shadow 600ms infinite ease-in-out;
-    -webkit-animation-delay: 225ms;
-    animation-delay: 225ms;
-  }
-  svg:nth-of-type(10) ellipse {
-    fill: #333333;
-    opacity: .05;
-    rx: 0;
-    ry: 0;
-    cx: 185px;
-    cy: 48px;
-    -webkit-animation: shadow 600ms infinite ease-in-out;
-    animation: shadow 600ms infinite ease-in-out;
-    -webkit-animation-delay: 300ms;
-    animation-delay: 300ms;
+  .cssload-zenith {
+    width: 69px;
+    height: 69px;
+    margin: 0 auto;
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    box-shadow: 4px 4px 1px rgb(56,58,99);
+    animation: cssload-spin 690ms infinite linear;
+    -o-animation: cssload-spin 690ms infinite linear;
+    -ms-animation: cssload-spin 690ms infinite linear;
+    -webkit-animation: cssload-spin 690ms infinite linear;
+    -moz-animation: cssload-spin 690ms infinite linear;
   }
 
-  @-webkit-keyframes jump {
-    40% {
-      -webkit-transform: translateY(20px) scale(1.3);
-      transform: translateY(20px) scale(1.3);
-      opacity: .9;
-    }
-    40% {
-      rx: 10px;
-      ry: 10px;
-      stroke-width: 3px;
-    }
-    45% {
-      rx: 15px;
-      ry: 7px;
-      stroke-width: 4px;
-    }
-    55% {
-      rx: 10px;
-      ry: 10px;
-    }
+
+
+  @keyframes cssload-spin {
+    100%{ transform: rotate(360deg); transform: rotate(360deg); }
   }
 
-  @keyframes jump {
-    40% {
-      -webkit-transform: translateY(20px) scale(1.3);
-      transform: translateY(20px) scale(1.3);
-      opacity: .9;
-    }
-    40% {
-      rx: 10px;
-      ry: 10px;
-      stroke-width: 3px;
-    }
-    45% {
-      rx: 15px;
-      ry: 7px;
-      stroke-width: 4px;
-    }
-    55% {
-      rx: 10px;
-      ry: 10px;
-    }
-  }
-  @-webkit-keyframes shadow {
-    45% {
-      opacity: .15;
-      rx: 10px;
-      ry: 3px;
-      -webkit-transform: translateY(5px) scale(1.3);
-      transform: translateY(5px) scale(1.3);
-    }
-  }
-  @keyframes shadow {
-    45% {
-      opacity: .15;
-      rx: 10px;
-      ry: 3px;
-      -webkit-transform: translateY(5px) scale(1.3);
-      transform: translateY(5px) scale(1.3);
-    }
+  @-o-keyframes cssload-spin {
+    100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
   }
 
+  @-ms-keyframes cssload-spin {
+    100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+  }
+
+  @-webkit-keyframes cssload-spin {
+    100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  }
+
+  @-moz-keyframes cssload-spin {
+    100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+  }
 </style>

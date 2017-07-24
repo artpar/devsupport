@@ -1,5 +1,4 @@
 <template>
-
   <div class="ui centered grid" style="    margin-top: 10em;">
     <div class="sixteen wide column">
       <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote

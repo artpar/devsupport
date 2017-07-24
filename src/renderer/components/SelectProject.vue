@@ -21,7 +21,7 @@
           drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drop file here or <em>click to select</em></div>
-        <div class="el-upload__tip" slot="tip">Root folder of your projec</div>
+        <div class="el-upload__tip" slot="tip">Root folder of your project</div>
       </el-upload>
 
     </div>
