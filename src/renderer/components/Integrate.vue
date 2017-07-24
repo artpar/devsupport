@@ -49,8 +49,8 @@
 
     </div>
     <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
-      <button class="ui huge primary button right floated" @click="reviewUpdates">Review Inputs</button>
-      <button class="ui huge orange button right floated" @click="beginValidateProject">Rescan files</button>
+      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui large orange button right floated" @click="beginValidateProject">Rescan files</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -99,18 +99,18 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui huge orange button" @click="state = 'scanned-files'">Back</button>
-      <button class="ui huge primary button" @click="doChanges" v-if="!doneChanges">Apply changes</button>
+      <button class="ui large orange button" @click="state = 'scanned-files'">Back</button>
+      <button class="ui large primary button" @click="doChanges" v-if="!doneChanges">Apply changes</button>
     </div>
 
 
     <div class="sixteen wide column" v-if="state == 'review-updates'">
 
-      <h1>Please enter the following details</h1>
-      <br><br>
-      <div class="ui massive form">
+      <h2>Please enter the following details:</h2>
+      <br>
+      <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable in variables">
-          <h2>{{variable.label}}</h2>
+          <h3>{{variable.label}}</h3>
           <input :placeholder="variable.label" v-model="variable.value" type="text">
           <p>
             <small>{{variable.description}}</small>
@@ -121,8 +121,8 @@
     </div>
 
     <div class="right floated sixteen wide column" v-if="state == 'review-updates'">
-      <button class="ui huge primary button right floated " @click="reviewFiles">Review files</button>
-      <button class="ui huge orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
+      <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
+      <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
     <div class="sixteen wide column " v-if="state == 'review-results'">
@@ -147,7 +147,7 @@
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
-      <button class="ui huge primary button right floated" @click="reset">Close</button>
+      <button class="ui large primary button right floated" @click="reset">Close</button>
     </div>
 
 

@@ -37,9 +37,10 @@
       </div>
 
 
-    </div>
-    <h3 v-if="Project.recentProjects.length == 0">No recent projects</h3>
 
+      <h3 v-if="Project.recentProjects.length == 0">No recent projects</h3>
+
+    </div>
 
   </div>
 
