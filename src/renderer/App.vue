@@ -23,7 +23,7 @@
               </div>
 
               <div class="right item">
-                <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
+                <a @click="goHome"><i class="circular large home link inverted orange icon"></i></a>
               </div>
             </div>
           </div>
@@ -75,6 +75,9 @@
 
 <style>
 
+  html, body {
+    overflow: hidden;
+  }
 
   h1 {
     color: #383A63;

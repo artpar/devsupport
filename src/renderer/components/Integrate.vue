@@ -49,8 +49,14 @@
 
     </div>
     <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
-      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
       <button class="ui large orange button right floated" @click="beginValidateProject">Rescan files</button>
+    </div>
+
+    <div class="right floated six wide column" v-if="state == 'review-files'">
+      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
+      </button>
+      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
@@ -58,28 +64,39 @@
 
 
         <template v-for="liveChange in liveChanges">
-          <div class="title ">
+          <div :class="{'title': true, 'active': liveChange.change.changeType == 'fileDownload'}">
             <i class="dropdown icon"></i>
             {{liveChange.change.name}}
-            ->
-            <span v-if="liveChange.selectedFiles.length == 0 ">No file to be modified</span>
-            <span v-if="liveChange.selectedFiles.length == 1 ">{{liveChange.selectedFilePath}}</span>
+            <br><br>
+            <span v-if="liveChange.selectedFiles.length == 0 && liveChange.change.changeType != 'fileDownload'">No file to be modified</span>
+            <span v-if="liveChange.change.changeType == 'fileDownload'"><i class="fa fa-angle-double-down"></i> Action Required</span>
+            <span v-if="liveChange.selectedFiles.length == 1 ">Automated action on selected file</span>
             <span v-if="liveChange.selectedFiles.length > 1 ">Multiple files matched, click here and select</span>
           </div>
-          <div class="content ">
-            <div class="ui form">
-              <div class="grouped fields">
+          <div :class="{'content': true, 'active': liveChange.change.changeType == 'fileDownload'}">
+            <div class="ui large form" v-if="liveChange.change.changeType != 'fileDownload'">
 
-                <div class="field" v-for="file in liveChange.selectedFiles">
-                  <div class="ui radio checkbox" @click="liveChange.selectedFilePath = file.filepath">
-                    <input class="hidden" type="radio" :name="liveChange.name" v-model="liveChange.selectedFilePath"
-                           :value="file.filepath">
-                    <label>{{file.relative}}</label>
-                  </div>
+              <div class="field" v-for="file in liveChange.selectedFiles">
+                <div class="ui radio checkbox" @click="liveChange.selectedFilePath = file.filepath">
+                  <input class="hidden" type="radio" :name="liveChange.name" v-model="liveChange.selectedFilePath"
+                         :value="file.filepath">
+                  <label>{{file.relative}}</label>
                 </div>
-
               </div>
+
             </div>
+            <template v-if="liveChange.change.changeType == 'fileDownload'">
+              <button class="ui green button right floated" @click="downloadAsFile(liveChange)">
+                Download content as file
+              </button>
+              <br>
+              <br>
+              <div class="ui column" v-if="liveChange.change.changeType == 'fileDownload'">
+                <editor :options="{fontSize: '16pt'}" :lang="liveChange.change.fileType"
+                        :content="liveChange.change.change[0].line"></editor>
+              </div>
+
+            </template>
 
           </div>
           <div class="extra content">
@@ -96,11 +113,6 @@
       </div>
 
 
-    </div>
-
-    <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large orange button" @click="state = 'scanned-files'">Back</button>
-      <button class="ui large primary button" @click="doChanges" v-if="!doneChanges">Apply changes</button>
     </div>
 
 
@@ -121,7 +133,7 @@
     </div>
 
     <div class="right floated sixteen wide column" v-if="state == 'review-updates'">
-      <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
+      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
       <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
@@ -160,6 +172,12 @@
 
   import JavaParser from 'java-parser';
   import FileProcessorFactor from '@/plugins/changehandler'
+
+  import editor from 'vue2-ace'
+  import 'brace/mode/php'
+  import 'brace/theme/chrome'
+
+
   //  import Integrations from '@/plugins/Integrations'
 
 
@@ -185,6 +203,9 @@
       });
 
 
+    },
+    components: {
+      editor
     },
     data() {
       return {
@@ -229,7 +250,19 @@
       }
     },
     methods: {
-      variableUpdate(){
+      downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      downloadAsFile(liveChange) {
+        console.log("download file as contents", liveChange);
+        this.downloadURI(liveChange.change.change[0].line, liveChange.change.fileName)
+      },
+      variableUpdate() {
         console.log("variable update", arguments);
       },
       ...mapActions(['setProjectDir', 'setSessionAction']),
@@ -243,6 +276,21 @@
         })
       },
       reviewFiles() {
+        var that = this;
+
+        that.state = "review-files";
+        console.log("set timeout for do accordian");
+        setTimeout(function () {
+          console.log("do accordian");
+          jQuery('.ui.accordion').accordion();
+        }, 300)
+      },
+      listScannedFiles() {
+        var that = this;
+        that.state = "scanned-files";
+
+      },
+      reviewUpdates() {
         var that = this;
 
 
@@ -260,20 +308,6 @@
         }
 
 
-        that.state = "review-files";
-        console.log("set timeout for do accordian");
-        setTimeout(function () {
-          console.log("do accordian");
-          jQuery('.ui.accordion').accordion();
-        }, 300)
-      },
-      listScannedFiles(){
-        var that = this;
-        that.state = "scanned-files";
-
-      },
-      reviewUpdates(){
-        var that = this;
         that.state = "review-updates";
         setTimeout(function () {
           console.log("do accordian");
@@ -343,7 +377,7 @@
           that.viewResult();
         }
       },
-      beginValidateProject(){
+      beginValidateProject() {
         var that = this;
         that.loading = true;
         that.state = "scanning-files";

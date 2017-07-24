@@ -86,6 +86,7 @@
     "vue-data-tables": "^1.1.1",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vue2-ace": "^1.0.6",
     "vue2-filters": "^0.1.9",
     "vuex": "^2.3.1"
   },

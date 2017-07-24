@@ -14,6 +14,9 @@ var FileProcessorFactor = {
       case "java":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
+      case "php":
+        return NewSearchAndReplace(fileType, logger);
+        return NewJavaFileHandler(fileType, logger);
       case "xml":
         return NewSearchAndReplace(fileType, logger);
         return NewXmlFileHandler(fileType, logger);

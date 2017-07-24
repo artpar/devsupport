@@ -4,6 +4,7 @@
     {
       "name": "Add dependency to lazypay",
       "fileSelector": ".+build.gradle$",
+      "changeType": "fileEdit",
       "fileType": "gradle",
       "change": [
         {
@@ -25,19 +26,22 @@
       ]
     },
     {
-       "name": "Server Side code - PHP",
-       "fileSelector": ".php$",
-       "fileType": "php",
-       "change": [
-         {
-           "changeType": "download.file",
-           "line": "<?php file contents ?>"
-         }
-       ]
+      "name": "Server Side code - PHP",
+      "fileSelector": ".php$",
+      "changeType": "fileDownload",
+      "fileName": "handle_server_redirect.php",
+      "fileType": "php",
+      "change": [
+        {
+          "changeType": "download.file",
+          "line": "<?php\n $variable1 = \"A value\";\necho \"Php works\" ?>"
+        }
+      ]
     },
     {
       "name": "Add key to AndroidManifest.xml",
       "fileSelector": ".+main[\\\\/]AndroidManifest.xml",
+      "changeType": "fileEdit",
       "fileType": "xml",
       "variables": [
         {
@@ -61,6 +65,7 @@
     {
       "name": "Add functions to some Activity.java for Initiate Pay and Handle Response",
       "fileSelector": ".+Activity.java",
+      "changeType": "fileEdit",
       "fileType": "java",
       "change": [
         {
