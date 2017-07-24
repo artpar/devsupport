@@ -10,7 +10,7 @@
           "changeType": "add.line",
           "line": "    compile 'in.lazypay:sdk2:0.0.0'",
           "action": "append",
-          "query": ".*dependencies"
+          "query": "compile 'com.android.support"
         }
       ],
       "validations": [
@@ -20,9 +20,20 @@
         },
         {
           "checkType": "positive",
-          "query": "apply plugin: 'com.android.application'"
+          "query": "compile 'com.android.support"
         }
       ]
+    },
+    {
+       "name": "Server Side code - PHP",
+       "fileSelector": ".php$",
+       "fileType": "php",
+       "change": [
+         {
+           "changeType": "download.file",
+           "line": "<?php file contents ?>"
+         }
+       ]
     },
     {
       "name": "Add key to AndroidManifest.xml",

@@ -9,6 +9,13 @@
     <!-- Add `node_modules/` to global paths so `require` works properly in development -->
     <script>
       require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
+      document.addEventListener("keydown", function (e) {
+        if (e.which === 123) {
+          require('remote').getCurrentWindow().toggleDevTools();
+        } else if (e.which === 116) {
+          location.reload();
+        }
+      });
     </script>
     <% } %>
 </head>

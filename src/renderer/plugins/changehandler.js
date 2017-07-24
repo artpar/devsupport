@@ -3,6 +3,7 @@ import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
 import dot from 'dot';
 
+dot.templateSettings.strip = false;
 
 var FileProcessorFactor = {
   ForType: function (fileType, logger) {
@@ -111,33 +112,33 @@ var FileProcessorFactor = {
 
 
     that.doChanges = function (contextMap) {
-
       return new Promise(function (resolve, reject) {
 
         // debugger
 
-        if (!that.selectedFilePath) {
-          that.logs.push("No selected file for " + that.change.change);
-          that.change.status = "N/A";
-          resolve();
-        } else {
-
-          for (var i = 0; i < change.change.length; i++) {
-
-            console.log("dot is not defined", dot.template);
-            let line = change.change[i].line;
-            console.log("line is ", line);
-            var tempFn = dot.template(line);
-            change.change[i].line = tempFn(contextMap);
-            console.log("evaluated template: ", change.change[i])
+        if (!that.chosenFile) {
+          that.chosenFile = {
+            relative: ''
           }
-
-          that.fileProcessor.doChange({
-            filepath: that.selectedFilePath,
-            relative: that.chosenFile.relative,
-          }, change.change).then(resolve, reject);
-          that.change.status = "Completed"
         }
+
+
+        for (var i = 0; i < change.change.length; i++) {
+
+          console.log("dot is not defined", dot.template);
+          let line = change.change[i].line;
+          console.log("line is ", line);
+
+          var tempFn = dot.template(line);
+          change.change[i].line = tempFn(contextMap);
+          console.log("evaluated template: ", change.change[i])
+        }
+
+        that.fileProcessor.doChange({
+          filepath: that.selectedFilePath,
+          relative: that.chosenFile.relative,
+        }, change.change).then(resolve, reject);
+        that.change.status = "Completed"
 
 
       })

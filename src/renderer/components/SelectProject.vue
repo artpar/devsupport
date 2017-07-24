@@ -1,7 +1,7 @@
 <template>
   <div class="ui column centered grid">
     <div class="row">
-      <div class="twelve wide column">
+      <div class="ten wide column">
         <img style="width: 100%;" src="~@/images/batman-full.png" alt="image?">
       </div>
     </div>

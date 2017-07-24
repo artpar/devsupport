@@ -75,9 +75,6 @@
 
 <style>
 
-  body {
-    padding: 20px;
-  }
 
   h1 {
     color: #383A63;
