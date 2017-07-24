@@ -37,7 +37,6 @@
       </div>
 
 
-
       <h3 v-if="Project.recentProjects.length == 0">No recent projects</h3>
 
     </div>
@@ -61,13 +60,11 @@
           console.log("not e or e location, so no name");
           return;
         }
-        let parts = e.location.split("/");
-        e.name = parts[parts.length - 1];
       })
     },
     methods: {
       ...mapActions(['setProjectDir']),
-      setProject(project){
+      setProject(project) {
         this.setProjectDir({
           projectDir: project.location,
         });
