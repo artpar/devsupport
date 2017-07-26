@@ -121,7 +121,7 @@
       <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable2 in secondStageVariables">
           <h3>{{variable2.label}}</h3>
-          <input :placeholder="secondStageVariables.help" v-model="secondStageVariables.value" type="text">
+          <input :placeholder="variable2.help" v-model="variable2.value" type="text">
           <p>
             <small>{{variable2.description}}</small>
           </p>
