@@ -207,6 +207,7 @@
     data() {
       return {
         variables: [],
+        secondsStageVariables: [],
         doneChanges: false,
         searchDef: {
           show: false
