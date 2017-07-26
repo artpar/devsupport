@@ -35,18 +35,21 @@
         {
           "name": "accessKey",
           "label": "Access Key",
+          "stage": 1,
           "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
           "help": "You can find this in the welcome email from lazypay"
         },
         {
           "name": "secretKey",
           "label": "Secret Key",
+          "stage": 1,
           "description": "The access secret will be used to create the Server side PHP code",
           "help": "You can find this on the lazypay dashboard"
         },
         {
           "name": "backendUrl",
           "label": "Backend Url",
+          "stage": 2,
           "description": "Your end users will be sent to this page after payment completion",
           "help": "The url pointing to the PHP script"
         }
