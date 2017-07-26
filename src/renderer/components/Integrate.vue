@@ -111,8 +111,11 @@
           </div>
         </template>
       </div>
+    </div>
 
-
+    <div class="right floated six wide column" v-if="state == 'review-files'">
+      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
 
@@ -142,7 +145,7 @@
 
       <h1>Results</h1>
 
-      <div class="ui styled fluid accordion">
+      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">
         <template v-for="liveChange in liveChanges">
 
           <div class="title active">

@@ -22,7 +22,7 @@
         </div>
       </button>
       <div class="or"></div>
-      <button class="ui button" @mouseover="active = true" @mouseleave="active = false">
+      <button class="ui button" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
         <div v-if="active">
           <i class="huge configure icon"></i>
           <h3 class="light">coming soon</h3>
@@ -33,7 +33,19 @@
         </div>
       </button>
     </div>
-
+    <div class="ui mini modal">
+      <div class="header">
+       <h3> Coming soon</h3>
+      </div>
+      <div class="content">
+        <div class="description">
+          This feature will be added soon.
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui primary button" @click="hideModal">OK</div>
+      </div>
+    </div>
     <!--<div class="four wide column">-->
     <!--<a class="ui button">-->
     <!--<div @click="setAction('fix')">-->
@@ -55,6 +67,13 @@
         }
     },
     methods: {
+      showModal: function () {
+        jQuery('.ui.mini.modal').modal('show');
+      },
+      hideModal: function () {
+        jQuery('.ui.mini.modal').modal('hide');
+      },
+
       printre: function () {
         console.log("printing stuff", arguments);
       },
@@ -71,6 +90,7 @@
     },
 
     mounted() {
+      jQuery('.ui.mini.modal').modal();
       console.log("loaded select action")
     }
   }
