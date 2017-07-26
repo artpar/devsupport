@@ -17,7 +17,7 @@ require('@/assets/icons.css');
 require('lato-font/css/lato-font.css');
 require('material-design-icons-iconfont/dist/material-design-icons.css');
 require('glyphicons');
-require('material-icons');
+require('material-icons/css/material-icons.min.css');
 require('@/assets/semantic/semantic.min.css');
 require('@/assets/semantic/semantic.min.js');
 import Vue2Filters from 'vue2-filters'

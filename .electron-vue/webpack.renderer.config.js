@@ -3,7 +3,7 @@
 process.env.BABEL_ENV = 'renderer'
 
 const path = require('path')
-const { dependencies } = require('../package.json')
+const {dependencies} = require('../package.json')
 const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
@@ -93,8 +93,7 @@ let rendererConfig = {
             name: 'fonts/[name].[ext]'
           }
         }
-      },
-      { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
+      }
     ]
   },
   node: {
@@ -112,8 +111,8 @@ let rendererConfig = {
         removeComments: true
       },
       nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
+          ? path.resolve(__dirname, '../node_modules')
+          : false
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
@@ -138,9 +137,9 @@ let rendererConfig = {
  */
 if (process.env.NODE_ENV !== 'production') {
   rendererConfig.plugins.push(
-    new webpack.DefinePlugin({
-      '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-    })
+      new webpack.DefinePlugin({
+        '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
+      })
   )
 }
 
@@ -151,23 +150,23 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin({
-      removeConsole: true,
-      removeDebugger: true
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: path.join(__dirname, '../static'),
-        to: path.join(__dirname, '../dist/electron/static'),
-        ignore: ['.*']
-      }
-    ]),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
+      new BabiliWebpackPlugin({
+        removeConsole: true,
+        removeDebugger: true
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: path.join(__dirname, '../static'),
+          to: path.join(__dirname, '../dist/electron/static'),
+          ignore: ['.*']
+        }
+      ]),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"production"'
+      }),
+      new webpack.LoaderOptionsPlugin({
+        minimize: true
+      })
   )
 }
 

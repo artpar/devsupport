@@ -207,43 +207,17 @@
     data() {
       return {
         variables: [],
+        secondsStageVariables: [],
         doneChanges: false,
         searchDef: {
           show: false
         },
         liveChanges: [],
         state: "scanning-files",
-//        integrations: Integrations,
         loading: false,
         selectedIntegration: null,
         selectedFiles: [],
-        actions: [],
-        actionDef: {
-          width: 5,
-          def: []
-        },
-        checkboxFilterDef: {
-          width: 14,
-          props: 'state_code',
-          def: []
-        },
-        rowActionDef: [{
-          type: 'primary',
-          handler: function handler(row) {
-            self.$message('Edit clicked');
-            console.log('Edit in row clicked', row);
-          },
-
-          name: 'Edit'
-        }, {
-          type: 'primary',
-          handler: function handler(row) {
-            self.$message('RUA in row clicked');
-            console.log('RUA in row clicked', row);
-          },
-
-          name: 'RUA'
-        }]
+        actions: []
       }
     },
     methods: {
@@ -379,6 +353,7 @@
         that.actions = [];
         that.liveChanges = [];
         that.variables = [];
+        that.secondStageVariables = [];
 
         this.selectedIntegration.changes.map(function (change) {
           console.log("Push change", change);
@@ -388,7 +363,11 @@
           if (change.variables && change.variables.length > 0) {
             change.variables.map(function (variable) {
               variable.value = null;
-              that.variables.push(variable);
+              if (variable.stage == 1) {
+                that.variables.push(variable);
+              } else if (variable.stage == 2) {
+                that.secondStageVariables.push(variable);
+              }
             })
           }
         });
