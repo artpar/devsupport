@@ -54,13 +54,13 @@
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
+      <button class="ui large primary button right floated" @click="secondInputs" v-if="!doneChanges">Next
       </button>
       <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div class="ui styled fluid accordion" style="overflow-y: auto;">
+      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh">
 
 
         <template v-for="liveChange in liveChanges">
@@ -86,7 +86,7 @@
 
             </div>
             <template v-if="liveChange.change.changeType == 'fileDownload'">
-              <button class="ui grey button right floated" @click="downloadAsFile(liveChange)">
+              <button class="ui small primary button right floated" @click="downloadAsFile(liveChange)">
                 Download content as file
               </button>
               <br>
@@ -112,6 +112,31 @@
         </template>
       </div>
     </div>
+
+    <!--second stage variable screeen begins-->
+
+    <div class="sixteen wide column" v-if="state == 'second-inputs'" style="overflow-y: auto; max-height: 53vh">
+      <h2>Please enter the following details:</h2>
+      <br>
+      <div class="ui large form">
+        <div class="sixteen wide required field" v-for="variable2 in secondStageVariables">
+          <h3>{{variable2.label}}</h3>
+          <input :placeholder="secondStageVariables.help" v-model="secondStageVariables.value" type="text">
+          <p>
+            <small>{{variable2.description}}</small>
+          </p>
+        </div>
+      </div>
+
+    </div>
+    <div class="right floated sixteen wide column" v-if="state == 'second-inputs'">
+      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
+      </button>
+      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
+    </div>
+
+    <!--second stage variable screen ends-->
+
 
     <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: 53vh">
 
@@ -152,13 +177,11 @@
         </template>
       </div>
 
-
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
       <button class="ui large primary button right floated" @click="reset">Close</button>
     </div>
-
 
   </div>
 </template>
@@ -207,7 +230,7 @@
     data() {
       return {
         variables: [],
-        secondsStageVariables: [],
+        secondStageVariables: [],
         doneChanges: false,
         searchDef: {
           show: false
@@ -276,6 +299,11 @@
       listScannedFiles() {
         var that = this;
         that.state = "scanned-files";
+
+      },
+      secondInputs() {
+        var that = this;
+        that.state = "second-inputs";
 
       },
       reviewUpdates() {
