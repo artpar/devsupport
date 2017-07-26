@@ -332,11 +332,13 @@
         var contextMap = {};
 
         var invalidFields = that.secondStageVariables.filter(function (variable) {
-          if (variable.stage == 1) {
-            contextMap[variable.name] = variable.value;
-            return variable.value == null || variable.value.length < 2;
-          }
-          return false;
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
+        that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
         });
 
         if (invalidFields.length > 0) {
@@ -345,7 +347,7 @@
         }
 
 
-        console.log("start doing changes")
+        console.log("start doing changes", contextMap);
 
 
         function doIndex(ith, doIndex) {

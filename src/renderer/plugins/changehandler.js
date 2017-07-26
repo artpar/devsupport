@@ -120,6 +120,11 @@ var FileProcessorFactor = {
 
         console.log("dot is not defined", dot.template);
         let line = change.change[i].line;
+        if (!change.change[i].originalLine) {
+          change.change[i].originalLine = line
+        } else {
+          line = change.change[i].originalLine;
+        }
         console.log("line is ", line);
 
         var tempFn = dot.template(line);
