@@ -114,7 +114,23 @@ var FileProcessorFactor = {
     };
 
 
-    that.doChanges = function (contextMap) {
+    that.evaluateTemplates = function (contextMap) {
+
+      for (var i = 0; i < change.change.length; i++) {
+
+        console.log("dot is not defined", dot.template);
+        let line = change.change[i].line;
+        console.log("line is ", line);
+
+        var tempFn = dot.template(line);
+        change.change[i].line = tempFn(contextMap);
+        console.log("evaluated template: ", change.change[i])
+      }
+
+    };
+
+
+    that.doChanges = function () {
       return new Promise(function (resolve, reject) {
 
         // debugger
@@ -123,18 +139,6 @@ var FileProcessorFactor = {
           that.chosenFile = {
             relative: ''
           }
-        }
-
-
-        for (var i = 0; i < change.change.length; i++) {
-
-          console.log("dot is not defined", dot.template);
-          let line = change.change[i].line;
-          console.log("line is ", line);
-
-          var tempFn = dot.template(line);
-          change.change[i].line = tempFn(contextMap);
-          console.log("evaluated template: ", change.change[i])
         }
 
         that.fileProcessor.doChange({

@@ -49,17 +49,18 @@
 
     </div>
     <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
-      <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
+      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
       <button class="ui large orange button right floated" @click="beginValidateProject">Rescan files</button>
     </div>
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
+      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
+      </button>
       <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
     </div>
 
     <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">
+      <div class="ui styled fluid accordion" style="overflow-y: auto;">
 
 
         <template v-for="liveChange in liveChanges">
@@ -91,7 +92,7 @@
               <br>
               <br>
               <div class="ui column" v-if="liveChange.change.changeType == 'fileDownload'">
-                <editor :options="{fontSize: '16pt'}" :lang="liveChange.change.fileType"
+                <editor :options="{fontSize: '15pt'}" :lang="liveChange.change.fileType"
                         :content="liveChange.change.change[0].line"></editor>
               </div>
 
@@ -132,8 +133,7 @@
     </div>
 
     <div class="right floated sixteen wide column" v-if="state == 'review-updates'">
-      <button class="ui large primary button right floated" @click="doChanges" v-if="!doneChanges">Apply changes
-      </button>
+      <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
       <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
@@ -278,6 +278,23 @@
       reviewFiles() {
         var that = this;
 
+
+        var contextMap = {};
+
+        var invalidFields = that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
+        if (invalidFields.length > 0) {
+          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
+          return
+        }
+
+        that.liveChanges.map(function (liveChange) {
+          liveChange.evaluateTemplates(contextMap)
+        });
+
         that.state = "review-files";
         console.log("set timeout for do accordian");
         setTimeout(function () {
@@ -312,17 +329,7 @@
       doChanges() {
         var that = this;
         console.log(this.liveChanges);
-        var contextMap = {};
-        
-        var invalidFields = that.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return variable.value == null || variable.value.length < 2;
-        });
 
-        if (invalidFields.length > 0) {
-          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
-          return
-        }
 
         console.log("start doing changes")
 

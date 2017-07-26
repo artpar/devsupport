@@ -9,7 +9,7 @@
       "change": [
         {
           "changeType": "add.line",
-          "line": "    compile 'in.lazypay:sdk2:0.0.0'",
+          "line": "\ncompile 'in.lazypay:sdk2:0.0.1'",
           "action": "append",
           "query": "compile 'com.android.support"
         }
@@ -31,10 +31,36 @@
       "changeType": "fileDownload",
       "fileName": "handle_server_redirect.php",
       "fileType": "php",
+      "variables": [
+        {
+          "name": "accessSecret",
+          "label": "LazyPay Production Access Secret",
+          "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
+          "help": "You can find this in the welcome email from lazypay"
+        },
+        {
+          "name": "salt",
+          "label": "LazyPay Production Salt",
+          "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
+          "help": "You can find this in the welcome email from lazypay"
+        },
+        {
+          "name": "notifyUrl",
+          "label": "Notification url",
+          "description": "LazyPay will initiate call the Notify url for eveny completed transaction (failed/successul)",
+          "help": "The url pointing to the PHP script"
+        },
+        {
+          "name": "redirectUrl",
+          "label": "Redirection Url",
+          "description": "Your end users will be sent to this page after payment completion",
+          "help": "The url pointing to the PHP script"
+        }
+      ],
       "change": [
         {
           "changeType": "download.file",
-          "line": "<?php\n $variable1 = \"A value\";\necho \"Php works\";\n ?>"
+          "line": "<?php\n\nconst apiKey = \"{{=it.accessKey}}\";\nconst apiSecret = \"{{=it.accessSecret}}\";\nconst salt = \"{{=it.salt}}\";\nconst redirectUrl = \"{{=it.redirectUrl}}\";\nconst notifyUrl = \"{{=it.notifyUrl}}\";\n\n$client = new Devsupport\Client\InstamojoClient(apiKey, apiSecret, salt, redirectUrl, notifyUrl, \"api\");\n\n$action = $_GET[\"action\"];\n\nif ($action == \"new_transaction\") {\n\n    $params = array(\n        'buyer_name' => $_GET[\"name\"],\n        'email' => $_GET[\"email\"],\n        'amount' => $_GET[\"amount\"],\n        'phone' => $_GET[\"phone\"],\n        'purpose' => $_GET[\"purpose\"],\n    );\n    echo json_encode($client->NewTransaction($params));\n} else if ($action == \"handle_redirect\") {\n    $params = $_POST;\n    $validatedResponse = $client->validateWebHookCall($params);\n    if ($validatedResponse) {\n        if ($_POST[\"status\"] == \"credit\") {\n            echo \"Payment success\";\n        } else {\n            echo \"Payment Failed\";\n        }\n    }\n}"
         }
       ]
     },
@@ -72,7 +98,7 @@
           "changeType": "add.line",
           "action": "append",
           "query": "{",
-          "line": "    @Override\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\n        switch (requestCode) {\n            case 1: {\n                switch (resultCode) {\n                    case Lazypay.LAZYPAY_SUCCESS :\n                        Toast.makeText(getApplicationContext(), \"Transaction Successful\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    case Lazypay.LAZYPAY_FAILED:\n                        Toast.makeText(getApplicationContext(), \"Transaction Failed\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    default:\n                        break;\n                }\n            }\n        }\n    }",
+          "line": "\n@Override\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\n        switch (requestCode) {\n            case 1: {\n                switch (resultCode) {\n                    case Lazypay.LAZYPAY_SUCCESS :\n                        Toast.makeText(getApplicationContext(), \"Transaction Successful\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    case Lazypay.LAZYPAY_FAILED:\n                        Toast.makeText(getApplicationContext(), \"Transaction Failed\", Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    default:\n                        break;\n                }\n            }\n        }\n    }",
           "validations": [
             {
               "checkType": "negative",
@@ -84,11 +110,23 @@
           "changeType": "add.line",
           "action": "append",
           "query": "{",
-          "line": "    private void callLazyPay(String email, String mobile, String amount) {\n        Intent intent = new Intent(this.getApplicationContext(), Lazypay.class);\n\n        intent.putExtra(\"email\", email);\n\n        intent.putExtra(\"mobile\", mobile);\n\n        intent.putExtra(\"amount\", amount);\n\n        startActivityForResult(intent, 1);\n    }",
+          "line": "\nprivate void callLazyPay(String email, String mobile, String amount) {\n        Intent intent = new Intent(this.getApplicationContext(), Lazypay.class);\n\n        intent.putExtra(\"email\", email);\n\n        intent.putExtra(\"mobile\", mobile);\n\n        intent.putExtra(\"amount\", amount);\n\n        startActivityForResult(intent, 1);\n    }",
           "validations": [
             {
               "checkType": "negative",
               "query": "callLazyPay"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "{",
+          "line": "\nprivate void askforSMSPermission() {\n        if (Build.VERSION.SDK_INT < 23) {\n            return;\n        }\n\n        if (ContextCompat.checkSelfPermission(MainActivity.this,\n                Manifest.permission.READ_SMS)\n                != PackageManager.PERMISSION_GRANTED) {\n\n            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,\n                    Manifest.permission.READ_SMS)) {\n                Toast.makeText(getApplicationContext(), \"SMS Permission for enable auto OTP reading\", Toast.LENGTH_LONG)\n                        .show();\n\n            } else {\n                ActivityCompat.requestPermissions(MainActivity.this,\n                        new String[]{Manifest.permission.READ_SMS},\n                        READ_SMS_PERMISSION);\n            }\n        }\n\n    }\n\n",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "private void askforSMSPermission"
             }
           ]
         },
@@ -101,6 +139,18 @@
             {
               "checkType": "negative",
               "query": "lazypay.app.Lazypay"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "setContentView",
+          "line": "askforSMSPermission();\n\n",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "askforSMSPermission"
             }
           ]
         },
