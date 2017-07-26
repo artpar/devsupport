@@ -130,7 +130,7 @@ var FileProcessorFactor = {
     };
 
 
-    that.doChanges = function () {
+    that.doChanges = function (contextMap) {
       return new Promise(function (resolve, reject) {
 
         // debugger
@@ -140,6 +140,8 @@ var FileProcessorFactor = {
             relative: ''
           }
         }
+
+        that.evaluateTemplates(contextMap);
 
         that.fileProcessor.doChange({
           filepath: that.selectedFilePath,

@@ -301,6 +301,7 @@
         var that = this;
         console.log(this.liveChanges);
 
+        var contextMap = {};
 
         var invalidFields = that.secondStageVariables.filter(function (variable) {
           if (variable.stage == 1) {
@@ -326,7 +327,7 @@
             return;
           }
 //          debugger
-          that.liveChanges[ith].doChanges().then(function () {
+          that.liveChanges[ith].doChanges(contextMap).then(function () {
             doIndex(ith + 1, doIndex);
           }).catch(function () {
             doIndex(ith + 1, doIndex);
