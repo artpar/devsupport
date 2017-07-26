@@ -86,13 +86,13 @@
 
             </div>
             <template v-if="liveChange.change.changeType == 'fileDownload'">
-              <button class="ui orange button right floated" @click="downloadAsFile(liveChange)">
+              <button class="ui grey button right floated" @click="downloadAsFile(liveChange)">
                 Download content as file
               </button>
               <br>
               <br>
               <div class="ui column" v-if="liveChange.change.changeType == 'fileDownload'">
-                <editor :options="{fontSize: '15pt'}" :lang="liveChange.change.fileType"
+                <editor :options="{fontSize: '12pt'}" :lang="liveChange.change.fileType"
                         :content="liveChange.change.change[0].line"></editor>
               </div>
 
@@ -113,20 +113,14 @@
       </div>
     </div>
 
-    <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
-      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
-    </div>
-
-
-    <div class="sixteen wide column" v-if="state == 'review-updates'">
+    <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: 53vh">
 
       <h2>Please enter the following details:</h2>
       <br>
       <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable in variables">
           <h3>{{variable.label}}</h3>
-          <input :placeholder="variable.label" v-model="variable.value" type="text">
+          <input :placeholder="variable.help" v-model="variable.value" type="text">
           <p>
             <small>{{variable.description}}</small>
           </p>
@@ -344,7 +338,7 @@
             return;
           }
 //          debugger
-          that.liveChanges[ith].doChanges(contextMap).then(function () {
+          that.liveChanges[ith].doChanges().then(function () {
             doIndex(ith + 1, doIndex);
           }).catch(function () {
             doIndex(ith + 1, doIndex);

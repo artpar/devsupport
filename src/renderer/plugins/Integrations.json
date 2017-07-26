@@ -27,32 +27,26 @@
     },
     {
       "name": "Server Side code - PHP",
-      "fileSelector": ".php$",
+      "fileSelector": "^$",
       "changeType": "fileDownload",
       "fileName": "handle_server_redirect.php",
       "fileType": "php",
       "variables": [
         {
-          "name": "accessSecret",
-          "label": "LazyPay Production Access Secret",
+          "name": "accessKey",
+          "label": "Access Key",
           "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
           "help": "You can find this in the welcome email from lazypay"
         },
         {
-          "name": "salt",
-          "label": "LazyPay Production Salt",
-          "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
-          "help": "You can find this in the welcome email from lazypay"
+          "name": "secretKey",
+          "label": "Secret Key",
+          "description": "The access secret will be used to create the Server side PHP code",
+          "help": "You can find this on the lazypay dashboard"
         },
         {
-          "name": "notifyUrl",
-          "label": "Notification url",
-          "description": "LazyPay will initiate call the Notify url for eveny completed transaction (failed/successul)",
-          "help": "The url pointing to the PHP script"
-        },
-        {
-          "name": "redirectUrl",
-          "label": "Redirection Url",
+          "name": "backendUrl",
+          "label": "Backend Url",
           "description": "Your end users will be sent to this page after payment completion",
           "help": "The url pointing to the PHP script"
         }
@@ -60,7 +54,7 @@
       "change": [
         {
           "changeType": "download.file",
-          "line": "<?php\n\nconst apiKey = \"{{=it.accessKey}}\";\nconst apiSecret = \"{{=it.accessSecret}}\";\nconst salt = \"{{=it.salt}}\";\nconst redirectUrl = \"{{=it.redirectUrl}}\";\nconst notifyUrl = \"{{=it.notifyUrl}}\";\n\n$client = new Devsupport\Client\InstamojoClient(apiKey, apiSecret, salt, redirectUrl, notifyUrl, \"api\");\n\n$action = $_GET[\"action\"];\n\nif ($action == \"new_transaction\") {\n\n    $params = array(\n        'buyer_name' => $_GET[\"name\"],\n        'email' => $_GET[\"email\"],\n        'amount' => $_GET[\"amount\"],\n        'phone' => $_GET[\"phone\"],\n        'purpose' => $_GET[\"purpose\"],\n    );\n    echo json_encode($client->NewTransaction($params));\n} else if ($action == \"handle_redirect\") {\n    $params = $_POST;\n    $validatedResponse = $client->validateWebHookCall($params);\n    if ($validatedResponse) {\n        if ($_POST[\"status\"] == \"credit\") {\n            echo \"Payment success\";\n        } else {\n            echo \"Payment Failed\";\n        }\n    }\n}"
+          "line": "<?php\n\n$secret_key = '{{=it.secretKey}}';\n$access_key = '{{=it.accessKey}}';\n\nfunction elig_sign($email, $mobile, $amount, $access_key, $secret_key) {\n    $hash_before = $mobile . $email . $amount . 'INR';\n    $signature = hash_hmac('sha1', $hash_before, $secret_key);\n    echo $signature;\n}\n\nfunction initpay_sign($txnid, $amount, $access_key, $secret_key) {\n    $hash_before = 'merchantAccessKey=' . $access_key . '&' . 'transactionId=' . $txnid . \"&\"\n        . \"amount=\" . $amount;\n    $signature = hash_hmac('sha1', $hash_before, $secret_key);\n    echo $signature;\n}\n\nfunction auto_debitsign($txnid, $amount, $access_key, $secret_key) {\n    initpay_sign($txnid, $amount, $access_key, $secret_key);\n}\n\nfunction otpsign($txReferencenum, $access_key, $secret_key) {\n    $hash_before = 'merchantAccessKey=' . $access_key . '&' . 'txnRefNo=' . $txReferencenum;\n    $signature = hash_hmac('sha1', $hash_before, $secret_key);\n    echo $signature;\n}\n\n$sign_type = $_POST['type'];\n\nif ($sign_type == 'elligibility') {\n    $amount = $_POST['amount'];\n    $email = $_POST['email'];\n    $mobile = $_POST['mobile'];\n    elig_sign($email, $mobile, $amount, $access_key, $secret_key);\n}\n\nelse if ($sign_type == 'initpay') {\n    $txnId = $_POST['txnId'];\n    $amount = $_POST['amount'];\n    initpay_sign($txnId, $amount, $access_key, $secret_key);\n}\n\nelse if ($sign_type == 'autodebit') {\n    $txnId = $_POST['txnId'];\n    $amount = $_POST['amount'];\n    auto_debitsign($txnId, $amount, $access_key, $secret_key);\n}\n\nelse if ($sign_type == 'otpsign') {\n    $txnref = $_POST['txnref'];\n    otpsign($txnref, $access_key, $secret_key);\n}\nelse {\n    echo 'Wrong signature type';\n}"
         }
       ]
     },
@@ -69,14 +63,6 @@
       "fileSelector": ".+main[\\\\/]AndroidManifest.xml",
       "changeType": "fileEdit",
       "fileType": "xml",
-      "variables": [
-        {
-          "name": "accessKey",
-          "label": "LazyPay Production Access Key",
-          "description": "The access key will be inject to your AndroidManifest.xml, to be used by LazyPay SDK",
-          "help": "You can find this in the welcome email from lazypay"
-        }
-      ],
       "change": {
         "changeType": "add.line",
         "line": "<meta-data android:name=\"in.sdk.lazypay\" android:value=\"{{=it.accessKey}}\"/>",
