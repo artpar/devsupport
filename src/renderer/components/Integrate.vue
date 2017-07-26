@@ -121,7 +121,7 @@
       <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable2 in secondStageVariables">
           <h3>{{variable2.label}}</h3>
-          <input :placeholder="variable2.help" v-model="variable2.value" type="text">
+          <input :placeholder="secondStageVariables.help" v-model="secondStageVariables.value" type="text">
           <p>
             <small>{{variable2.description}}</small>
           </p>
@@ -159,29 +159,47 @@
       <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Back</button>
     </div>
 
+    <!--result page begins-->
+
     <div class="sixteen wide column " v-if="state == 'review-results'">
 
 
       <h1>Results</h1>
 
-      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">
+      <!--<div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">-->
+      <!--<template v-for="liveChange in liveChanges">-->
+
+      <!--<div class="title active">-->
+      <!--<i class="dropdown icon"></i>{{liveChange.change.name}}-->
+      <!--</div>-->
+      <!--<div class="content active">-->
+      <!--<span>{{liveChange.change.status}}</span>-->
+      <!--</div>-->
+
+      <!--</template>-->
+      <!--</div>-->
+
+
+      <div class="ui large bottom aligned divided relaxed animated list">
         <template v-for="liveChange in liveChanges">
-
-          <div class="title active">
-            <i class="dropdown icon"></i>{{liveChange.change.name}}
+        <div class="ui fluid item">
+          <div class="content"><i class="large info circle aligned primary icon"></i>
+            {{liveChange.change.name}}
+            <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
+            <i v-else class="large warning circle middle aligned orange icon"></i>
           </div>
-          <div class="content active">
-            <span>{{liveChange.change.status}}</span>
-          </div>
-
+        </div>
         </template>
       </div>
+
+
 
     </div>
 
     <div class="right floated four wide column" v-if="state == 'review-results'">
       <button class="ui large primary button right floated" @click="reset">Close</button>
     </div>
+    <!--result page ends-->
 
   </div>
 </template>
@@ -332,13 +350,11 @@
         var contextMap = {};
 
         var invalidFields = that.secondStageVariables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return variable.value == null || variable.value.length < 2;
-        });
-
-        that.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return variable.value == null || variable.value.length < 2;
+          if (variable.stage == 1) {
+            contextMap[variable.name] = variable.value;
+            return variable.value == null || variable.value.length < 2;
+          }
+          return false;
         });
 
         if (invalidFields.length > 0) {
@@ -347,10 +363,10 @@
         }
 
 
-        console.log("start doing changes", contextMap);
+        console.log("start doing changes")
 
 
-        function doIndex(ith, doIndex) {
+        function doIndex (ith, doIndex) {
           console.log("do change", ith);
           if (that.liveChanges.length == ith) {
             that.callbackChangeComplete();
@@ -444,7 +460,7 @@
         var changes = [];
 
 
-        function completed() {
+        function completed () {
           console.log("completed scan");
           that.loading = false;
           that.state = "scanned-files";
@@ -452,70 +468,70 @@
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
-            ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
-              // console.log("callback point 1")
-              if (typeof filename != "undefined") {
-                // console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
+          ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
+            // console.log("callback point 1")
+            if (typeof filename != "undefined") {
+              // console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
 
 
-                if (completeTimeout) {
-                  clearTimeout(completeTimeout);
-                  completeTimeout = setTimeout(function () {
-                    completed();
-                  }, 700);
-                }
-                var matched = false;
-                for (var k = 0; k < filesToEdit.length; k++) {
-
-                  var conditions = filesToEdit[k];
-                  var matching = true;
-                  if (conditions.matchConditions) {
-
-                    for (var o = 0; o < conditions.matchConditions.length; o++) {
-                      if (!filepath.match(conditions.matchConditions[o])) {
-                        matching = false;
-                        break;
-                      }
-                    }
-                  }
-
-                  if (!matching) {
-                    // console.log("no match for ", conditions.matchConditions[o], filepath)
-                    continue
-                  }
-
-                  if (conditions.nonMatchConditions) {
-                    for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
-                      if (filepath.match(conditions.nonMatchConditions[o])) {
-                        matching = false;
-                        // console.log("match for ", conditions.nonMatchConditions[o], filepath)
-
-                      }
-                    }
-                  }
-                  matched = matching;
-                  break;
-                }
-
-
-                // console.log("File ", filename, matched);
-                if (matched) {
-                  var file = {
-                    filename: filename,
-                    filepath: filepath,
-                    relative: relative,
-                  };
-                  that.liveChanges.map(function (liveChange) {
-                    // console.log("add file to live change", liveChange, file);
-                    liveChange.addFile(file)
-                  });
-                }
-
-                // it's file
-              } else {
-                // it's folder
+              if (completeTimeout) {
+                clearTimeout(completeTimeout);
+                completeTimeout = setTimeout(function () {
+                  completed();
+                }, 700);
               }
-            });
+              var matched = false;
+              for (var k = 0; k < filesToEdit.length; k++) {
+
+                var conditions = filesToEdit[k];
+                var matching = true;
+                if (conditions.matchConditions) {
+
+                  for (var o = 0; o < conditions.matchConditions.length; o++) {
+                    if (!filepath.match(conditions.matchConditions[o])) {
+                      matching = false;
+                      break;
+                    }
+                  }
+                }
+
+                if (!matching) {
+                  // console.log("no match for ", conditions.matchConditions[o], filepath)
+                  continue
+                }
+
+                if (conditions.nonMatchConditions) {
+                  for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
+                    if (filepath.match(conditions.nonMatchConditions[o])) {
+                      matching = false;
+                      // console.log("match for ", conditions.nonMatchConditions[o], filepath)
+
+                    }
+                  }
+                }
+                matched = matching;
+                break;
+              }
+
+
+              // console.log("File ", filename, matched);
+              if (matched) {
+                var file = {
+                  filename: filename,
+                  filepath: filepath,
+                  relative: relative,
+                };
+                that.liveChanges.map(function (liveChange) {
+                  // console.log("add file to live change", liveChange, file);
+                  liveChange.addFile(file)
+                });
+              }
+
+              // it's file
+            } else {
+              // it's folder
+            }
+          });
 
 //        fs.readdir(this.Project.projectDir, function (err, files) {
 //          if (err) {
