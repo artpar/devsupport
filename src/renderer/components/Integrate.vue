@@ -302,6 +302,20 @@
         console.log(this.liveChanges);
 
 
+        var invalidFields = that.secondStageVariables.filter(function (variable) {
+          if (variable.stage == 1) {
+            contextMap[variable.name] = variable.value;
+            return variable.value == null || variable.value.length < 2;
+          }
+          return false;
+        });
+
+        if (invalidFields.length > 0) {
+          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
+          return
+        }
+
+
         console.log("start doing changes")
 
 
@@ -363,6 +377,7 @@
           if (change.variables && change.variables.length > 0) {
             change.variables.map(function (variable) {
               variable.value = null;
+              debugger
               if (variable.stage == 1) {
                 that.variables.push(variable);
               } else if (variable.stage == 2) {
