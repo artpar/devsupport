@@ -121,7 +121,7 @@
       <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable2 in secondStageVariables">
           <h3>{{variable2.label}}</h3>
-          <input :placeholder="secondStageVariables.help" v-model="secondStageVariables.value" type="text">
+          <input :placeholder="variable2.help" v-model="variable2.value" type="text">
           <p>
             <small>{{variable2.description}}</small>
           </p>
@@ -182,13 +182,13 @@
 
       <div class="ui large bottom aligned divided relaxed animated list">
         <template v-for="liveChange in liveChanges">
-        <div class="ui fluid item">
-          <div class="content"><i class="info circle aligned primary icon"></i>
-            {{liveChange.change.name}}
-            <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
-            <i v-else class="right floated large warning circle orange icon"></i>
+          <div class="ui fluid item">
+            <div class="content"><i class="info circle aligned primary icon"></i>
+              {{liveChange.change.name}}
+              <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
+              <i v-else class="right floated large warning circle orange icon"></i>
+            </div>
           </div>
-        </div>
         </template>
       </div>
       <br/>
@@ -198,7 +198,7 @@
         <div class="ui center aligned basic segment"><span class="devcolor" style="font-size: 22px"> Integration should be done now<br><br></span>
           <span style="font-size: 16px">You can now build and run the project<br><br></span>
           <span style="font-size: 20px; margin:1em">Did it help?</span>
-          <button class="ui primary button" style="margin: 1em"  @click="reset">Yes</button>
+          <button class="ui primary button" style="margin: 1em" @click="reset">Yes</button>
           <button class="ui orange button" style="margin: 1em" @click="reset">No</button>
           <span><br>We are collecting this information for our feedback</span>
         </div>
@@ -209,7 +209,7 @@
     </div>
 
     <!--<div class="right floated four wide column" v-if="state == 'review-results'">-->
-      <!--<button class="ui large primary button right floated" @click="reset">Close</button>-->
+    <!--<button class="ui large primary button right floated" @click="reset">Close</button>-->
     <!--</div>-->
     <!--result page ends-->
 
@@ -362,11 +362,13 @@
         var contextMap = {};
 
         var invalidFields = that.secondStageVariables.filter(function (variable) {
-          if (variable.stage == 1) {
-            contextMap[variable.name] = variable.value;
-            return variable.value == null || variable.value.length < 2;
-          }
-          return false;
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
+        });
+
+        that.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return variable.value == null || variable.value.length < 2;
         });
 
         if (invalidFields.length > 0) {
@@ -378,7 +380,7 @@
         console.log("start doing changes")
 
 
-        function doIndex (ith, doIndex) {
+        function doIndex(ith, doIndex) {
           console.log("do change", ith);
           if (that.liveChanges.length == ith) {
             that.callbackChangeComplete();
@@ -472,7 +474,7 @@
         var changes = [];
 
 
-        function completed () {
+        function completed() {
           console.log("completed scan");
           that.loading = false;
           that.state = "scanned-files";
@@ -480,70 +482,70 @@
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
-          ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
-            // console.log("callback point 1")
-            if (typeof filename != "undefined") {
-              // console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
+            ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
+              // console.log("callback point 1")
+              if (typeof filename != "undefined") {
+                // console.log("recurse callback", filename.toLowerCase(), filepath, filesToEdit);
 
 
-              if (completeTimeout) {
-                clearTimeout(completeTimeout);
-                completeTimeout = setTimeout(function () {
-                  completed();
-                }, 700);
-              }
-              var matched = false;
-              for (var k = 0; k < filesToEdit.length; k++) {
+                if (completeTimeout) {
+                  clearTimeout(completeTimeout);
+                  completeTimeout = setTimeout(function () {
+                    completed();
+                  }, 700);
+                }
+                var matched = false;
+                for (var k = 0; k < filesToEdit.length; k++) {
 
-                var conditions = filesToEdit[k];
-                var matching = true;
-                if (conditions.matchConditions) {
+                  var conditions = filesToEdit[k];
+                  var matching = true;
+                  if (conditions.matchConditions) {
 
-                  for (var o = 0; o < conditions.matchConditions.length; o++) {
-                    if (!filepath.match(conditions.matchConditions[o])) {
-                      matching = false;
-                      break;
+                    for (var o = 0; o < conditions.matchConditions.length; o++) {
+                      if (!filepath.match(conditions.matchConditions[o])) {
+                        matching = false;
+                        break;
+                      }
                     }
                   }
-                }
 
-                if (!matching) {
-                  // console.log("no match for ", conditions.matchConditions[o], filepath)
-                  continue
-                }
+                  if (!matching) {
+                    // console.log("no match for ", conditions.matchConditions[o], filepath)
+                    continue
+                  }
 
-                if (conditions.nonMatchConditions) {
-                  for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
-                    if (filepath.match(conditions.nonMatchConditions[o])) {
-                      matching = false;
-                      // console.log("match for ", conditions.nonMatchConditions[o], filepath)
+                  if (conditions.nonMatchConditions) {
+                    for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
+                      if (filepath.match(conditions.nonMatchConditions[o])) {
+                        matching = false;
+                        // console.log("match for ", conditions.nonMatchConditions[o], filepath)
 
+                      }
                     }
                   }
+                  matched = matching;
+                  break;
                 }
-                matched = matching;
-                break;
+
+
+                // console.log("File ", filename, matched);
+                if (matched) {
+                  var file = {
+                    filename: filename,
+                    filepath: filepath,
+                    relative: relative,
+                  };
+                  that.liveChanges.map(function (liveChange) {
+                    // console.log("add file to live change", liveChange, file);
+                    liveChange.addFile(file)
+                  });
+                }
+
+                // it's file
+              } else {
+                // it's folder
               }
-
-
-              // console.log("File ", filename, matched);
-              if (matched) {
-                var file = {
-                  filename: filename,
-                  filepath: filepath,
-                  relative: relative,
-                };
-                that.liveChanges.map(function (liveChange) {
-                  // console.log("add file to live change", liveChange, file);
-                  liveChange.addFile(file)
-                });
-              }
-
-              // it's file
-            } else {
-              // it's folder
-            }
-          });
+            });
 
 //        fs.readdir(this.Project.projectDir, function (err, files) {
 //          if (err) {
