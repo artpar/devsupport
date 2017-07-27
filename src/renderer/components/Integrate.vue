@@ -436,7 +436,7 @@
           if (change.variables && change.variables.length > 0) {
             change.variables.map(function (variable) {
               variable.value = null;
-              debugger
+//              debugger
               if (variable.stage == 1) {
                 that.variables.push(variable);
               } else if (variable.stage == 2) {
