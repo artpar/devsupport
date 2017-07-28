@@ -1,0 +1,184 @@
+{
+  "name": "LazyPay Android Integration",
+  "changes": [
+    {
+      "name": "Add dependency for InstaMojo SDK",
+      "fileSelector": ".+build.gradle$",
+      "changeType": "fileEdit",
+      "fileType": "gradle",
+      "change": [
+        {
+          "changeType": "add.line",
+          "line": "\ncompile 'ai.devsupport.instamojo:instamojolib:0.0.0'",
+          "action": "append",
+          "query": "compile 'com.android.support",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "godel-release/godel"
+            },
+            {
+              "checkType": "negative",
+              "query": "instamojo:instamojolib"
+            },
+            {
+              "checkType": "positive",
+              "query": "compile 'com.android.support"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "mavenCentral()\n    maven {\n        url \"https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/\"\n    }",
+          "action": "append",
+          "query": "repositories[ \t]*{",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "repositories"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "repositories {\n    mavenCentral()\n    maven {\n        url \"https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/\"\n    }\n}\n",
+          "action": "prepend",
+          "query": "dependencies[ \t]*{",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "repositories"
+            }
+          ]
+        }
+      ],
+      "validations":[]
+    },
+    {
+      "name": "Server Side code - PHP",
+      "fileSelector": "^$",
+      "changeType": "fileDownload",
+      "fileName": "handle_server_redirect.php",
+      "fileType": "php",
+      "variables": [
+        {
+          "name": "accessKey",
+          "label": "Access Key",
+          "stage": 1,
+          "description": "The access key will be inject to your AndroidManifest.xml, to be used by InstaMojo SDK",
+          "help": "You can find this in the welcome email from InstaMojo"
+        },
+        {
+          "name": "accessSecret",
+          "label": "Secret Key",
+          "stage": 1,
+          "description": "The access secret will be used to create the Server side PHP code",
+          "help": "You can find this on the InstaMojo dashboard"
+        },
+        {
+          "name": "salt",
+          "label": "Salt",
+          "stage": 1,
+          "description": "Your end users will be sent to this page after payment completion",
+          "help": "The url pointing to the PHP script"
+        },
+        {
+          "name": "redirectUrl",
+          "label": "Redirect Url",
+          "stage": 1,
+          "description": "Your end users will be sent to this page after payment completion",
+          "help": "The url pointing to the PHP script"
+        },
+        {
+          "name": "notifyUrl",
+          "label": "Notification Url",
+          "stage": 1,
+          "description": "InstaMojo will call this url after each payment completion",
+          "help": "The url pointing to the PHP script"
+        }
+      ],
+      "change": [
+        {
+          "changeType": "download.file",
+          "line": "<?php\n\nconst apiKey = \"{{=it.accessKey}}\";\nconst apiSecret = \"{{=it.accessSecret}}\";\nconst salt = \"{{=it.salt}}\";\nconst redirectUrl = \"{{=it.redirectUrl}}\";\nconst notifyUrl = \"{{=it.notifyUrl}}\";\n\n$client = new Devsupport\\Client\\InstamojoClient(apiKey, apiSecret, salt, redirectUrl, notifyUrl, \"api\");\n\n$action = $_GET[\"action\"];\n\nif ($action == \"new_transaction\") {\n\n    $params = array(\n        'buyer_name' => $_GET[\"name\"],\n        'email' => $_GET[\"email\"],\n        'amount' => $_GET[\"amount\"],\n        'phone' => $_GET[\"phone\"],\n        'purpose' => $_GET[\"purpose\"],\n    );\n    echo json_encode($client->NewTransaction($params));\n} else if ($action == \"handle_redirect\") {\n    $params = $_POST;\n    $validatedResponse = $client->validateWebHookCall($params);\n    if ($validatedResponse) {\n        if ($_POST[\"status\"] == \"credit\") {\n            echo \"Payment success\";\n        } else {\n            echo \"Payment Failed\";\n        }\n    }\n}"
+        }
+      ],
+      "validations":[]
+    },
+    {
+      "name": "Add key to AndroidManifest.xml",
+      "fileSelector": ".+main[\\\\/]AndroidManifest.xml",
+      "changeType": "fileEdit",
+      "fileType": "xml",
+      "change": [
+        {
+          "changeType": "add.line",
+          "line": "<meta-data android:name=\"instamojo.orderauth.url\"\n                   android:value=\"{{=it.redirectUrl}}\"\n            />",
+          "action": "prepend",
+          "query": "</application>"
+        }
+      ],
+      "validations": [{
+        "checkType": "negative",
+        "query": "instamojo.orderauth.url"
+      }]
+    },
+    {
+      "name": "Add functions to some Activity.java for Initiate Pay and Handle Response",
+      "fileSelector": ".+Activity.java",
+      "changeType": "fileEdit",
+      "fileType": "java",
+      "change": [
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "{",
+          "line": "private void callInstamojo(String email, String phone, String amount, String purpose, String buyername) {\n        Intent intent = new Intent(MainActivity.this, Instamojo.class);\n        intent.putExtra(\"email\", email);\n        intent.putExtra(\"phone\", phone);\n        intent.putExtra(\"purpose\", purpose);\n        intent.putExtra(\"amount\", amount);\n        intent.putExtra(\"name\", buyername);\n        startActivityForResult(intent, Config.INSTAMOJO);\n    }",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "callInstamojo"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "{",
+          "line": "@Override\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\n        switch (requestCode) {\n            case Config.INSTAMOJO:\n                switch (resultCode) {\n                    case Config.SUCCESS:\n                        Toast.makeText(getApplicationContext(), data.getStringExtra(\"response\"), Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    case Config.FAILED:\n                        Toast.makeText(getApplicationContext(), data.getStringExtra(\"response\"), Toast.LENGTH_LONG)\n                                .show();\n                        break;\n                    default:\n                        break;\n                }\n\n            default:\n                break;\n        }\n    }",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "onActivityResult"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "import",
+          "line": "import instamojo.library.Config;\nimport instamojo.library.Instamojo;                        \nimport android.content.Intent;",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "lazypay.app.Instamojo"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "action": "append",
+          "query": "setContentView",
+          "line": "pay = (Button) this.findViewById(R.id.pay);\n\n        pay.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                String email = \"tester@gmail.com\";\n                String phone = \"7875432991\";\n                String amount = \"10\";\n                String purpose = \"official\";\n                String buyername = \"tester\";\n\n                callInstamojo(email, phone, amount, purpose, buyername);\n            }\n        });",
+          "validations": [
+            {
+              "checkType": "negative",
+              "query": "this.findViewById(R.id.pay);"
+            }
+          ]
+        }
+      ],
+      "validations":[]
+    }
+  ]
+}

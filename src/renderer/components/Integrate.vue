@@ -335,6 +335,12 @@
         var that = this;
         that.state = "second-inputs";
 
+        if (that.secondStageVariables.length < 1) {
+          setTimeout(function () {
+            that.doChanges();
+          }, 300)
+        }
+
       },
       reviewUpdates() {
         var that = this;
