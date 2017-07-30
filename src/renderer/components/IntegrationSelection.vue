@@ -3,39 +3,39 @@
     <!--<div v-if="Project" class="sixteen wide column">-->
 
 
-      <!--<div class="ui ordered steps mini">-->
-        <!--<div class="completed step">-->
-          <!--<div class="content">-->
-            <!--<div class="title">-->
-              <!--Project Source-->
-            <!--</div>-->
-            <!--<div slot="description">-->
-              <!--{{Project.projectDir}}-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="active step" title="Choose integration">-->
-          <!--<div class="content">-->
-            <!--<div class="title">-->
-              <!--Choose integration-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="step" title="Review">-->
-          <!--<div class="content">-->
-            <!--<div class="title">-->
-              <!--Review-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="step" title="Execute">-->
-          <!--<div class="content">-->
-            <!--<div class="title">-->
-              <!--Execute-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
+    <!--<div class="ui ordered steps mini">-->
+    <!--<div class="completed step">-->
+    <!--<div class="content">-->
+    <!--<div class="title">-->
+    <!--Project Source-->
+    <!--</div>-->
+    <!--<div slot="description">-->
+    <!--{{Project.projectDir}}-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="active step" title="Choose integration">-->
+    <!--<div class="content">-->
+    <!--<div class="title">-->
+    <!--Choose integration-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="step" title="Review">-->
+    <!--<div class="content">-->
+    <!--<div class="title">-->
+    <!--Review-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="step" title="Execute">-->
+    <!--<div class="content">-->
+    <!--<div class="title">-->
+    <!--Execute-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
     <!--</div>-->
     <div class="sixteen wide column">
@@ -48,7 +48,7 @@
 
             <div class="image">
               <span
-                    :style="{float: 'bottom', color: integration.color, fontSize: '150px', padding: '62px'}"
+                  :style="{float: 'bottom', color: integration.color, fontSize: '150px', padding: '62px'}"
                   :class="'ui image devicon ' + integration.icon"></span>
 
             </div>
@@ -84,11 +84,15 @@
     },
     mounted() {
       var that = this;
-      console.log("started integration selection", this.$route.params.id);
+      let merchantReferenceId = this.$route.params.id;
+      console.log("started integration selection", merchantReferenceId);
 
 
-      jsonApi.findAll("integration", {
-        page: {number: 1, size: 50}
+      jsonApi.one("merchant", merchantReferenceId).all("integration_id").get({
+        page: {
+          number: 1,
+          size: 10,
+        }
       }).then(function (r) {
         console.log("all integrations", r);
         that.integrations = r;
@@ -97,13 +101,13 @@
     },
     methods: {
       startIntegration(integration) {
-        console.log("start integration ", integration.id)
+        console.log("start integration ", integration.id);
         this.$router.push({
           name: 'Integrate', params: {id: integration.id}
         })
       },
       ...mapActions(['setIntegration']),
-      chooseIntegration(inte){
+      chooseIntegration(inte) {
         this.setIntegration(inte);
         this.$router.push({
           name: 'Integrate',
