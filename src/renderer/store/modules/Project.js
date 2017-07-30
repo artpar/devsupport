@@ -1,6 +1,8 @@
+import Analytics from 'universal-analytics';
 const Store = require('electron-store');
 const store = new Store();
 
+const visitor = new Analytics('UA-103570663-1').debug();
 console.log("load projects store");
 const state = {
   projectDir: null,
@@ -96,6 +98,7 @@ const actions = {
 };
 
 export default {
+  visitor,
   state,
   mutations,
   actions,

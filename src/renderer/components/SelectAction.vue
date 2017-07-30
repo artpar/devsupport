@@ -67,7 +67,8 @@
   export default {
     data() {
       return {
-        active: true
+        active: true,
+        visitor: []
 
         }
     },
@@ -95,6 +96,10 @@
     },
 
     mounted() {
+//      var ua = require('ua');
+//      var visitor = ua('UA-103570663-1');
+      visitor.screenview("select action", "App Name").send();
+      visitor.pageview("/selectionaction", "http://devsupport.ai", "Welcome");
       jQuery('.ui.mini.modal').modal();
       console.log("loaded select action")
     }

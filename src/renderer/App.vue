@@ -42,6 +42,9 @@
 
 <script>
 
+
+//  const visitor = new Analytics('UA-103570663-1').debug();
+
   import RecentProjects from './components/RecentProjects.vue';
   import {mapState, mapActions} from 'vuex';
   export default {

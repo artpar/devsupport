@@ -8,7 +8,7 @@ import { app, BrowserWindow, Menu } from 'electron' // eslint-disable-line
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\') // eslint-disable-line
 }
-
+// let ua = require('universal-analytics');
 let mainWindow;
 const winURL = process.env.NODE_ENV === 'development'
   ? 'http://localhost:9080'

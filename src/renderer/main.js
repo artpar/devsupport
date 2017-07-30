@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import Element from 'element-ui';
+// import ua from 'universal-analytics';
 
 
 import 'element-ui/lib/theme-default/index.css';
@@ -9,6 +10,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import Loading from './components/Loading.vue'
+
 
 global.jQuery = require('jquery');
 import _Tether from 'tether';

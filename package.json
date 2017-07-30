@@ -83,6 +83,7 @@
     "material-icons": "^0.1.0",
     "mustache": "^2.3.0",
     "tether": "^1.4.0",
+    "universal-analytics": "^0.4.13",
     "vue": "^2.3.3",
     "vue-data-tables": "^1.1.1",
     "vue-electron": "^1.0.6",
