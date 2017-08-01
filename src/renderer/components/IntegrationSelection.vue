@@ -79,10 +79,27 @@
   export default {
     data() {
       return {
-        integrations: []
+        integrations: [],
+        pageDesc: [
+          {
+            path: null,
+            title: null,
+          }
+        ],
+        eventDesc: [
+          {
+            category: null,
+            action: null,
+            label: null,
+          }
+        ],
       }
     },
     mounted() {
+      this.setPageDesc("/app/integrationSelection","IntegrationSelection");
+      console.log("pageDesc",this.pageDesc);
+      this.$store.commit('PAGE_VIEW',this.pageDesc);
+
       var that = this;
       console.log("started integration selection", this.$route.params.id);
 
@@ -96,6 +113,15 @@
 
     },
     methods: {
+      setPageDesc(path,title) {
+        this.pageDesc.path=path;
+        this.pageDesc.title=title;
+      },
+      setEventDesc(category,action,label) {
+        this.eventDesc.category=category;
+        this.eventDesc.action=action;
+        this.eventDesc.label=label;
+      },
       startIntegration(integration) {
         console.log("start integration ", integration.id)
         this.$router.push({

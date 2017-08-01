@@ -242,6 +242,9 @@
 
   export default {
     mounted() {
+      this.setPageDesc("/app/integrationProcess","IntegrationProcess");
+      console.log("pageDesc",this.pageDesc);
+      this.$store.commit('PAGE_VIEW',this.pageDesc);
       var that = this;
       this.setIntegration(this.$route.params.id);
 
@@ -270,10 +273,32 @@
         loading: false,
         selectedIntegration: null,
         selectedFiles: [],
-        actions: []
+        actions: [],
+        pageDesc: [
+          {
+            path: null,
+            title: null,
+          }
+        ],
+        eventDesc: [
+          {
+            category: null,
+            action: null,
+            label: null,
+          }
+        ],
       }
     },
     methods: {
+      setPageDesc(path,title) {
+        this.pageDesc.path=path;
+        this.pageDesc.title=title;
+      },
+      setEventDesc(category,action,label) {
+        this.eventDesc.category=category;
+        this.eventDesc.action=action;
+        this.eventDesc.label=label;
+      },
       downloadURI(uri, name) {
         var link = document.createElement("a");
         link.download = name;
@@ -415,6 +440,9 @@
 //        if (this.liveChanges.length == 0) {
 //          that.callbackChangeComplete();
 //        }
+        this.setPageDesc("/app/results","Results");
+        console.log("pageDesc",this.pageDesc);
+        this.$store.commit('PAGE_VIEW',this.pageDesc);
       },
       callbackChangeComplete() {
         var that = this;

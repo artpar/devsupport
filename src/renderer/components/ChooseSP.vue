@@ -34,9 +34,31 @@
         newsp: [],
         newspId: [],
         message: "",
+        pageDesc: [
+          {
+            path: null,
+            title: null,
+          }
+        ],
+        eventDesc: [
+          {
+            category: null,
+            action: null,
+            label: null,
+          }
+        ],
       }
     },
     methods: {
+      setPageDesc(path,title) {
+        this.pageDesc.path=path;
+        this.pageDesc.title=title;
+      },
+      setEventDesc(category,action,label) {
+        this.eventDesc.category=category;
+        this.eventDesc.action=action;
+        this.eventDesc.label=label;
+      },
       name: 'chose-sp',
       integrate(){
         let that = this;
@@ -76,6 +98,9 @@
 //      }
     },
     mounted(){
+      this.setPageDesc("/app/chooseSP","ChooseSP");
+      console.log("pageDesc",this.pageDesc);
+      this.$store.commit('PAGE_VIEW',this.pageDesc);
       let that = this;
 
       jsonApi.findAll("merchant", {

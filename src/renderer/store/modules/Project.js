@@ -2,7 +2,7 @@ import Analytics from 'universal-analytics';
 const Store = require('electron-store');
 const store = new Store();
 
-const visitor = new Analytics('UA-103570663-1').debug();
+
 console.log("load projects store");
 const state = {
   projectDir: null,
@@ -10,7 +10,9 @@ const state = {
   integration: null,
   identification: null,
   currentProject: null,
-  recentProjects: store.get("projects.recent", [])
+  recentProjects: store.get("projects.recent", []),
+  visitor: [],
+  cid: store.get("cid")
 };
 
 const mutations = {
@@ -33,6 +35,32 @@ const mutations = {
   SET_INTEGRATION(state, action){
     state.integration = action
   },
+  SET_VISITOR(state){
+    if (state.cid == null) {
+      state.visitor = new Analytics('UA-103570663-2').debug();
+      state.cid = state.visitor.cid;
+      console.log("cid length", state.cid.length, "\n cid:", state.cid);
+      store.set("cid", state.cid);
+    }
+    else {
+      state.visitor = new Analytics('UA-103570663-2', state.cid).debug();
+      console.log("cid from response:", state.visitor.cid, "\n cid from store:", state.cid);
+    }
+  },
+
+
+  PAGE_VIEW(state, pageProperties){
+    console.log("pageProperties", pageProperties);
+    state.visitor.pageview(pageProperties.path, "http://devsupport.ai", pageProperties.title).send();
+  },
+
+
+  GA_EVENT(state, eventProperties){
+    console.log("eventProperties", eventProperties);
+    state.visitor.event(eventProperties.category, eventProperties.action, eventProperties.label).send();
+  },
+
+
   ADD_PROJECT(state, projectProperties) {
     // debugger
     if (!projectProperties.projectDir) {
@@ -98,7 +126,6 @@ const actions = {
 };
 
 export default {
-  visitor,
   state,
   mutations,
   actions,

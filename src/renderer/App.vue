@@ -13,13 +13,13 @@
               <div class="item"
                    v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
                 <i class="circular big icon"><i
-                    :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
+                  :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
               </div>
 
               <div class="item"
                    v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
                 <i class="circular big icon"><i
-                    :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
+                  :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
               </div>
 
               <div class="right item">
@@ -43,11 +43,29 @@
 <script>
 
 
-//  const visitor = new Analytics('UA-103570663-1').debug();
+  //  const visitor = new Analytics('UA-103570663-1').debug();
 
   import RecentProjects from './components/RecentProjects.vue';
   import {mapState, mapActions} from 'vuex';
   export default {
+    data() {
+      return {
+        pageDesc: [
+          {
+            path: null,
+            title: null,
+          }
+        ],
+        eventDesc: [
+          {
+            category: null,
+            action: null,
+            label: null,
+          }
+        ],
+
+      }
+    },
     components: {
       'recent-projects': RecentProjects
     },
@@ -55,12 +73,18 @@
       ...mapState({
         'Project': 'Project',
       }),
+//      visitor () {
+//        return store.state.visitor;
+//      }
+
     },
     methods: {
       ...mapActions([
         'setProjectDir'
       ]),
       goHome() {
+        this.setPageDesc("/app","home");
+        this.$store.commit('PAGE_VIEW',this.pageDesc);
         this.setProjectDir({
           projectDir: null
         });
@@ -68,8 +92,29 @@
           name: 'select-project'
         })
       },
+      setPageDesc(path,title) {
+        this.pageDesc.path=path;
+        this.pageDesc.title=title;
+      },
+      setEventDesc(category,action,label) {
+        this.eventDesc.category=category;
+        this.eventDesc.action=action;
+        this.eventDesc.label=label;
+      },
     },
     mounted() {
+      this.$store.commit('SET_VISITOR');
+      console.log("store", this.$store);
+      this.setPageDesc("/app","home");
+      console.log("pageDesc",this.pageDesc);
+      this.$store.commit('PAGE_VIEW',this.pageDesc);
+
+
+//      this.$store.state.Project.visitor.pageview("/app", "http://devsupport.ai", "Homepage").send();
+
+
+//      this.$store.state.Project.visitor.screenview("Home Screen", "devsupp").send();
+//      this.$store.state.Project.visitor.event("Event Category", "Event Action").send();
       console.log("projects", app.getPath)
     },
     name: 'devsupport-ai',
