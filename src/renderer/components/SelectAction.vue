@@ -122,20 +122,6 @@
       this.setPageDesc("/app/selectAction","SelectAction");
       console.log("pageDesc",this.pageDesc);
       this.$store.commit('PAGE_VIEW',this.pageDesc);
-//      this.$store.state.Project.visitor.pageview("/app/selectaction", "http://devsupport.ai", "SelectAction").send();
-
-//      const visitor1 = new Analytics('UA-103570663-1').debug();
-////      var ua = require('ua');
-////      var visitor = ua('UA-103570663-1');
-//      visitor1.pageview("/selectactionpls", "http://devsupport.ai", "Welcome").send();
-//      console.log("after analytic call");
-//      setTimeout(function() {
-//        console.log("in delay func");
-//        visitor1.pageview("/selectsp", "http://devsupport.ai", "Welcome").send();
-//      }, 4000);
-
-//      this.$store.state.visitor.screenview("select action", "App Name").send();
-//      $store.state.visitor.pageview("/selectionaction", "http://devsupport.ai", "Welcome").send();
       jQuery('.ui.mini.modal').modal();
       console.log("loaded select action")
     }

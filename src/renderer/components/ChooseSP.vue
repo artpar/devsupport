@@ -8,7 +8,7 @@
             v-for="item in list"
             :key="item.id"
             :label="item.name"
-            :value="item.id">
+            :value="item">
         </el-option>
       </el-select>
     </div>
@@ -28,7 +28,7 @@
     data(){
       return {
         options4: [],
-        selectedSP: "",
+        selectedSP: [],
         list: [],
         loading: false,
         newsp: [],
@@ -59,13 +59,18 @@
         this.eventDesc.action=action;
         this.eventDesc.label=label;
       },
-      name: 'chose-sp',
       integrate(){
         let that = this;
+
+        this.setEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
+        console.log("eventDesc",this.eventDesc);
+        this.$store.commit('GA_EVENT',this.eventDesc);
+
         console.log("clicked button");
+        console.log("selectedSP",that.selectedSP);
         console.log(this.message);
 
-        if (that.selectedSP == "") {
+        if (that.selectedSP == []) {
           that.$alert({
             type: 'error',
             message: "Please select a merchant to integrate"
@@ -76,7 +81,7 @@
         this.$router.push({
           name: 'SelectIntegration',
           params: {
-            id: that.selectedSP
+            id: that.selectedSP.id
           }
         })
 

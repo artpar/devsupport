@@ -198,8 +198,8 @@
         <div class="ui center aligned basic segment"><span class="devcolor" style="font-size: 22px"> Integration should be done now<br><br></span>
           <span style="font-size: 16px">You can now build and run the project<br><br></span>
           <span style="font-size: 20px; margin:1em">Did it help?</span>
-          <button class="ui primary button" style="margin: 1em" @click="reset">Yes</button>
-          <button class="ui orange button" style="margin: 1em" @click="reset">No</button>
+          <button class="ui primary button" style="margin: 1em" @click="feedBackYes">Yes</button>
+          <button class="ui orange button" style="margin: 1em" @click="feedBackNo">No</button>
           <span><br>We are collecting this information for our feedback</span>
         </div>
 
@@ -323,6 +323,24 @@
         this.$router.push({
           name: "select-project"
         })
+      },
+      feedBackYes() {
+        this.setEventDesc("feedBack","yes","did it help?");
+        console.log("eventDesc",this.eventDesc);
+        this.$store.commit('GA_EVENT',this.eventDesc);
+        this.setPageDesc("/app", "home");
+        this.$store.commit('PAGE_VIEW', this.pageDesc);
+        this.reset();
+
+      },
+      feedBackNo() {
+        this.setEventDesc("feedBack","no","did it help?");
+        console.log("eventDesc",this.eventDesc);
+        this.$store.commit('GA_EVENT',this.eventDesc);
+        this.setPageDesc("/app", "home");
+        this.$store.commit('PAGE_VIEW', this.pageDesc);
+        this.reset();
+
       },
       reviewFiles() {
         var that = this;
