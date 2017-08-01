@@ -37,7 +37,9 @@ const mutations = {
   },
   SET_VISITOR(state){
     if (state.cid == null) {
-      state.visitor = new Analytics('UA-103570663-2').debug();
+      state.visitor = new Analytics('UA-103793943-1').debug();
+      // production: UA-103793943-1, testing: UA-103570663-2
+
       state.cid = state.visitor.cid;
       console.log("cid length", state.cid.length, "\n cid:", state.cid);
       store.set("cid", state.cid);
