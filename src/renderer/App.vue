@@ -1,11 +1,11 @@
 <template>
   <div id="app" class="ui container fluid">
-
+    
     <div class="ui grid">
       <recent-projects></recent-projects>
 
 
-      <div class="ten wide column">
+      <div class="twelve wide column">
         <div class="ui vertical masthead segment">
           <div class="ui container" v-if="Project.currentProject != null">
             <div class="ui large secondary menu">
@@ -114,9 +114,9 @@
 
 <style>
 
-  html, body {
+/*  html, body {
     overflow: hidden;
-  }
+  }*/
 
   h1 {
     color: #383A63;
