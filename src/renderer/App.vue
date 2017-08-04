@@ -5,7 +5,7 @@
       <recent-projects></recent-projects>
 
 
-      <div class="twelve wide column">
+      <div class="twelve wide column content-wpr">
         <div class="ui vertical masthead segment">
           <div class="ui container" v-if="Project.currentProject != null">
             <div class="ui large secondary menu">
@@ -27,10 +27,8 @@
               </div>
             </div>
           </div>
-
-          <div class="ui text" style="margin-top: 3em;">
-            <router-view></router-view>
-          </div>
+          
+          <router-view></router-view>
 
         </div>
       </div>

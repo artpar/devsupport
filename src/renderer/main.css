@@ -8,6 +8,8 @@ body{
 .vh-100{
     height: 100vh;
 }
+
+/*Sidebar*/
 .sidebar-wpr{
     min-height: 1px;
     position: relative;
@@ -48,4 +50,37 @@ body{
     font-style: italic;
     color: rgba(118,118,118,1);
     font-weight: 500
+}
+
+/*Content*/
+.content-wpr{
+    min-height: 1px;
+    position: relative;
+    height: 100vh;
+    box-shadow: -5px 0px 20px 0px #ddd;
+    overflow-y: auto;
+}
+.content-wpr .super-coder{
+    width: 100vw;
+    margin: 5vh auto;
+}
+.super-coder>img{
+    width: 70vh;
+}
+.get-source-folder{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+.get-source-folder .heading{
+    font-size: 20px;
+    color: rgba(33,28,61,1);
+    font-weight: 500;
+}
+.get-source-folder .box{
+    padding: 30px;
+}
+.get-source-folder .box .el-upload, .get-source-folder .box .el-upload-dragger{
+    height: 23vh;
+    width: 100%;
 }
