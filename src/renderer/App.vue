@@ -1,9 +1,8 @@
 <template>
-  <div id="app" class="ui container fluid">
+  <div id="app" class="container fluid pad-1em">
     
     <div class="ui grid">
       <recent-projects></recent-projects>
-
 
       <div class="twelve wide column content-wpr">
         <div class="ui vertical masthead segment">
@@ -39,9 +38,6 @@
 </template>
 
 <script>
-
-
-
   import RecentProjects from './components/RecentProjects.vue';
   import {mapState, mapActions} from 'vuex';
   export default {

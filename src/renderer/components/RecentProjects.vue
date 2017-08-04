@@ -1,9 +1,15 @@
 <template>
 
   <div class="four wide column sidebar-wpr">
-    <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
+<!--     <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
       <h2 class="light">{{Project.name}}</h2>
       <p>{{Project.projectDir}}</p>
+    </div> -->
+    <div class="sidebar-path" v-if="Project.projectDir != null">
+      <div class="content">
+        <div class="heading">{{Project.name}}</div>
+        <div class="data">{{Project.projectDir}}</div>
+      </div>
     </div>
     <div class="sidebar-heading">Recent Projects</div>
     <div class="sidebar-recent-project">
