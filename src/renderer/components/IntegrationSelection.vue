@@ -1,43 +1,5 @@
 <template>
   <div class="ui grid">
-    <!--<div v-if="Project" class="sixteen wide column">-->
-
-
-    <!--<div class="ui ordered steps mini">-->
-    <!--<div class="completed step">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Project Source-->
-    <!--</div>-->
-    <!--<div slot="description">-->
-    <!--{{Project.projectDir}}-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="active step" title="Choose integration">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Choose integration-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="step" title="Review">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Review-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="step" title="Execute">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Execute-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--</div>-->
     <div class="sixteen wide column">
 
       <div class="ui cards">

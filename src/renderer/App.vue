@@ -1,39 +1,26 @@
 <template>
   <div id="app" class="container fluid pad-1em">
-    
     <div class="ui grid">
       <recent-projects></recent-projects>
-
       <div class="twelve wide column content-wpr">
-        <div class="ui vertical masthead segment">
-          <div class="ui container" v-if="Project.currentProject != null">
-            <div class="ui large secondary menu">
-
-              <div class="item"
-                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
-                <i class="circular big icon"><i
-                  :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
-              </div>
-
-              <div class="item"
-                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
-                <i class="circular big icon"><i
-                  :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
-              </div>
-
-              <div class="right item">
-                <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
-              </div>
-            </div>
+        <div class="ui secondary menu" v-if="Project.currentProject != null">
+          <div class="item"
+               v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
+            <i class="circular big icon"><i
+              :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
           </div>
-          
-          <router-view></router-view>
-
+          <div class="item"
+               v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
+            <i class="circular big icon"><i
+              :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
+          </div>
+          <div class="right item">
+            <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
+          </div>
         </div>
+        <router-view></router-view>
       </div>
     </div>
-
-
   </div>
 </template>
 

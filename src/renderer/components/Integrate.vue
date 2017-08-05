@@ -1,5 +1,5 @@
 <template>
-  <div class="ui grid">
+  <div class="ui grid" style="margin-top: calc(30vh - 125px); padding: 0 5em">
 
     <div class="sixteen wide column" v-if="state == 'scanning-files'">
       <loading v-if="loading"></loading>
@@ -23,30 +23,6 @@
         </tr>
         </tbody>
       </table>
-
-      <!--<data-tables-->
-      <!--:actions-def="actionDef"-->
-      <!--:checkbox-filter-def="checkboxFilterDef"-->
-      <!--:row-action-def="rowActionDef"-->
-      <!--:search-def="searchDef"-->
-      <!--:has-action-col="false"-->
-      <!--:pagination-def="{}"-->
-      <!--:data='liveChanges'>-->
-      <!--<el-table-column prop="change.name"-->
-      <!--label="Pending update">-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-      <!--prop="change.status"-->
-      <!--label="Change status">-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-      <!--prop="selectedFiles.length"-->
-      <!--label="Files ">-->
-      <!--</el-table-column>-->
-
-      <!--</data-tables>-->
-
-
     </div>
     <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
       <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
@@ -115,7 +91,7 @@
 
     <!--second stage variable screeen begins-->
 
-    <div class="sixteen wide column" v-if="state == 'second-inputs'" style="overflow-y: auto; max-height: 53vh">
+    <div class="sixteen wide column" v-if="state == 'second-inputs'" style="overflow-y: auto; max-height: 54vh">
       <h2>Please enter the following details:</h2>
       <br>
       <div class="ui large form">
@@ -138,7 +114,7 @@
     <!--second stage variable screen ends-->
 
 
-    <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: 53vh">
+    <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: calc(100vh - 125px);">
 
       <h2>Please enter the following details:</h2>
       <br>

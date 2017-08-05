@@ -1,25 +1,27 @@
 <template>
-  <div class="ui centered grid" style="    margin-top: 10em;">
+  <div class="ui centered grid" style="padding: 0 5em; margin-top: 10em;">
     <div class="sixteen wide column">
-      <el-select style="width: 100%; height: 100px; overflow: hidden" size="large" v-model="selectedSP" filterable
-                 placeholder="What do you want to integrate"
-                 :loading="loading">
-        <el-option style="overflow: hidden"
+      <el-select 
+        style="width: 100%; height: 100px; overflow: hidden" 
+        size="large" 
+        v-model="selectedSP" 
+        filterable
+        placeholder="What do you want to integrate"
+        :loading="loading">
+          <el-option style="overflow: hidden"
             v-for="item in list"
             :key="item.id"
             :label="item.name"
             :value="item">
-        </el-option>
+          </el-option>
       </el-select>
     </div>
     <div class="four wide column">
       <button @click="integrate()" class="ui huge button background devcolordark">INTEGRATE</button>
     </div>
-
   </div>
-
-
 </template>
+
 <script>
   import jsonApi from '../plugins/jsonApi';
   import {Notification} from 'element-ui';
@@ -84,23 +86,7 @@
             id: that.selectedSP.id
           }
         })
-
-
       },
-//      remoteMethod(query) {
-//        console.log("input box active");
-//        if (query !== '') {
-//          this.loading = true;
-//          this.options4 = this.list.filter(item => {
-//            return item.name.toLowerCase()
-//                    .indexOf(query.toLowerCase()) > -1;
-//          });
-//          this.loading = false;
-//
-//        } else {
-//          this.options4 = [];
-//        }
-//      }
     },
     mounted(){
       this.setPageDesc("/app/chooseSP","ChooseSP");
