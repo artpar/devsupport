@@ -9,6 +9,14 @@ body{
     padding: 1em;
 }
 
+/*Overrides*/
+.el-upload-dragger .el-icon-upload {
+    font-size: 67px;
+    color: #97a8be;
+    margin: 2vh;
+    line-height: 12vh;
+}
+
 /*Sidebar*/
 .sidebar-wpr{
     min-height: 1px;
@@ -100,7 +108,7 @@ body{
     font-weight: 500;
 }
 .get-source-folder .box{
-    padding: 30px;
+    padding: 15px;
 }
 .get-source-folder .box .el-upload, .get-source-folder .box .el-upload-dragger{
     height: 23vh;
