@@ -1,6 +1,8 @@
 <template>
-
-  <div class="ui centered grid" style="margin-top: calc(50vh - calc(90px + 1rem));">
+  <div class="ui centered grid">
+    <div class="super-coder">
+      <img src="~@/images/herofull.png" alt="image?">
+    </div>
     <div class="ui massive primary buttons">
       <div class="ui button" @click="setAction('integrate')">
         <div>
@@ -33,16 +35,7 @@
         <div class="ui primary button" @click="hideModal">OK</div>
       </div>
     </div>
-    <!--<div class="four wide column">-->
-    <!--<a class="ui button">-->
-    <!--<div @click="setAction('fix')">-->
-    <!--<i class="massive configure icon"></i>-->
-    <!--<h1>Fix</h1>-->
-    <!--</div>-->
-    <!--</a>-->
-    <!--</div>-->
   </div>
-
 </template>
 <script>
   import Analytics from 'universal-analytics';
@@ -50,7 +43,7 @@
   export default {
     data() {
       return {
-        active: true,
+        active: false,
         pageDesc: [
           {
             path: null,
