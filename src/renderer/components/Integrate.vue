@@ -1,12 +1,10 @@
 <template>
-  <div class="ui grid">
+  <div class="ui grid" style="padding: 0 5em">
 
     <div class="sixteen wide column" v-if="state == 'scanning-files'">
       <loading v-if="loading"></loading>
     </div>
     <div class="sixteen wide column" v-if="!loading > 0 && state == 'scanned-files'">
-
-
       <table class="ui selectable celled table">
         <thead>
         <tr>
@@ -23,46 +21,37 @@
         </tr>
         </tbody>
       </table>
-
-      <!--<data-tables-->
-      <!--:actions-def="actionDef"-->
-      <!--:checkbox-filter-def="checkboxFilterDef"-->
-      <!--:row-action-def="rowActionDef"-->
-      <!--:search-def="searchDef"-->
-      <!--:has-action-col="false"-->
-      <!--:pagination-def="{}"-->
-      <!--:data='liveChanges'>-->
-      <!--<el-table-column prop="change.name"-->
-      <!--label="Pending update">-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-      <!--prop="change.status"-->
-      <!--label="Change status">-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-      <!--prop="selectedFiles.length"-->
-      <!--label="Files ">-->
-      <!--</el-table-column>-->
-
-      <!--</data-tables>-->
-
-
     </div>
     <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
       <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
       <button class="ui large orange button right floated" @click="beginValidateProject">Rescan files</button>
     </div>
-
-    <div class="right floated six wide column" v-if="state == 'review-files'">
-      <button class="ui large primary button right floated" @click="secondInputs" v-if="!doneChanges">Next
-      </button>
-      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
-    </div>
-
     <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh">
-
-
+      <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
+        <div class="integration-task-list">
+          <div 
+            class="grouped fields" v-for="item in liveChanges" 
+            v-if="(item.selectedFiles.length > 1) || (item.change.changeType == 'fileDownload')">
+              <label for="fruit"><h3>{{item.change.name}}</h3></label>
+              <div class="field" v-for="file in item.selectedFiles">
+                <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" @click="item.selectedFilePath = file.filepath">
+                  <input 
+                    class="hidden" 
+                    type="radio" 
+                    :name="item.name" 
+                    v-model="item.selectedFilePath"
+                    :value="file.filepath">
+                  <label>{{file.relative}}</label>
+                </div>
+              </div>
+              <div v-if="item.change.changeType == 'fileDownload'" class="field download">
+                <span>{{item.change.fileName}}</span>
+                <i class="c-pointer cloud download icon"></i>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="false" class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh">
         <template v-for="liveChange in liveChanges">
           <div :class="{'title': true, 'active': liveChange.change.changeType == 'fileDownload'}">
             <i class="dropdown icon"></i>
@@ -83,7 +72,6 @@
                   <label>{{file.relative}}</label>
                 </div>
               </div>
-
             </div>
             <template v-if="liveChange.change.changeType == 'fileDownload'">
               <button class="ui small primary button right floated" @click="downloadAsFile(liveChange)">
@@ -95,9 +83,7 @@
                 <editor :options="{fontSize: '12pt'}" :lang="liveChange.change.fileType"
                         :content="liveChange.change.change[0].line"></editor>
               </div>
-
             </template>
-
           </div>
           <div class="extra content">
               <span v-if="liveChange.selectedFiles.length == 0 ">
@@ -105,17 +91,20 @@
             </span>
             <span v-if="liveChange.selectedFiles.length > 1 ">
               More then 1 file matched our search for the correct file to change. Choose the file you want to be modified
-              </span>
-
-
+            </span>
           </div>
         </template>
       </div>
     </div>
 
+    <div class="right floated six wide column" v-if="state == 'review-files'">
+      <button class="ui large primary button right floated" @click="secondInputs" v-if="!doneChanges">Next
+      </button>
+      <button class="ui large orange button right floated" @click="state = 'scanned-files'">Back</button>
+    </div>
     <!--second stage variable screeen begins-->
 
-    <div class="sixteen wide column" v-if="state == 'second-inputs'" style="overflow-y: auto; max-height: 53vh">
+    <div class="sixteen wide column" v-if="state == 'second-inputs'" style="overflow-y: auto; max-height: 54vh">
       <h2>Please enter the following details:</h2>
       <br>
       <div class="ui large form">
@@ -138,7 +127,7 @@
     <!--second stage variable screen ends-->
 
 
-    <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: 53vh">
+    <div class="sixteen wide column" v-if="state == 'review-updates'" style="overflow-y: auto; max-height: calc(100vh - 180px);">
 
       <h2>Please enter the following details:</h2>
       <br>
@@ -161,25 +150,7 @@
 
     <!--result page begins-->
 
-    <div class="sixteen wide column " v-if="state == 'review-results'">
-
-
-      <h1>Results</h1>
-
-      <!--<div class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh;">-->
-      <!--<template v-for="liveChange in liveChanges">-->
-
-      <!--<div class="title active">-->
-      <!--<i class="dropdown icon"></i>{{liveChange.change.name}}-->
-      <!--</div>-->
-      <!--<div class="content active">-->
-      <!--<span>{{liveChange.change.status}}</span>-->
-      <!--</div>-->
-
-      <!--</template>-->
-      <!--</div>-->
-
-
+    <div class="sixteen wide column " v-if="state == 'review-results'"><h1>Results</h1>
       <div class="ui large bottom aligned divided relaxed animated list">
         <template v-for="liveChange in liveChanges">
           <div class="ui fluid item">
@@ -192,7 +163,6 @@
         </template>
       </div>
       <br/>
-
       <div class="ui segment">
         <img class="ui top aligned left floated image" style="margin-top: 6%" src="~@/images/launch.png"/>
         <div class="ui center aligned basic segment"><span class="devcolor" style="font-size: 22px"> Integration should be done now<br><br></span>
@@ -202,17 +172,8 @@
           <button class="ui orange button" style="margin: 1em" @click="feedBackNo">No</button>
           <span><br>We are collecting this information for our feedback</span>
         </div>
-
-
       </div>
-
     </div>
-
-    <!--<div class="right floated four wide column" v-if="state == 'review-results'">-->
-    <!--<button class="ui large primary button right floated" @click="reset">Close</button>-->
-    <!--</div>-->
-    <!--result page ends-->
-
   </div>
 </template>
 <script>
@@ -254,7 +215,6 @@
         that.selectedIntegration = changeSet;
         that.beginValidateProject();
       });
-
 
     },
     components: {
@@ -343,6 +303,8 @@
 
       },
       reviewFiles() {
+
+
         var that = this;
 
 

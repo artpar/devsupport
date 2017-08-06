@@ -1,7 +1,15 @@
 <template>
-  <div class="cssload-container">
-    <div class="cssload-zenith"></div>
+<div class='container'>
+  <div class='loader'>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--text'></div>
   </div>
+</div>
 </template>
 <script>
   export default {
@@ -11,47 +19,101 @@
   }
 </script>
 <style>
-  .cssload-container {
-    width: 100%;
-    height: 69px;
-    text-align: center;
+.container {
+  height: 70vh;
+  width: 100vw;
+  font-family: Helvetica;
+}
+
+.loader {
+  height: 20px;
+  width: 250px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.loader--dot {
+  animation-name: loader;
+  animation-timing-function: ease-in-out;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background-color: black;
+  position: absolute;
+  border: 2px solid white;
+}
+.loader--dot:first-child {
+  background-color: #8cc759;
+  animation-delay: 0.5s;
+}
+.loader--dot:nth-child(2) {
+  background-color: #8c6daf;
+  animation-delay: 0.4s;
+}
+.loader--dot:nth-child(3) {
+  background-color: #ef5d74;
+  animation-delay: 0.3s;
+}
+.loader--dot:nth-child(4) {
+  background-color: #f9a74b;
+  animation-delay: 0.2s;
+}
+.loader--dot:nth-child(5) {
+  background-color: #60beeb;
+  animation-delay: 0.1s;
+}
+.loader--dot:nth-child(6) {
+  background-color: #fbef5a;
+  animation-delay: 0s;
+}
+.loader--text {
+  position: absolute;
+  top: 200%;
+  left: 0;
+  right: 0;
+  width: 4rem;
+  margin: auto;
+}
+.loader--text:after {
+  content: "Loading";
+  font-weight: bold;
+  animation-name: loading-text;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loader {
+  15% {
+    transform: translateX(0);
   }
-
-  .cssload-zenith {
-    width: 69px;
-    height: 69px;
-    margin: 0 auto;
-    border-radius: 50%;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    box-shadow: 4px 4px 1px rgb(56,58,99);
-    animation: cssload-spin 690ms infinite linear;
-    -o-animation: cssload-spin 690ms infinite linear;
-    -ms-animation: cssload-spin 690ms infinite linear;
-    -webkit-animation: cssload-spin 690ms infinite linear;
-    -moz-animation: cssload-spin 690ms infinite linear;
+  45% {
+    transform: translateX(230px);
   }
-
-
-
-  @keyframes cssload-spin {
-    100%{ transform: rotate(360deg); transform: rotate(360deg); }
+  65% {
+    transform: translateX(230px);
   }
-
-  @-o-keyframes cssload-spin {
-    100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+  95% {
+    transform: translateX(0);
   }
-
-  @-ms-keyframes cssload-spin {
-    100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes loading-text {
+  0% {
+    content: "Loading";
   }
-
-  @-webkit-keyframes cssload-spin {
-    100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  25% {
+    content: "Loading.";
   }
-
-  @-moz-keyframes cssload-spin {
-    100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+  50% {
+    content: "Loading..";
   }
+  75% {
+    content: "Loading...";
+  }
+}
+
 </style>
