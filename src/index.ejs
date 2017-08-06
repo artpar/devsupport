@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>devsupport-ai</title>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,600,700" rel="stylesheet">
     <!-- Add `node_modules/` to global paths so `require` works properly in development -->
     <script>
       require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
@@ -18,6 +19,7 @@
       });
     </script>
     <% } %>
+
 </head>
 <body>
 <div id="app"></div>
@@ -27,5 +29,6 @@
 </script>
 
 <!-- webpack builds are automatically injected -->
+<link rel="stylesheet" href="src/renderer/main.css">
 </body>
 </html>

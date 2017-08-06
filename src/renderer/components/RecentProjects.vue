@@ -1,46 +1,28 @@
 <template>
 
-  <div class="five wide column">
-
-    <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
+  <div class="four wide column sidebar-wpr">
+<!--     <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
       <h2 class="light">{{Project.name}}</h2>
       <p>{{Project.projectDir}}</p>
-    </div>
-
-    <div class="ui raised segment">
-      <h1>Recent Projects</h1>
-
-      <!--<div class="ui dividing header">-->
-      <!--<i class="folder icon"></i>-->
-      <!--<div class="content">-->
-      <!--My awesome project-->
-      <!--<div class="sub header">Android</div>-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <div class="ui divided items">
-
-        <div class="item" v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)"
-             v-if="project.location != null">
-
-          <div class="content">
-            <a class="header" @click="setProject(project)">
-              <h3>{{project.name}}</h3>
-            </a>
-            <div class="description">
-              <p>{{project.location}}</p>
-              <p>Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</p>
-            </div>
-          </div>
-
-        </div>
+    </div> -->
+    <div class="sidebar-path" v-if="Project.projectDir != null">
+      <div class="content">
+        <div class="heading">{{Project.name}}</div>
+        <div class="data">{{Project.projectDir}}</div>
       </div>
-
-
-      <h3 v-if="Project.recentProjects.length == 0">No recent projects</h3>
-
     </div>
-
+    <div class="sidebar-heading">Recent Projects</div>
+    <div class="sidebar-recent-project">
+      <div 
+        class="recent-project-item-wpr" 
+        v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)"
+        v-if="project.location != null">
+          <div class="title" @click="setProject(project)">{{project.name}}</div>
+          <div class="path">{{project.location}}</div>
+          <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
+      </div>
+    </div>
+    <h3 v-if="Project.recentProjects.length == 0">No recent projects</h3>
   </div>
 
 </template>

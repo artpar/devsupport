@@ -1,20 +1,13 @@
 <template>
+
   <div class="ui column centered grid">
-    <div class="row">
-      <div class="ten wide column">
-        <img style="width: 100%;" src="~@/images/herofull.png" alt="image?">
-      </div>
+    <div class="super-coder">
+      <img src="~@/images/herofull.png" alt="image?">
     </div>
-
-    <div class="row">
-      <h2>
-        Start by selecting your source code folder
-      </h2>
-
-    </div>
-    <div class="row">
+    <div class="get-source-folder">
+      <div class="heading">Before we start please link your source folder here</div>
       <el-upload
-          class="upload-demo"
+          class="upload-demo box"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
           :auto-upload="false"
@@ -23,7 +16,6 @@
         <div class="el-upload__text">Drop file here or <em>click to select</em></div>
         <div class="el-upload__tip" slot="tip">Root folder of your project</div>
       </el-upload>
-
     </div>
   </div>
 
