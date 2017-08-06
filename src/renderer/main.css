@@ -11,6 +11,12 @@ body{
 .c-pointer{
     cursor: pointer;
 }
+.pull-right{
+    float: right;
+}
+.pull-left{
+    float: left;
+}
 
 /*Overrides*/
 .el-upload-dragger .el-icon-upload {
@@ -92,6 +98,23 @@ body{
     height: 100vh;
     box-shadow: -5px 0px 20px 0px #ddd;
     overflow-y: auto;
+}
+.content-wpr .task-list{
+    width: 50%;
+    margin: auto;
+    margin-top: 10vh;
+}
+.content-wpr .task-list h4{
+    color: #eee;
+}
+.content-wpr .task-list>div{
+    color: #eee;
+    background: rgb(56, 58, 99);
+    width: 150px;
+    height: 120px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px 0;
 }
 .content-wpr .super-coder{
     width: 100vw;

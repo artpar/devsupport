@@ -3,25 +3,19 @@
     <div class="super-coder">
       <img src="~@/images/herofull.png" alt="image?">
     </div>
-    <div class="ui massive primary buttons">
-      <div class="ui button" @click="setAction('integrate')">
-        <div>
-          <i class="huge settings icon"></i>
-          <h3 class="light">Integrate</h3>
-        </div>
+
+    <div class="task-list">
+      <div class="pull-left c-pointer" @click="setAction('integrate')">
+        <i class="huge settings icon"></i>
+        <h4>Integrate</h4>
       </div>
-      <div class="or"></div>
-      <div class="ui button" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
-        <div v-if="active">
-          <i class="huge configure icon"></i>
-          <h3 class="light">coming soon</h3>
-        </div>
-        <div v-else>
-          <i class="huge configure icon"></i>
-          <h3 class="light">Fix</h3>
-        </div>
+      <div class="pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
+        <i class="huge configure icon"></i>
+        <h4 v-if="active">Coming Soon</h4>
+        <h4 v-else="active">Fix</h4>
       </div>
     </div>
+
     <div class="ui mini modal">
       <div class="header">
        <h3> Coming soon</h3>
