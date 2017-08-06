@@ -1,12 +1,8 @@
 <template>
   <div class="ui grid">
     <div class="sixteen wide column">
-
-      <div class="ui cards">
-
-
-        <template v-for="integration in integrations">
-          <div @click="startIntegration(integration)" class="ui card hoverZoom1 hoverColor1" style="cursor: pointer;">
+        <template >
+<!--           <div @click="startIntegration(integration)" class="ui card hoverZoom1 hoverColor1" style="cursor: pointer;">
 
             <div class="image">
               <span
@@ -23,15 +19,24 @@
               </div>
             </div>
 
+          </div> -->
+          <div class="integration list-wpr">
+            <div class="list-item" v-for="integration in integrations" @click="startIntegration(integration)">
+              <div
+                :style="{float: 'bottom', color: integration.color, fontSize: '85px'}"
+                :class="'ui image devicon pull-left ' + integration.icon"></div>
+              <div class="pull-left content-data">
+                <div class="title">{{integration.name}}</div>
+                <div class="desc">{{integration.description}}</div> 
+              </div>
+              <div class="integration-btn pull-right">Integration</div> 
+            </div>
           </div>
         </template>
-
-      </div>
-
     </div>
-
   </div>
 </template>
+
 <script>
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex';

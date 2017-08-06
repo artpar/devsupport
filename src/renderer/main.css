@@ -102,7 +102,7 @@ body{
 .content-wpr .task-list{
     width: 50%;
     margin: auto;
-    margin-top: 10vh;
+    margin-top: 5vh;
 }
 .content-wpr .task-list h4{
     color: #eee;
@@ -162,4 +162,51 @@ body{
 }
 .integration-task-list .download span{
     font-size: 16px;
+}
+
+/*Card UI*/
+.integration.list-wpr{
+    margin: 5vh 5em;
+}
+.integration .list-item{
+    display: table;
+    content: " ";
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 1px 2px rgba(43,59,93,.29);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform .3s ease-in-out,box-shadow .3s ease-in-out;
+    margin-top: 25px;
+}
+.integration .list-item:hover{
+    box-shadow: 0 1px 2px rgba(43,59,93,.29), 0 0 13px rgba(43,59,93,.29);
+}
+.integration .list-item .content-data{
+    width: 65%;
+    margin: 15px 50px 0 5%;
+}
+.integration .list-item .integration-btn{
+    width: 15%;
+    margin: 22px 3% 0 0;
+    background: #383a63;
+    color: #eee;
+    text-align: center;
+    padding: 10px;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 300;
+    transition: .25s ease-in-out;
+}
+.integration .list-item .integration-btn:hover{
+    background: #52558a;
+    transition: .25s ease-in-out;
+}
+.integration .list-item .content-data .title{
+    font-size: 28px;
+    font-weight: 300;
+}
+.integration .list-item .content-data .desc{
+    line-height: 35px;
+    margin: 0;
 }
