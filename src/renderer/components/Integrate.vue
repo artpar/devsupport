@@ -1,5 +1,5 @@
 <template>
-  <div class="ui grid" style="margin-top: calc(30vh - 125px); padding: 0 5em">
+  <div class="ui grid" style="padding: 0 5em">
 
     <div class="sixteen wide column" v-if="state == 'scanning-files'">
       <loading v-if="loading"></loading>
@@ -27,54 +27,27 @@
       <button class="ui large orange button right floated" @click="beginValidateProject">Rescan files</button>
     </div>
     <div class="sixteen wide column" v-if="state == 'review-files'">
-      <div style="overflow-y: auto; max-height: calc(53vh - 20px);">
+      <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="integration-task-list">
-          <div class="grouped fields">
-            <label for="fruit"><h3>Add dependency to Lazy pay</h3></label>
-            <div class="field">
-              <div class="ui">
-                <input type="radio" name="fruit">
-                <label>Apples</label>
+          <div 
+            class="grouped fields" v-for="item in liveChanges" 
+            v-if="(item.selectedFiles.length > 1) || (item.change.changeType == 'fileDownload')">
+              <label for="fruit"><h3>{{item.change.name}}</h3></label>
+              <div class="field" v-for="file in item.selectedFiles">
+                <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" @click="item.selectedFilePath = file.filepath">
+                  <input 
+                    class="hidden" 
+                    type="radio" 
+                    :name="item.name" 
+                    v-model="item.selectedFilePath"
+                    :value="file.filepath">
+                  <label>{{file.relative}}</label>
+                </div>
               </div>
-            </div>
-            <div class="field">
-              <div class="ui">
-                <input type="radio" name="fruit">
-                <label>Oranges</label>
+              <div v-if="item.change.changeType == 'fileDownload'" class="field download">
+                <span>{{item.change.fileName}}</span>
+                <i class="c-pointer cloud download icon"></i>
               </div>
-            </div>
-          </div>
-          <div class="grouped fields">
-            <label for="fruit"><h3>Download PHP File</h3></label>
-            <div class="field">
-              <input type="text">
-              D icon
-            </div>
-          </div>
-          <div class="grouped fields">
-            <label for="fruit"><h3>Add key to AndroidManifest.xml</h3></label>
-            <div class="field">
-              <div class="ui">
-                <input type="radio" name="fruit">
-                <label>Apples</label>
-              </div>
-            </div>
-            <div class="field">
-              <div class="ui">
-                <input type="radio" name="fruit">
-                <label>Oranges</label>
-              </div>
-            </div>
-          </div>
-          <div class="grouped fields">
-            <label for="fruit"><h3>Add functions to some Activity.java for Initiate Pay and Handle Response</h3></label>
-            <div class="field" v-for="file in liveChanges[3].selectedFiles">
-              <div class="ui radio checkbox" @click="liveChanges[3].selectedFilePath = file.filepath">
-                <input class="hidden" type="radio" :name="liveChanges[3].name" v-model="liveChanges[3].selectedFilePath"
-                       :value="file.filepath">
-                <label>{{file.relative}}</label>
-              </div>
-            </div>
           </div>
         </div>
       </div>

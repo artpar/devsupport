@@ -8,6 +8,9 @@ body{
 .pad-1em{
     padding: 1em;
 }
+.c-pointer{
+    cursor: pointer;
+}
 
 /*Overrides*/
 .el-upload-dragger .el-icon-upload {
@@ -113,4 +116,21 @@ body{
 .get-source-folder .box .el-upload, .get-source-folder .box .el-upload-dragger{
     height: 23vh;
     width: 100%;
+}
+
+/*Integration Page CSS*/
+.integration-task-list{
+    overflow: hidden;
+}
+.integration-task-list .grouped.fields{
+    margin-top: 30px;
+}
+.integration-task-list .download i{
+    font-size: 2em;
+    padding: 10px;
+    position: relative;
+    top: 5px;
+}
+.integration-task-list .download span{
+    font-size: 16px;
 }
