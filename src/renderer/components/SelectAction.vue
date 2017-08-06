@@ -56,9 +56,9 @@
     },
     methods: {
       setPageDesc(path,title) {
-      this.pageDesc.path=path;
-      this.pageDesc.title=title;
-    },
+        this.pageDesc.path=path;
+        this.pageDesc.title=title;
+      },
       setEventDesc(category,action,label) {
         this.eventDesc.category=category;
         this.eventDesc.action=action;

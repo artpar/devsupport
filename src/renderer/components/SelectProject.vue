@@ -14,7 +14,10 @@
           drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drop file here or <em>click to select</em></div>
-        <div class="el-upload__tip" slot="tip">Root folder of your project</div>
+        <div class="el-upload__tip" slot="tip">
+          Root folder of your project OR 
+          <span class="skip" @click="skip()">Skip</span>
+        </div>
       </el-upload>
     </div>
   </div>
@@ -48,6 +51,12 @@
 //      processFile: function (file, filelist) {
 //        console.log("provided schema", this.schema, file.raw)
 //      },
+      
+      skip() {
+        this.$router.push({
+          name: 'select-action'
+        });
+      },
       print() {
         console.log("take me somwewhere");
       },
