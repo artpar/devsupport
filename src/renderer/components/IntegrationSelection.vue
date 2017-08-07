@@ -29,7 +29,6 @@
                 <div class="title">{{integration.name}}</div>
                 <div class="desc">{{integration.description}}</div> 
               </div>
-              <div class="integration-btn pull-right">Integration</div> 
             </div>
           </div>
         </template>

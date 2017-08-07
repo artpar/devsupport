@@ -32,7 +32,7 @@
           <div 
             class="grouped fields" v-for="item in liveChanges" 
             v-if="(item.selectedFiles.length > 1) || (item.change.changeType == 'fileDownload')">
-              <label for="fruit"><h3>{{item.change.name}}</h3></label>
+              <label :for="item.name"><h3>{{item.change.name}}</h3></label>
               <div class="field" v-for="file in item.selectedFiles">
                 <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" @click="item.selectedFilePath = file.filepath">
                   <input 
@@ -46,11 +46,14 @@
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download">
                 <span>{{item.change.fileName}}</span>
-                <i class="c-pointer cloud download icon"></i>
+                <i class="c-pointer cloud download icon" @click="downloadAsFile(item)"></i>
               </div>
           </div>
         </div>
       </div>
+
+
+
       <div v-if="false" class="ui styled fluid accordion" style="overflow-y: auto; max-height: 53vh">
         <template v-for="liveChange in liveChanges">
           <div :class="{'title': true, 'active': liveChange.change.changeType == 'fileDownload'}">
@@ -96,6 +99,9 @@
         </template>
       </div>
     </div>
+
+
+
 
     <div class="right floated six wide column" v-if="state == 'review-files'">
       <button class="ui large primary button right floated" @click="secondInputs" v-if="!doneChanges">Next
