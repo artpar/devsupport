@@ -14,6 +14,7 @@ import Loading from './components/Loading.vue'
 
 global.jQuery = require('jquery');
 import _Tether from 'tether';
+
 window.Tether = _Tether;
 require('@/assets/icons.css');
 require('lato-font/css/lato-font.css');
@@ -22,6 +23,7 @@ require('glyphicons');
 require('material-icons/css/material-icons.min.css');
 require('@/assets/semantic/semantic.min.css');
 require('@/assets/semantic/semantic.min.js');
+require('@/assets/css/main.css');
 import Vue2Filters from 'vue2-filters'
 
 Vue.use(Vue2Filters)
