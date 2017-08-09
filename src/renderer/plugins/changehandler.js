@@ -43,8 +43,9 @@ var FileProcessorFactor = {
     that.logs = [];
 
     that.log = function (file, message) {
-      that.logs.push("[" + file.relative + "] " + message)
-    };
+      console.log("message");
+      // that.logs.push("[" + file.relative + "] " + message)
+    }
 
     that.getFileCount = function () {
       return that.selectedFiles.length;

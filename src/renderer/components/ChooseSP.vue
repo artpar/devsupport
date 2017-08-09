@@ -56,7 +56,7 @@
         this.pageDesc.path=path;
         this.pageDesc.title=title;
       },
-      setEventDesc(category,action,label) {
+      getEventDesc(category, action, label) {
         this.eventDesc.category=category;
         this.eventDesc.action=action;
         this.eventDesc.label=label;
@@ -64,7 +64,7 @@
       integrate(){
         let that = this;
 
-        this.setEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
+        this.getEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
         console.log("eventDesc",this.eventDesc);
         this.$store.commit('GA_EVENT',this.eventDesc);
 
