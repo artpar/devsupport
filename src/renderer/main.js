@@ -32,6 +32,25 @@ Vue.use(Element, {locale});
 Vue.component("loading", Loading);
 
 
+String.prototype.repeat = function (times) {
+  return (new Array(times + 1)).join(this);
+};
+
+window.getPageDesc = function (path, title) {
+  return {
+    path: path,
+    title: title,
+  }
+};
+window.getEventDesc = function (category, action, label) {
+  return {
+    category: category,
+    action: action,
+    label: label,
+  };
+};
+
+
 var DURATION_IN_SECONDS = {
   epochs: ['year', 'month', 'day', 'hour', 'minute', 'second'],
   year: 31536000,

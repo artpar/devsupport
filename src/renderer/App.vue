@@ -73,7 +73,7 @@
         this.pageDesc.path = path;
         this.pageDesc.title = title;
       },
-      setEventDesc(category, action, label) {
+      getEventDesc(category, action, label) {
         this.eventDesc.category = category;
         this.eventDesc.action = action;
         this.eventDesc.label = label;
