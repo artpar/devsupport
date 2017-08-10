@@ -30,6 +30,7 @@ const mutations = {
     }
     let parts = dir.split("/");
     state.name = parts[parts.length - 1];
+    state.currentProject = {};
   },
   SET_CONTEXT_MAP(state, contextMap) {
     state.contextMap = contextMap;

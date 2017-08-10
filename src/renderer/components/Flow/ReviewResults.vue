@@ -21,8 +21,8 @@
         <div class="ui center aligned basic segment"><span class="devcolor" style="font-size: 22px"> Integration should be done now<br><br></span>
           <span style="font-size: 16px">You can now build and run the project<br><br></span>
           <span style="font-size: 20px; margin:1em">Did it help?</span>
-          <button class="ui primary button" style="margin: 1em" @click="feedBackYes">Yes</button>
-          <button class="ui orange button" style="margin: 1em" @click="feedBackNo">No</button>
+          <button class="ui primary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
+          <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
           <span><br>We are collecting this information for our feedback</span>
         </div>
       </div>
@@ -44,17 +44,20 @@
 
     },
     methods: {
-      feedBackYes() {
-        this.$store.commit('GA_EVENT', getEventDesc("feedBack", "yes", "did it help?"));
+      feedback(answer) {
+        this.$store.commit('GA_EVENT', getEventDesc("feedBack", answer, "did it help?"));
         this.$store.commit('PAGE_VIEW', getPageDesc("/app", "home"));
         this.reset();
 
       },
-      feedBackNo() {
-        this.$store.commit('GA_EVENT', getEventDesc("feedBack", "no", "did it help?"));
-        this.$store.commit('PAGE_VIEW', getPageDesc("/app", "home"));
-        this.reset();
-
+      reset() {
+        this.setProjectDir({
+          projectDir: null
+        });
+        this.setSessionAction(null);
+        this.$router.push({
+          name: "select-project"
+        })
       },
     }
   }

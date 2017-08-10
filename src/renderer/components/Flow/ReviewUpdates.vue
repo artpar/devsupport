@@ -23,8 +23,6 @@
 
     <div class="right floated sixteen wide column">
       <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
-      <button class="ui large orange button right floated " @click="listScannedFiles" v-if="!doneChanges">Rescan Files
-      </button>
     </div>
 
   </div>
@@ -40,14 +38,6 @@
     },
     methods: {
       ...mapActions(["setContextMap", "evaluateTemplates"]),
-      listScannedFiles() {
-        var that = this;
-        that.state = "scanned-files";
-        that.$router.push({
-          name: "ScanningFiles",
-        })
-
-      },
       reviewFiles() {
         var that = this;
         var contextMap = {};

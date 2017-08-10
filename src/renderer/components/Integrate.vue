@@ -59,15 +59,6 @@
         console.log("variable update", arguments);
       },
       ...mapActions(['setProjectDir', 'setSessionAction']),
-      reset() {
-        this.setProjectDir({
-          projectDir: null
-        });
-        this.setSessionAction(null);
-        this.$router.push({
-          name: "select-project"
-        })
-      },
 
 
 
