@@ -12,8 +12,10 @@ const state = {
   identification: null,
   variables: [],
   secondStageVariables: [],
+  variableValidations: [],
   changes: [],
   currentProject: null,
+  error: null,
   contextMap: {},
   recentProjects: store.get("projects.recent", []),
   visitor: [],
@@ -21,6 +23,12 @@ const state = {
 };
 
 const mutations = {
+  SET_VARIABLE_VALIDATIONS(state, validations) {
+    state.variableValidations = validations;
+  },
+  SET_ERROR(state, error) {
+    state.error = error;
+  },
   SET_PROJECT_DIR(state, dir) {
     state.projectDir = dir;
     if (dir == null) {
@@ -80,7 +88,19 @@ const mutations = {
     console.log("eventProperties", eventProperties);
     state.visitor.event(eventProperties.category, eventProperties.action, eventProperties.label).send();
   },
+  RUN_VARIABLE_VALIDATIONS(state, callback) {
 
+    if (state.changes.length === 0) {
+      callback([]);
+    } else {
+      state.changes[0].runVariableValidations(state.contextMap, state.variableValidations).then(function (result) {
+        callback(result);
+      }).catch(function(failure){
+        callback(failure);
+      })
+    }
+
+  },
   DO_CHANGES(state, callback) {
 
     function doIndex(ith, doIndex) {
@@ -150,13 +170,23 @@ const mutations = {
 };
 
 const actions = {
+  setError({commit}, error) {
+    commit('SET_ERROR', error);
+  },
   setProjectDir({commit}, projectProperties) {
     console.log("set project dir", projectProperties.projectDir);
     commit('SET_PROJECT_DIR', projectProperties.projectDir);
     commit('ADD_PROJECT', projectProperties);
+    commit("SET_ERROR", null);
+  },
+  runVariableValidations({commit}, callback) {
+    commit("RUN_VARIABLE_VALIDATIONS", callback)
   },
   doChanges({commit}, callback) {
     commit("DO_CHANGES", callback)
+  },
+  setVariableValidations({commit}, validations) {
+    commit("SET_VARIABLE_VALIDATIONS", validations)
   },
   evaluateTemplates({commit}) {
     commit("EVALUATE_TEMPLATES")

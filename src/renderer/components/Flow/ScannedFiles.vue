@@ -2,7 +2,7 @@
   <div class="ui grid" style="padding: 0 5em">
 
 
-    <div class="sixteen wide column" v-if="!loading > 0 && state == 'scanned-files'">
+    <div class="sixteen wide column">
       <table class="ui selectable celled table">
         <thead>
         <tr>
@@ -20,7 +20,7 @@
         </tbody>
       </table>
     </div>
-    <div class="right floated sixteen wide column" v-if="state == 'scanned-files'">
+    <div class="right floated sixteen wide column" >
       <button class="ui large primary button right floated" @click="reviewUpdates">Review Inputs</button>
       <button class="ui large orange button right floated" @click="rescanFiles">Rescan files</button>
     </div>
@@ -36,15 +36,6 @@
       },
       reviewUpdates() {
         var that = this;
-
-
-        that.state = "review-updates";
-
-        if (that.secondStageVariables.length < 1) {
-          setTimeout(function () {
-            that.doChanges();
-          }, 100)
-        }
 
       },
     },

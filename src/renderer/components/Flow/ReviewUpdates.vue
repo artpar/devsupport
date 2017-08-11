@@ -9,6 +9,19 @@
 
       <h2>Please enter the following details:</h2>
       <br>
+      <div>
+      </div>
+      <div class="ui icon warning message" v-if="Project.error != null">
+        <i class="warning sign icon"></i>
+        <div class="content">
+          <div class="header">
+            There was an while validating inputs
+          </div>
+          <p>
+            {{Project.error}}
+          </p>
+        </div>
+      </div>
       <div class="ui large form">
         <div class="sixteen wide required field" v-for="variable in Project.variables">
           <h3>{{variable.label}}</h3>
@@ -23,6 +36,7 @@
 
     <div class="right floated sixteen wide column">
       <button class="ui large primary button right floated " @click="reviewFiles">Review files</button>
+      </button>
     </div>
 
   </div>
