@@ -141,41 +141,48 @@
 
           Promise.all(response).then(function (res) {
             console.log("more response", res);
+            var finalResult = true;
+
             for (var i = 0; i < res.length; i++) {
               let response = res[i];
-              if (response.result) {
+              if (!response.result) {
+                finalResult = false;
+                break;
+              }
+            }
 
-                that.doChanges(function () {
-                  console.log("Completed all changes");
-                  that.$notify({
-                    title: "Success",
-                    message: "All changes were completed.",
-                    type: "success"
-                  });
+            if (finalResult) {
 
-                  that.callbackChangeComplete();
-                })
-
-              } else {
-                that.setError(response.validation.errorLabel);
+              that.doChanges(function () {
+                console.log("Completed all changes");
                 that.$notify({
-                  message: response.validation.errorLabel,
-                  title: "Failed",
-                  type: "error"
+                  title: "Success",
+                  message: "All changes were completed.",
+                  type: "success"
                 });
 
-                switch (response.validation.stage) {
-                  case 1:
-                    that.$router.push({
-                      name: "ReviewUpdates",
-                    });
-                    return;
-                  case 2:
-                    that.$router.push({
-                      name: "SecondInputs",
-                    });
-                    return;
-                }
+                that.callbackChangeComplete();
+              })
+
+            } else {
+              that.setError(response.validation.errorLabel);
+              that.$notify({
+                message: response.validation.errorLabel,
+                title: "Failed",
+                type: "error"
+              });
+
+              switch (response.validation.stage) {
+                case 1:
+                  that.$router.push({
+                    name: "ReviewUpdates",
+                  });
+                  return;
+                case 2:
+                  that.$router.push({
+                    name: "SecondInputs",
+                  });
+                  return;
               }
             }
           }).catch(function (result) {
