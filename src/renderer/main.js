@@ -14,6 +14,7 @@ import Loading from './components/Loading.vue'
 
 global.jQuery = require('jquery');
 import _Tether from 'tether';
+
 window.Tether = _Tether;
 require('@/assets/icons.css');
 require('lato-font/css/lato-font.css');
@@ -22,12 +23,32 @@ require('glyphicons');
 require('material-icons/css/material-icons.min.css');
 require('@/assets/semantic/semantic.min.css');
 require('@/assets/semantic/semantic.min.js');
+require('@/assets/css/main.css');
 import Vue2Filters from 'vue2-filters'
 
 Vue.use(Vue2Filters)
 
 Vue.use(Element, {locale});
 Vue.component("loading", Loading);
+
+
+String.prototype.repeat = function (times) {
+  return (new Array(times + 1)).join(this);
+};
+
+window.getPageDesc = function (path, title) {
+  return {
+    path: path,
+    title: title,
+  }
+};
+window.getEventDesc = function (category, action, label) {
+  return {
+    category: category,
+    action: action,
+    label: label,
+  };
+};
 
 
 var DURATION_IN_SECONDS = {

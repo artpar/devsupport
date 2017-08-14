@@ -1,29 +1,24 @@
 <template>
+
   <div class="ui column centered grid">
-    <div class="row">
-      <div class="ten wide column">
-        <img style="width: 100%;" src="~@/images/herofull.png" alt="image?">
-      </div>
+    <div class="super-coder">
+      <img src="~@/images/herofull.png" alt="image?">
     </div>
-
-    <div class="row">
-      <h2>
-        Start by selecting your source code folder
-      </h2>
-
-    </div>
-    <div class="row">
+    <div class="get-source-folder">
+      <div class="heading">Before we start please link your source folder here</div>
       <el-upload
-          class="upload-demo"
+          class="upload-demo box"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
           :auto-upload="false"
           drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drop file here or <em>click to select</em></div>
-        <div class="el-upload__tip" slot="tip">Root folder of your project</div>
+        <div class="el-upload__tip" slot="tip">
+          Root folder of your project OR 
+          <span class="skip" @click="skip()">Skip</span>
+        </div>
       </el-upload>
-
     </div>
   </div>
 
@@ -53,11 +48,13 @@
       }
     },
     methods: {
-//      processFile: function (file, filelist) {
-//        console.log("provided schema", this.schema, file.raw)
-//      },
-      print() {
-        console.log("take me somwewhere");
+      skip() {
+        this.setProjectDir({
+         projectDir: ""
+        });
+        this.$router.push({
+          name: 'select-action'
+        });
       },
       ...mapActions(['setProjectDir', 'setSessionAction', 'addProject']),
       open(link) {
@@ -68,9 +65,7 @@
 
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-
         let identification = null;
-
         fs.recurseSync(
             rawFile.path,
             ['**/build.gradle', '**/AndroidManifest.xml'],

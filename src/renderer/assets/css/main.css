@@ -1,0 +1,212 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+.pad-1em{
+    padding: 1em;
+}
+.c-pointer{
+    cursor: pointer;
+}
+.pull-right{
+    float: right;
+}
+.pull-left{
+    float: left;
+}
+
+/*Overrides*/
+.el-upload-dragger .el-icon-upload {
+    font-size: 67px;
+    color: #97a8be;
+    margin: 2vh;
+    line-height: 12vh;
+}
+
+/*Sidebar*/
+.sidebar-wpr{
+    min-height: 1px;
+    position: relative;
+    height: 100vh;
+    background: #fbfcfc;
+    padding: 0 !important;
+}
+.sidebar-wpr .sidebar-heading {
+    padding: 0px 20px;
+    margin-top: 30px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+.sidebar-wpr .sidebar-recent-project{
+    padding: 0pc 20px;
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+}.sidebar-wpr .sidebar-recent-project .recent-project-item-wpr{
+    border-bottom: 1px solid rgba(60,71,145,0.25);    
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.sidebar-path{
+    padding: 0px 20px;
+}
+.sidebar-path .content{
+    background: rgba(56,58,99,1);
+    border-radius: 5px; 
+    padding: 10px 20px;
+    color: #fff;
+    line-height: 30px;
+    margin: 15px 0 30px 0;
+    box-shadow: 0px 2.8px 6.5px 1px rgba(0,0,0,0.26);
+    position: relative;
+}
+.sidebar-path .content .heading{
+    font-weight: 600;
+    font-size: 19px;
+}
+.sidebar-path .content .data{
+    font-size: 13px;
+}
+.recent-project-item-wpr .title{
+    font-size: 17px;
+    font-weight: 700;
+    color: rgba(56,58,99,1);
+    line-height: 25px;
+    cursor: pointer;
+}
+.recent-project-item-wpr .path{
+    font-size: 12px;
+    color: rgba(118,118,118,1);
+    padding-bottom: 8px
+}
+.recent-project-item-wpr .note{
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(118,118,118,1);
+    font-weight: 500
+}
+
+/*Content*/
+.content-wpr{
+    min-height: 1px;
+    position: relative;
+    height: 100vh;
+    box-shadow: -5px 0px 20px 0px #ddd;
+    overflow-y: auto;
+}
+.content-wpr .task-list{
+    width: 50%;
+    margin: auto;
+    margin-top: 5vh;
+}
+.content-wpr .task-list h4{
+    color: #eee;
+}
+.content-wpr .task-list>div{
+    color: #eee;
+    background: rgb(56, 58, 99);
+    width: 150px;
+    height: 120px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px 0;
+}
+.content-wpr .super-coder{
+    width: 100vw;
+    margin: 5vh auto;
+}
+.super-coder>img{
+    width: 70vh;
+}
+.get-source-folder{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+.get-source-folder .skip{
+    font-size: 16px;
+    padding: 2px;
+    color: #383a63;
+    cursor: pointer;
+}
+.get-source-folder .heading{
+    font-size: 20px;
+    color: rgba(33,28,61,1);
+    font-weight: 500;
+}
+.get-source-folder .box{
+    padding: 15px;
+}
+.get-source-folder .box .el-upload, .get-source-folder .box .el-upload-dragger{
+    height: 23vh;
+    width: 100%;
+}
+
+/*Integration Page CSS*/
+.integration-task-list{
+    overflow: hidden;
+}
+.integration-task-list .grouped.fields{
+    margin-top: 30px;
+}
+.integration-task-list .download i{
+    font-size: 2em;
+    padding: 10px;
+    position: relative;
+    top: 5px;
+}
+.integration-task-list .download span{
+    font-size: 16px;
+}
+
+/*Card UI*/
+.integration.list-wpr{
+    margin: 5vh 5em;
+}
+.integration .list-item{
+    display: table;
+    content: " ";
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 1px 2px rgba(43,59,93,.29);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform .3s ease-in-out,box-shadow .3s ease-in-out;
+    margin-top: 25px;
+}
+.integration .list-item:hover{
+    box-shadow: 0 1px 2px rgba(43,59,93,.29), 0 0 13px rgba(43,59,93,.29);
+}
+.integration .list-item .content-data{
+    width: 60%;
+    margin: 15px 0 0 5%;
+}
+.integration .list-item .integration-btn{
+    width: 15%;
+    margin: 22px 3% 0 0;
+    background: #383a63;
+    color: #eee;
+    text-align: center;
+    padding: 10px;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 300;
+    transition: .25s ease-in-out;
+}
+.integration .list-item .integration-btn:hover{
+    background: #52558a;
+    transition: .25s ease-in-out;
+}
+.integration .list-item .content-data .title{
+    font-size: 28px;
+    font-weight: 300;
+}
+.integration .list-item .content-data .desc{
+    line-height: 35px;
+    margin: 0;
+}

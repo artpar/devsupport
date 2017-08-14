@@ -1,75 +1,23 @@
 <template>
   <div class="ui grid">
-    <!--<div v-if="Project" class="sixteen wide column">-->
-
-
-    <!--<div class="ui ordered steps mini">-->
-    <!--<div class="completed step">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Project Source-->
-    <!--</div>-->
-    <!--<div slot="description">-->
-    <!--{{Project.projectDir}}-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="active step" title="Choose integration">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Choose integration-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="step" title="Review">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Review-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="step" title="Execute">-->
-    <!--<div class="content">-->
-    <!--<div class="title">-->
-    <!--Execute-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--</div>-->
     <div class="sixteen wide column">
-
-      <div class="ui cards">
-
-
-        <template v-for="integration in integrations">
-          <div @click="startIntegration(integration)" class="ui card hoverZoom1 hoverColor1" style="cursor: pointer;">
-
-            <div class="image">
-              <span
-                  :style="{float: 'bottom', color: integration.color, fontSize: '150px', padding: '62px'}"
-                  :class="'ui image devicon ' + integration.icon"></span>
-
+      <template>
+        <div class="integration list-wpr">
+          <div class="list-item" v-for="integration in integrations" @click="startIntegration(integration)">
+            <div
+                :style="{float: 'bottom', color: integration.color, fontSize: '85px'}"
+                :class="'ui image devicon pull-left ' + integration.icon"></div>
+            <div class="pull-left content-data">
+              <div class="title">{{integration.name}}</div>
+              <div class="desc">{{integration.description}}</div>
             </div>
-            <div class="content">
-              <a class="primary header">
-                {{integration.name}}
-              </a>
-              <div class="description">
-                {{integration.description}}
-              </div>
-            </div>
-
           </div>
-        </template>
-
-      </div>
-
+        </div>
+      </template>
     </div>
-
   </div>
 </template>
+
 <script>
   import {mapState} from 'vuex';
   import {mapActions} from 'vuex';
@@ -96,10 +44,7 @@
       }
     },
     mounted() {
-      this.setPageDesc("/app/integrationSelection","IntegrationSelection");
-      console.log("pageDesc",this.pageDesc);
-      this.$store.commit('PAGE_VIEW',this.pageDesc);
-
+      this.$store.commit('PAGE_VIEW', getPageDesc("/app/integrationSelection", "IntegrationSelection"));
       var that = this;
       let merchantReferenceId = this.$route.params.id;
       console.log("started integration selection", merchantReferenceId);
@@ -117,29 +62,17 @@
 
     },
     methods: {
-      setPageDesc(path,title) {
-        this.pageDesc.path=path;
-        this.pageDesc.title=title;
-      },
-      setEventDesc(category,action,label) {
-        this.eventDesc.category=category;
-        this.eventDesc.action=action;
-        this.eventDesc.label=label;
-      },
       startIntegration(integration) {
         console.log("start integration ", integration.id);
         this.$router.push({
-          name: 'Integrate', params: {id: integration.id}
+          name: 'ScanningFiles', params: {id: integration.id}
         })
       },
       ...mapActions(['setIntegration']),
       chooseIntegration(inte) {
         this.setIntegration(inte);
         this.$router.push({
-          name: 'Integrate',
-          params: {
-            name: 'lazyPayAndroid'
-          }
+          name: 'ScanningFiles',
         })
       },
     },

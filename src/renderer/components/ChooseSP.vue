@@ -1,25 +1,38 @@
 <template>
-  <div class="ui centered grid" style="    margin-top: 10em;">
+  <div class="ui centered grid" style="padding: 0 5em; margin-top: 10em;">
     <div class="sixteen wide column">
-      <el-select style="width: 100%; height: 100px; overflow: hidden" size="large" v-model="selectedSP" filterable
+      <!--<el-select -->
+        <!--style="width: 100%; height: 100px; overflow: hidden" -->
+        <!--size="large" -->
+        <!--v-model="selectedSP" -->
+        <!--filterable-->
+        <!--placeholder="What do you want to integrate"-->
+        <!--:loading="loading">-->
+          <!--<el-option style="overflow: hidden"-->
+            <!--v-for="item in list"-->
+            <!--:key="item.id"-->
+            <!--:label="item.name"-->
+            <!--:value="item">-->
+          <!--</el-option>-->
+      <!--</el-select>-->
+      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
-                 :loading="loading">
-        <el-option style="overflow: hidden"
-            v-for="item in list"
-            :key="item.id"
-            :label="item.name"
-            :value="item">
+                 :remote-method="remoteMethod" :loading="loading">
+        <el-option
+          v-for="item in options4"
+          :key="item.id"
+          :label="item.name"
+          :value="item">
         </el-option>
       </el-select>
+
     </div>
     <div class="four wide column">
       <button @click="integrate()" class="ui huge button background devcolordark">INTEGRATE</button>
     </div>
-
   </div>
-
-
 </template>
+
 <script>
   import jsonApi from '../plugins/jsonApi';
   import {Notification} from 'element-ui';
@@ -54,15 +67,29 @@
         this.pageDesc.path=path;
         this.pageDesc.title=title;
       },
-      setEventDesc(category,action,label) {
+      getEventDesc(category, action, label) {
         this.eventDesc.category=category;
         this.eventDesc.action=action;
         this.eventDesc.label=label;
       },
+      remoteMethod(query) {
+        console.log("input box active");
+        if (query !== '') {
+          this.loading = true;
+          this.options4 = this.list.filter(item => {
+            return item.name.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+          });
+          this.loading = false;
+
+        } else {
+          this.options4 = [];
+        }
+      },
       integrate(){
         let that = this;
 
-        this.setEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
+        this.getEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
         console.log("eventDesc",this.eventDesc);
         this.$store.commit('GA_EVENT',this.eventDesc);
 
@@ -84,23 +111,7 @@
             id: that.selectedSP.id
           }
         })
-
-
       },
-//      remoteMethod(query) {
-//        console.log("input box active");
-//        if (query !== '') {
-//          this.loading = true;
-//          this.options4 = this.list.filter(item => {
-//            return item.name.toLowerCase()
-//                    .indexOf(query.toLowerCase()) > -1;
-//          });
-//          this.loading = false;
-//
-//        } else {
-//          this.options4 = [];
-//        }
-//      }
     },
     mounted(){
       this.setPageDesc("/app/chooseSP","ChooseSP");

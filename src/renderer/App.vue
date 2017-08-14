@@ -1,49 +1,30 @@
 <template>
-  <div id="app" class="ui container fluid">
-
+  <div id="app" class="container fluid pad-1em">
     <div class="ui grid">
       <recent-projects></recent-projects>
-
-
-      <div class="ten wide column">
-        <div class="ui vertical masthead segment">
-          <div class="ui container" v-if="Project.currentProject != null">
-            <div class="ui large secondary menu">
-
-              <div class="item"
-                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
-                <i class="circular big icon"><i
-                  :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
-              </div>
-
-              <div class="item"
-                   v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
-                <i class="circular big icon"><i
-                  :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
-              </div>
-
-              <div class="right item">
-                <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
-              </div>
-            </div>
+      <div class="twelve wide column content-wpr">
+        <div class="ui secondary menu" v-if="Project.currentProject != null">
+          <div class="item"
+               v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
+            <i class="circular big icon"><i
+              :class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>
           </div>
-
-          <div class="ui text" style="margin-top: 3em;">
-            <router-view></router-view>
+          <div class="item"
+               v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
+            <i class="circular big icon"><i
+              :class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>
           </div>
-
+          <div class="right item">
+            <a @click="goHome"><i class="circular large home link inverted primary icon"></i></a>
+          </div>
         </div>
+        <router-view></router-view>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
-
-
-
   import RecentProjects from './components/RecentProjects.vue';
   import {mapState, mapActions} from 'vuex';
   export default {
@@ -92,7 +73,7 @@
         this.pageDesc.path = path;
         this.pageDesc.title = title;
       },
-      setEventDesc(category, action, label) {
+      getEventDesc(category, action, label) {
         this.eventDesc.category = category;
         this.eventDesc.action = action;
         this.eventDesc.label = label;
@@ -114,9 +95,9 @@
 
 <style>
 
-  html, body {
+/*  html, body {
     overflow: hidden;
-  }
+  }*/
 
   h1 {
     color: #383A63;
