@@ -21,7 +21,7 @@ export default function (params, expectations) {
         return
       }
 
-      console.log("creating new axios promise");
+      console.log("creating new axios promise", params.url);
       axios(params).then(function (res) {
         console.log("response from validation", res);
         var finalResult = true;

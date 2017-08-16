@@ -123,18 +123,18 @@ const FileProcessorFactor = {
 
       for (let i = 0; i < change.change.length; i++) {
 
-        console.log("dot is not defined", dot.template);
+        // console.log("dot is not defined", dot.template);
         let line = change.change[i].line;
         if (!change.change[i].originalLine) {
           change.change[i].originalLine = line
         } else {
           line = change.change[i].originalLine;
         }
-        console.log("line is ", line);
+        // console.log("line is ", line);
 
         const tempFn = dot.template(line);
         change.change[i].line = tempFn(contextMap);
-        console.log("evaluated template: ", change.change[i])
+        // console.log("evaluated template: ", change.change[i])
       }
     };
 

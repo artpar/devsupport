@@ -26,29 +26,14 @@ export default new Router({
       component: require('@/components/Integrate')
     },
     {
-      path: '/scanning-files/:id',
-      name: "ScanningFiles",
-      component: require("@/components/Flow/ScanningFiles")
+      path: '/apply-changes',
+      name: "ApplyChanges",
+      component: require("@/components/Flow/ApplyChanges")
     },
     {
-      path: '/scanned-files',
-      name: "ScanningFiles",
-      component: require("@/components/Flow/ScannedFiles")
-    },
-    {
-      path: '/review-changes',
-      name: "ReviewChanges",
-      component: require("@/components/Flow/ReviewChanges")
-    },
-    {
-      path: '/second-inputs',
-      name: "SecondInputs",
-      component: require("@/components/Flow/SecondInputs")
-    },
-    {
-      path: '/review-updates',
-      name: "ReviewUpdates",
-      component: require("@/components/Flow/ReviewUpdates")
+      path: '/present-changes',
+      name: "PresentChanges",
+      component: require("@/components/Flow/PresentChanges")
     },
     {
       path: '/scanning-files',
@@ -61,9 +46,9 @@ export default new Router({
       component: require("@/components/Flow/ReviewResults")
     },
     {
-      path: '/scanning/:id',
-      name: "ScanningFiles",
-      component: require("@/components/Flow/ScanningFiles")
+      path: '/variable-inputs',
+      name: "VariableInputs",
+      component: require("@/components/Flow/VariableInputs")
     },
     {
       path: '/SelectFix',
