@@ -11,7 +11,7 @@
         <i class="warning sign icon"></i>
         <div class="content">
           <div class="header">
-            There was an while validating inputs
+            There was an error while validating inputs
           </div>
           <p>
             {{Project.error}}
