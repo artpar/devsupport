@@ -4,7 +4,7 @@
     <div class="sixteen wide column">
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="integration-task-list">
-          <div  class="grouped fields" v-for="item in Project.changes">
+          <div class="grouped fields" v-for="item in changes">
             <label :for="item.name"><h3>{{item.change.name}}</h3></label>
             <div class="field" v-for="file in item.selectedFiles">
               <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox"
@@ -31,9 +31,9 @@
 
 
     <div class="right floated six wide column">
-      <button class="ui large primary button right floated" @click="secondInputs">Next
-      </button>
-      <button class="ui large orange button right floated" @click="reviewFirstInputs">Back</button>
+      <button class="ui large primary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+      <button class="ui large primary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large orange button right floated" @click="goBackStage">Back</button>
     </div>
   </div>
 </template>
@@ -43,6 +43,12 @@
 
   export default {
     methods: {
+      applyChanges() {
+        this.$router.push({
+          name: "ApplyChanges"
+        })
+      },
+      ...mapActions(["setStage"]),
       downloadAsFile(liveChange) {
         console.log("download file as contents", liveChange);
         this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName)
@@ -55,21 +61,49 @@
         link.click();
         document.body.removeChild(link);
       },
-      reviewFirstInputs() {
+      goBackStage() {
+        var that = this;
+
+        if (that.Project.stage == 1) {
+          this.$router.push({
+            name: "ScanningFiles"
+          });
+          return
+        }
+
+        that.setStage(that.Project.stage - 1);
         this.$router.push({
-          name: "ReviewUpdates"
+          name: "VariableInputs"
         })
       },
-      secondInputs() {
+      nextStage() {
+
         var that = this;
+        that.setStage(that.Project.stage + 1);
         that.$router.push({
-          name: "SecondInputs"
+          name: "VariableInputs"
         })
 
       },
     },
+    data() {
+      return {
+        lastStage: false,
+        changes: [],
+      }
+    },
     mounted() {
-      console.log("entered review changes")
+      var that = this;
+      if (that.Project.lastStage == that.Project.stage) {
+        that.lastStage = true;
+      }
+      console.log("entered review changes", that.Project);
+      for (var i = 0; i < that.Project.changes.length; i++) {
+        let changes = that.Project.changes[i];
+        if (changes.change.stage == that.Project.stage) {
+          that.changes.push(changes)
+        }
+      }
     },
     computed: {
       ...mapState(["Project"])

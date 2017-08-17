@@ -17,6 +17,8 @@ const state = {
   currentProject: null,
   error: null,
   contextMap: {},
+  stage: 1,
+  lastStage: 1,
   recentProjects: store.get("projects.recent", []),
   visitor: [],
   cid: store.get("cid")
@@ -42,6 +44,12 @@ const mutations = {
   },
   SET_CONTEXT_MAP(state, contextMap) {
     state.contextMap = contextMap;
+  },
+  SET_LAST_STAGE(state, lastStage) {
+    state.lastStage = lastStage;
+  },
+  SET_STAGE(state, stage) {
+    state.stage = stage;
   },
   SET_CHANGES(state, changes) {
     state.changes = changes;
@@ -198,6 +206,12 @@ const actions = {
   setIntegration({commit}, integration) {
     console.log("integation set ", integration);
     commit('SET_INTEGRATION', integration)
+  },
+  setLastStage({commit}, lastStage){
+    commit("SET_LAST_STAGE", lastStage)
+  },
+  setStage({commit}, stage){
+    commit("SET_STAGE", stage)
   },
   setChanges({commit}, changes) {
     commit("SET_CHANGES", changes);
