@@ -37,7 +37,6 @@
       ]),
       beginValidateProject() {
         var that = this;
-        that.loading = true;
         console.log("begin ", this.Project.projectDir);
         that.actions = [];
         that.liveChanges = [];
@@ -210,7 +209,10 @@
         console.log("last stage is ", lastStage)
         that.setLastStage(lastStage);
 
-        that.beginValidateProject();
+        that.loading = true;
+        setTimeout(function(){
+          that.beginValidateProject();
+        }, 1000)
       });
 
     }

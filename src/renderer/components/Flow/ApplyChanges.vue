@@ -1,5 +1,6 @@
 <template>
-  <div> Apply Changes
+  <div>
+    <loading v-if="loading"></loading>
   </div>
 </template>
 <script>
@@ -8,7 +9,9 @@
 
   export default {
     data() {
-      return {}
+      return {
+        loading: true,
+      }
     },
     computed: {
       ...mapState(['Project'])
