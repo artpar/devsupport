@@ -33,7 +33,7 @@
     <div class="right floated sixteen wide column">
       <button class="ui large primary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
       <button class="ui large primary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
-      <button class="ui large orange button right floated" @click="goBackStage">Back</button>
+      <button class="ui large orange button right floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
   </div>
@@ -54,6 +54,13 @@
       this.variables = variables;
       if (that.Project.lastStage == that.Project.stage) {
         that.lastStage = true;
+      }
+      if (that.Project.stage == 1) {
+        that.firstStage = true;
+      }
+
+      if (variables.length == 0) {
+        that.nextStage();
       }
     },
     methods: {
@@ -111,7 +118,8 @@
         doneChanges: false,
         lastStage: false,
         variables: [],
-        loading: false
+        loading: false,
+        firstStage: false,
       }
     },
     computed: {

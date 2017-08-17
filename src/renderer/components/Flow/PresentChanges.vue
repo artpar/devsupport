@@ -104,6 +104,10 @@
           that.changes.push(changes)
         }
       }
+
+      if (that.changes.length == 0) {
+        that.nextStage();
+      }
     },
     computed: {
       ...mapState(["Project"])
