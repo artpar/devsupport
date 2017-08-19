@@ -1,6 +1,6 @@
 {
   "name": "devsupport-ai",
-  "version": "0.0.28",
+  "version": "0.0.34",
   "author": "Parth Mudgal <artpar@gmail.com>",
   "description": "AI support for developer integrations",
   "license": null,
@@ -79,6 +79,7 @@
     "glyphicons": "^0.2.0",
     "java-parser": "^0.0.2",
     "jquery": "^3.2.1",
+    "jsonpath": "^0.2.12",
     "material-design-icons-iconfont": "^3.0.3",
     "material-icons": "^0.1.0",
     "mustache": "^2.3.0",

@@ -48,17 +48,13 @@
       }
     },
     methods: {
-//      processFile: function (file, filelist) {
-//        console.log("provided schema", this.schema, file.raw)
-//      },
-      
       skip() {
+        this.setProjectDir({
+         projectDir: ""
+        });
         this.$router.push({
           name: 'select-action'
         });
-      },
-      print() {
-        console.log("take me somwewhere");
       },
       ...mapActions(['setProjectDir', 'setSessionAction', 'addProject']),
       open(link) {
@@ -69,9 +65,7 @@
 
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-
         let identification = null;
-
         fs.recurseSync(
             rawFile.path,
             ['**/build.gradle', '**/AndroidManifest.xml'],

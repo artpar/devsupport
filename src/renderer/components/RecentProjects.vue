@@ -5,7 +5,7 @@
       <h2 class="light">{{Project.name}}</h2>
       <p>{{Project.projectDir}}</p>
     </div> -->
-    <div class="sidebar-path" v-if="Project.projectDir != null">
+    <div class="sidebar-path" v-if="Project.projectDir != null && Project.projectDir != ''">
       <div class="content">
         <div class="heading">{{Project.name}}</div>
         <div class="data">{{Project.projectDir}}</div>

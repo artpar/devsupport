@@ -18,7 +18,7 @@
 
     <div class="ui mini modal">
       <div class="header">
-       <h3> Coming soon</h3>
+        <h3> Coming soon</h3>
       </div>
       <div class="content">
         <div class="description">
@@ -34,6 +34,7 @@
 <script>
   import Analytics from 'universal-analytics';
   import {mapActions} from 'vuex';
+
   export default {
     data() {
       return {
@@ -52,17 +53,17 @@
           }
         ],
 
-        }
+      }
     },
     methods: {
-      setPageDesc(path,title) {
-        this.pageDesc.path=path;
-        this.pageDesc.title=title;
+      setPageDesc(path, title) {
+        this.pageDesc.path = path;
+        this.pageDesc.title = title;
       },
-      setEventDesc(category,action,label) {
-        this.eventDesc.category=category;
-        this.eventDesc.action=action;
-        this.eventDesc.label=label;
+      getEventDesc(category, action, label) {
+        this.eventDesc.category = category;
+        this.eventDesc.action = action;
+        this.eventDesc.label = label;
       },
       showModal: function () {
         jQuery('.ui.mini.modal').modal('show');
@@ -75,7 +76,7 @@
         console.log("printing stuff", arguments);
       },
       ...mapActions(['setSessionAction']),
-      setAction(act){
+      setAction(act) {
         this.setSessionAction(act);
 
         this.$router.push({
@@ -87,10 +88,8 @@
     },
 
     mounted() {
-
-      this.setPageDesc("/app/selectAction","SelectAction");
-      console.log("pageDesc",this.pageDesc);
-      this.$store.commit('PAGE_VIEW',this.pageDesc);
+      console.log("pageDesc", getPageDesc("/app/selectAction", "SelectAction"));
+      this.$store.commit('PAGE_VIEW', getPageDesc("/app/selectAction", "SelectAction"));
       jQuery('.ui.mini.modal').modal();
       console.log("loaded select action")
     }
