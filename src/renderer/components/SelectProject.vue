@@ -65,32 +65,35 @@
 
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-        let identification = null;
-        fs.recurseSync(
-            rawFile.path,
-            ['**/build.gradle', '**/AndroidManifest.xml'],
-            function (filepath, relative, filename) {
-              console.log("matched file ", filepath);
-
-              for (let i = 0; i < that.ProjectIdentificationRules.length && identification == null; i++) {
-                let rule = that.ProjectIdentificationRules[i];
-
-                switch (rule.checkType) {
-                  case "fileNameIs":
-                    console.log("rule file name check", filename, rule.value)
-                    if (filename == rule.value) {
-                      identification = rule.result;
-                    }
-                    break;
-                  default:
-                    console.error("Unidentified check type", rule);
-                }
-
-
-              }
-
-            }
-        );
+        let identification = {
+          stack: 'android',
+          language: 'java'
+        };
+//        fs.recurseSync(
+//            rawFile.path,
+//            ['**/build.gradle', '**/AndroidManifest.xml'],
+//            function (filepath, relative, filename) {
+//              console.log("matched file ", filepath);
+//
+//              for (let i = 0; i < that.ProjectIdentificationRules.length && identification == null; i++) {
+//                let rule = that.ProjectIdentificationRules[i];
+//
+//                switch (rule.checkType) {
+//                  case "fileNameIs":
+//                    console.log("rule file name check", filename, rule.value)
+//                    if (filename == rule.value) {
+//                      identification = rule.result;
+//                    }
+//                    break;
+//                  default:
+//                    console.error("Unidentified check type", rule);
+//                }
+//
+//
+//              }
+//
+//            }
+//        );
 
 
         if (identification == null) {

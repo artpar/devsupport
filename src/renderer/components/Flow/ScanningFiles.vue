@@ -29,14 +29,14 @@
       ...mapActions([
         'setProjectDir',
         'setChanges',
+        'setStage',
+        'setLastStage',
         'setIntegration',
         'setVariables',
         'setVariableValidations',
-        'setSecondStageVariables'
       ]),
       beginValidateProject() {
         var that = this;
-        that.loading = true;
         console.log("begin ", this.Project.projectDir);
         that.actions = [];
         that.liveChanges = [];
@@ -46,43 +46,22 @@
         this.selectedIntegration.changes.map(function (change) {
           console.log("Push change", change);
           that.liveChanges.push(new FileProcessorFactor.ChangeHandler(change));
-
           console.log("variables from changes");
-//          if (change.variables && change.variables.length > 0) {
-//            change.variables.map(function (variable) {
-//              variable.value = null;
-////              debugger
-//              if (variable.stage == 1) {
-//                that.variables.push(variable);
-//              } else if (variable.stage == 2) {
-//                that.secondStageVariables.push(variable);
-//              }
-//            })
-//          }
         });
 
 
         if (this.selectedIntegration.variables && this.selectedIntegration.variables.length > 0) {
           this.selectedIntegration.variables.map(function (variable) {
             variable.value = null;
-//              debugger
-            if (variable.stage == 1) {
-              that.variables.push(variable);
-            } else if (variable.stage == 2) {
-              that.secondStageVariables.push(variable);
-            }
+            that.variables.push(variable);
           })
         }
-
-
         if (this.selectedIntegration.variableValidations) {
           that.setVariableValidations(this.selectedIntegration.variableValidations)
         }
 
-
         that.setVariables(that.variables);
-        that.setSecondStageVariables(that.secondStageVariables);
-        console.log("Set variables and second stage variables", that.variables, that.secondStageVariables);
+        console.log("Set variables and second stage variables", that.variables);
 
         that.files = [];
 
@@ -116,8 +95,9 @@
           that.loading = false;
           that.setChanges(that.liveChanges);
           console.log("set changes", that.liveChanges);
+          that.setStage(1);
           that.$router.push({
-            name: 'ReviewUpdates'
+            name: 'VariableInputs',
           })
         }
 
@@ -202,7 +182,37 @@
         console.log("found integration", obj);
         var changeSet = JSON.parse(obj.change_set);
         that.selectedIntegration = changeSet;
-        that.beginValidateProject();
+
+
+        var lastStage = 1;
+        changeSet.changes.map(function (c) {
+
+          if (!c.stage) {
+            c.stage = 2;
+          }
+
+          if (c.stage > lastStage) {
+            lastStage = c.stage
+          }
+        });
+        changeSet.variables.map(function (c) {
+
+          if (!c.stage) {
+            c.stage = 2;
+          }
+
+          if (c.stage > lastStage) {
+            lastStage = c.stage
+          }
+        });
+
+        console.log("last stage is ", lastStage)
+        that.setLastStage(lastStage);
+
+        that.loading = true;
+        setTimeout(function(){
+          that.beginValidateProject();
+        }, 1000)
       });
 
     }

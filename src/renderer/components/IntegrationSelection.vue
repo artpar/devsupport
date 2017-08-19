@@ -5,7 +5,7 @@
         <div class="integration list-wpr">
           <div class="list-item" v-for="integration in integrations" @click="startIntegration(integration)">
             <div
-                :style="{float: 'bottom', color: integration.color, fontSize: '85px'}"
+                :style="{float: 'bottom', color: integration.color, fontSize: '60px'}"
                 :class="'ui image devicon pull-left ' + integration.icon"></div>
             <div class="pull-left content-data">
               <div class="title">{{integration.name}}</div>
