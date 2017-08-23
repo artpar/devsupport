@@ -35,6 +35,8 @@ body{
     padding: 0 !important;
 }
 .sidebar-wpr .sidebar-heading {
+    color: rgba(56,58,99,1);
+    word-wrap:break-word;
     padding: 0px 20px;
     margin-top: 30px;
     text-align: left;
@@ -66,13 +68,19 @@ body{
     position: relative;
 }
 .sidebar-path .content .heading{
+    word-wrap:break-word;
     font-weight: 600;
     font-size: 19px;
 }
 .sidebar-path .content .data{
+    word-wrap:break-word;
     font-size: 13px;
+    line-height: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 .recent-project-item-wpr .title{
+    word-wrap:break-word;
     font-size: 17px;
     font-weight: 700;
     color: rgba(56,58,99,1);
@@ -80,11 +88,13 @@ body{
     cursor: pointer;
 }
 .recent-project-item-wpr .path{
+    word-wrap:break-word;
     font-size: 12px;
     color: rgba(118,118,118,1);
-    padding-bottom: 8px
+    padding-bottom: 3px
 }
 .recent-project-item-wpr .note{
+    word-wrap:break-word;
     font-size: 12px;
     font-style: italic;
     color: rgba(118,118,118,1);

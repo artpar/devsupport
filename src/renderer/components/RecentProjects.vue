@@ -8,7 +8,7 @@
     <div class="sidebar-path" v-if="Project.projectDir != null && Project.projectDir != ''">
       <div class="content">
         <div class="heading">{{Project.name}}</div>
-        <div class="data">{{Project.projectDir}}</div>
+        <div class="data" style="">{{Project.projectDir}}</div>
       </div>
     </div>
     <div class="sidebar-heading">Recent Projects</div>
@@ -18,7 +18,7 @@
         v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)"
         v-if="project.location != null">
           <div class="title" @click="setProject(project)">{{project.name}}</div>
-          <div class="path">{{project.location}}</div>
+          <div class="path" style="">{{project.location}}</div>
           <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
       </div>
     </div>

@@ -17,7 +17,7 @@
           </el-option>
       </el-select> -->
 
-      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote
+      <el-select style="width: 100%;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
