@@ -37,12 +37,14 @@
       return {
         ProjectIdentificationRules: [
           {
-            "checkType": "fileNameIs",
-            "value": "AndroidManifest.xml",
             "result": {
               "language": "java",
               "stack": "android",
-            }
+            },
+            "checks": [{
+              "checkType": "fileExists",
+              "value": "build.gradle",
+            }]
           }
         ]
       }
@@ -50,7 +52,7 @@
     methods: {
       skip() {
         this.setProjectDir({
-         projectDir: ""
+          projectDir: ""
         });
         this.$router.push({
           name: 'select-action'
@@ -65,35 +67,42 @@
 
         var rawFile = file.raw;
         console.log("folder selected", file, arguments);
-        let identification = {
-          stack: 'android',
-          language: 'java'
-        };
-//        fs.recurseSync(
-//            rawFile.path,
-//            ['**/build.gradle', '**/AndroidManifest.xml'],
-//            function (filepath, relative, filename) {
-//              console.log("matched file ", filepath);
-//
-//              for (let i = 0; i < that.ProjectIdentificationRules.length && identification == null; i++) {
-//                let rule = that.ProjectIdentificationRules[i];
-//
-//                switch (rule.checkType) {
-//                  case "fileNameIs":
-//                    console.log("rule file name check", filename, rule.value)
-//                    if (filename == rule.value) {
-//                      identification = rule.result;
-//                    }
-//                    break;
-//                  default:
-//                    console.error("Unidentified check type", rule);
-//                }
-//
-//
-//              }
-//
-//            }
-//        );
+//        let identification = {
+//          stack: 'android',
+//          language: 'java'
+//        };
+
+
+        let identification = null;
+
+        for (let i = 0; i < that.ProjectIdentificationRules.length && identification == null; i++) {
+          let rule = that.ProjectIdentificationRules[i];
+
+          let isOk = true;
+
+          for (var w=0;w<rule.checks.length && isOk;w++) {
+            let check = rule.checks[w];
+            switch (check.checkType) {
+              case "fileExists":
+                console.log("check if file exists", check.value);
+                if (fs.existsSync(rawFile.path + "/" + check.value)) {
+                  console.log("file", check.value, "exists")
+                } else {
+                  isOk = false;
+                  console.log("file", rule.value, "doesnt exists")
+                }
+                break;
+              default:
+                console.error("Unidentified check type", rule);
+            }
+          }
+
+          if (isOk) {
+            identification = rule.result;
+            break;
+          }
+
+        }
 
 
         if (identification == null) {
