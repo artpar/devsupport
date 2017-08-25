@@ -36,6 +36,20 @@
       <button class="ui large orange button right floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
+    <div class="ui mini modal">
+      <div class="header">
+        <h3>Missing value</h3>
+      </div>
+      <div class="content">
+        <div class="description">
+          {{errorField}} is left empty.
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui primary button" @click="hideErrModal">OK</div>
+      </div>
+    </div>
+
   </div>
 </template>
 <script>
@@ -69,6 +83,12 @@
           name: "ApplyChanges",
         })
       },
+      showErrModal: function () {
+        jQuery('.ui.mini.modal').modal('show');
+      },
+      hideErrModal: function () {
+        jQuery('.ui.mini.modal').modal('hide');
+      },
       goBackStage() {
         var that = this;
 
@@ -98,8 +118,10 @@
         that.setContextMap(contextMap);
 
         if (invalidFields.length > 0) {
-          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
-          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
+          that.errorField=invalidFields[0].label;
+          that.showErrModal();
+//          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
+//          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
           return
         }
 
@@ -120,6 +142,8 @@
         variables: [],
         loading: false,
         firstStage: false,
+        errorField: ""
+
       }
     },
     computed: {

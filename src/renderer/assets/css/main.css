@@ -5,6 +5,9 @@ body{
     overflow: hidden;
     position: relative;
 }
+.defont{
+    font-family: 'Raleway', sans-serif;
+}
 .pad-1em{
     padding: 1em;
 }
@@ -128,7 +131,7 @@ body{
 }
 .content-wpr .super-coder{
     width: 100vw;
-    margin: 5vh auto;
+    margin: calc(7.5vh - 20px) auto calc(7.5vh - 10px) auto;
 }
 .super-coder>img{
     width: 70vh;
@@ -145,15 +148,16 @@ body{
     cursor: pointer;
 }
 .get-source-folder .heading{
-    font-size: 20px;
-    color: rgba(33,28,61,1);
-    font-weight: 500;
+    font-size: 21px;
+    color: rgb(56, 58, 99);
+    font-weight: 700;
 }
 .get-source-folder .box{
     padding: 15px;
 }
 .get-source-folder .box .el-upload, .get-source-folder .box .el-upload-dragger{
-    height: 23vh;
+
+    height: 130px;/*16vh*/
     width: 100%;
 }
 

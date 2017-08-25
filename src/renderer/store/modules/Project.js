@@ -136,7 +136,8 @@ const mutations = {
   },
 
   ADD_PROJECT(state, projectProperties) {
-    // debugger
+    window.console.log("this is the state object",state);
+    //debugger
     if (!projectProperties.projectDir) {
       return
     }
@@ -153,6 +154,7 @@ const mutations = {
           state.recentProjects = state.recentProjects.slice(0, 5);
         }
         store.set("projects.recent", state.recentProjects);
+        //store.clear();
         return
       }
     }

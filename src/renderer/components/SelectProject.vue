@@ -4,6 +4,7 @@
     <div class="super-coder">
       <img src="~@/images/herofull.png" alt="image?">
     </div>
+
     <div class="get-source-folder">
       <div class="heading">Before we start please link your source folder here</div>
       <el-upload
@@ -12,8 +13,8 @@
           :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
           :auto-upload="false"
           drag>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">Drop file here or <em>click to select</em></div>
+        <!--<i class="el-icon-upload"></i>-->
+        <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">Drop your source folder here <br>or<br>Click here to locate the folder</div>
         <div class="el-upload__tip" slot="tip">
           Root folder of your project OR 
           <span class="skip" @click="skip()">Skip</span>

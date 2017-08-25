@@ -7,15 +7,14 @@
     <div class="task-list">
       <div class="pull-left c-pointer" @click="setAction('integrate')">
         <!--<i class="huge settings icon"></i>-->
-        <img src="~@/images/integration_icon1.svg" height="60%"><br/><br>
-        Integrate
+        <img src="~@/images/integration_icon1.svg" height="60%">
+        <div style="font-size:20px; padding-top: 0.5em">Integrate</div>
       </div>
       <div class="pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
         <img src="~@/images/fix_icon1.svg" height="60%">
         <!--<i class="huge configure icon"></i>-->
-        <!--<h4 v-if="active">Coming Soon</h4>-->
-        <!--<h4 v-else="active">Fix</h4>-->
-        <br><br>Fix
+        <div style="font-size:20px; padding-top: 0.5em" v-if="active">Coming Soon</div>
+        <div style="font-size:20px; padding-top: 0.5em" v-else="active">Fix</div>
       </div>
     </div>
 
