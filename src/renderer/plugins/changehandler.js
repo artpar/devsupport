@@ -1,11 +1,15 @@
 import NewSearchAndReplace from './handlers/searchreplacefilehandler'
 import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
+
+
+import NewHttpValidator from './validators/httpvalidator';
+
 import dot from 'dot';
 
 dot.templateSettings.strip = false;
 
-var FileProcessorFactor = {
+const FileProcessorFactor = {
   ForType: function (fileType, logger) {
     console.log("return new file processor for ", fileType);
     switch (fileType) {
@@ -23,11 +27,11 @@ var FileProcessorFactor = {
     }
   },
   ChangeHandler: function (change) {
-    var that = {};
+    const that = {};
 
 
     // poor naming choice thats all
-    var change1 = change.change;
+    let change1 = change.change;
     if (!(change1 instanceof Array)) {
       change1 = [change1];
       change.change = change1;
@@ -43,7 +47,8 @@ var FileProcessorFactor = {
     that.logs = [];
 
     that.log = function (file, message) {
-      that.logs.push("[" + file.relative + "] " + message)
+      console.log("message", file, message);
+      // that.logs.push("[" + file.relative + "] " + message)
     };
 
     that.getFileCount = function () {
@@ -64,8 +69,8 @@ var FileProcessorFactor = {
 
     that.addFile = function (file) {
       console.log("Call add file for ", file.filepath);
-      var reg = new RegExp(that.change.fileSelector);
-      var nameMatch = false;
+      const reg = new RegExp(that.change.fileSelector);
+      let nameMatch = false;
       if (file.filename.match(reg)) {
         console.log("File Name matches the regex", file.filepath, that.change.fileSelector, reg);
         nameMatch = true;
@@ -79,12 +84,12 @@ var FileProcessorFactor = {
         return;
       }
 
-      var validations = that.change.validations;
+      let validations = that.change.validations;
       if (!(validations instanceof Array)) {
         validations = [validations];
       }
-      var totalValidations = validations.length;
-      if (validations.length == 0) {
+      const totalValidations = validations.length;
+      if (validations.length === 0) {
         that.log(file, "No validations");
         that.selectedFiles.push(file);
         if (!that.selectedFilePath) {
@@ -96,8 +101,8 @@ var FileProcessorFactor = {
       that.fileProcessor.validate(file, validations).then(function (res) {
         const failedValidations = res.failed;
         const passedValidations = res.success;
-        if (failedValidations + passedValidations == totalValidations) {
-          if (failedValidations == 0) {
+        if (failedValidations + passedValidations === totalValidations) {
+          if (failedValidations === 0) {
             that.selectedFiles.push(file);
             if (!that.selectedFilePath) {
               that.selectedFilePath = file.filepath;
@@ -116,34 +121,111 @@ var FileProcessorFactor = {
 
     that.evaluateTemplates = function (contextMap) {
 
-      for (var i = 0; i < change.change.length; i++) {
+      for (let i = 0; i < change.change.length; i++) {
 
-        console.log("dot is not defined", dot.template);
+        // console.log("dot is not defined", dot.template);
         let line = change.change[i].line;
         if (!change.change[i].originalLine) {
           change.change[i].originalLine = line
         } else {
           line = change.change[i].originalLine;
         }
-        console.log("line is ", line);
+        // console.log("line is ", line);
 
-        var tempFn = dot.template(line);
+        const tempFn = dot.template(line);
         change.change[i].line = tempFn(contextMap);
-        console.log("evaluated template: ", change.change[i])
+        // console.log("evaluated template: ", change.change[i])
+      }
+    };
+
+    that.validateVariable = function (validation) {
+
+      console.log("Creating new variable validation promise", validation)
+
+      return new Promise(function (resolve, reject) {
+        let validatorInstance = null;
+        const validationParams = validation["params"];
+        const expectations = validation.expectations;
+
+        switch (validation.validationType) {
+          case "http":
+            validatorInstance = new NewHttpValidator(validationParams, expectations);
+            break;
+        }
+        validatorInstance.evaluate().then(function (res) {
+          resolve(res);
+        }).catch(function(res){
+          reject({result: false, validation: validation, failedExpectation: res})
+        })
+      });
+
+
+    };
+
+
+    that.evaluateTemplatesInObject = function (variableValidation, contextMap) {
+
+      if (typeof  variableValidation === "string") {
+        const tempFn = dot.template(variableValidation);
+        return tempFn(contextMap);
+      } else if (typeof variableValidation === "object") {
+
+        if (variableValidation instanceof Array) {
+          return variableValidation.map(function (obj) {
+            return that.evaluateTemplatesInObject(obj);
+          })
+        } else {
+          const retObj = {};
+          const keys = Object.keys(variableValidation);
+
+          for (let i = 0; i < keys.length; i++) {
+            retObj[keys[i]] = that.evaluateTemplatesInObject(variableValidation[keys[i]], contextMap);
+          }
+          return retObj;
+        }
+
+      } else {
+        return variableValidation;
       }
 
     };
 
 
-    that.doChanges = function (contextMap) {
-      return new Promise(function (resolve, reject) {
+    that.runVariableValidations = function (contextMap, validations) {
 
-        // debugger
+      const that = this;
+
+      return new Promise(function (resolve, reject) {
+        const variableValidations = validations;
+        if (variableValidations && variableValidations instanceof Array) {
+          const results = variableValidations.map(function (variableValidation) {
+            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap))
+          });
+          Promise.all(results).then(function (validationResults) {
+            console.log("valiation results", validationResults);
+            resolve(results);
+          }).catch(function(failures){
+            console.log("validation failures", failures);
+            reject(failures);
+          })
+        } else {
+          resolve([]);
+        }
+      });
+    };
+
+
+    that.doChanges = function (contextMap) {
+
+
+      return new Promise(function (resolve, reject) {
 
         if (!that.chosenFile) {
           that.chosenFile = {
             relative: ''
-          }
+          };
+          resolve();
+          return;
         }
 
         that.evaluateTemplates(contextMap);

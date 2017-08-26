@@ -26,6 +26,31 @@ export default new Router({
       component: require('@/components/Integrate')
     },
     {
+      path: '/apply-changes',
+      name: "ApplyChanges",
+      component: require("@/components/Flow/ApplyChanges")
+    },
+    {
+      path: '/present-changes',
+      name: "PresentChanges",
+      component: require("@/components/Flow/PresentChanges")
+    },
+    {
+      path: '/scanning-files',
+      name: "ScanningFiles",
+      component: require("@/components/Flow/ScanningFiles")
+    },
+    {
+      path: '/review-results',
+      name: "ReviewResults",
+      component: require("@/components/Flow/ReviewResults")
+    },
+    {
+      path: '/variable-inputs',
+      name: "VariableInputs",
+      component: require("@/components/Flow/VariableInputs")
+    },
+    {
       path: '/SelectFix',
       name: 'SelectFix',
       component: require('@/components/IntegrationSelection')
