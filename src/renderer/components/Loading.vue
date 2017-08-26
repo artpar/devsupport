@@ -101,5 +101,19 @@
     transform: translateX(0);
   }
 }
+@keyframes loading-text {
+  15% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(230px);
+  }
+  65% {
+    transform: translateX(230px);
+  }
+  95% {
+    transform: translateX(0);
+  }
+}
 
 </style>
