@@ -22,7 +22,7 @@
   .loadingContainer {
     height: 70vh;
     width: 70vw;
-    /*overflow: hidden;*/
+    overflow: hidden;
     font-family: Helvetica;
   }
 .loader {
