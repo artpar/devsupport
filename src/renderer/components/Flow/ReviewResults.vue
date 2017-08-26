@@ -7,7 +7,7 @@
       <div class="ui large bottom aligned divided relaxed animated list">
         <template v-for="liveChange in Project.changes">
           <div class="ui fluid item">
-            <div class="content"><i class="info circle aligned primary icon"></i>
+            <div class="content"><!--<i class="info circle aligned primary icon"></i>-->
               {{liveChange.change.name}}
               <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
               <i v-else="" class="right floated large warning circle orange icon"></i>

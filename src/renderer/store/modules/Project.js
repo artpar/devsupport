@@ -136,7 +136,8 @@ const mutations = {
   },
 
   ADD_PROJECT(state, projectProperties) {
-    // debugger
+    window.console.log("this is the state object",state);
+    //debugger
     if (!projectProperties.projectDir) {
       return
     }
@@ -149,10 +150,11 @@ const mutations = {
           rp.identification = projectProperties.identification;
         }
         state.recentProjects[i].lastAccess = new Date();
-        if (state.recentProjects.length > 6) {
-          state.recentProjects = state.recentProjects.slice(0, 6);
+        if (state.recentProjects.length > 5) {
+          state.recentProjects = state.recentProjects.slice(0, 5);
         }
         store.set("projects.recent", state.recentProjects);
+        //store.clear();
         return
       }
     }

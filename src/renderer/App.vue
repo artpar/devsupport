@@ -4,18 +4,22 @@
       <recent-projects></recent-projects>
       <div class="twelve wide column content-wpr">
         <div class="ui secondary menu" v-if="Project.currentProject != null">
-          <div class="item"
-               v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">
+          <!--<div class="item"-->
+               <!--v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">-->
             <!--<i class="circular big icon"><i-->
               <!--:class="'devicon devicon-'+Project.currentProject.identification.language+'-plain'"></i></i>-->
-          </div>
-          <div class="item"
-               v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">
+          <!--</div>-->
+          <!--<div class="item"-->
+               <!--v-if="Project.currentProject.identification != null && Project.currentProject.identification.stack != null">-->
             <!--<i class="circular big icon"><i-->
               <!--:class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>-->
-          </div>
+          <!--</div>-->
           <div class="right item">
-            <a @click="goHome"><i class="circular large close link inverted primary icon"></i></a>
+            <a @click="goHome"><div class="c-pointer" style="height: 2.7em; width: 2.7em; border-radius:50%; background:#383A63">
+              <i class="material-icons" style="font-size: 2.7em; color: white;">close</i>
+            </div>
+              <!--<i class="circular large close link inverted primary icon"></i>-->
+            </a>
           </div>
         </div>
         <router-view></router-view>

@@ -3,11 +3,12 @@
 
     <div class="sixteen wide column">
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
-        <div class="integration-task-list">
-          <div class="grouped fields" v-for="item in changes">
+        <div class="ui relaxed divided list">
+          <div class="item" v-for="item in changes" style="margin-bottom: 1em;margin-top: 1em;">
             <label :for="item.name"><h3>{{item.change.name}}</h3></label>
-            <div class="field" v-for="file in item.selectedFiles">
-              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox"
+            <div class="relaxed list" style="padding-left: 1em;">
+            <div class="item" v-for="file in item.selectedFiles">
+              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" style="margin-bottom: 0.2em;margin-top: 0.2em;"
                    @click="item.selectedFilePath = file.filepath">
                 <input
                     class="hidden"
@@ -22,6 +23,7 @@
               <span>{{item.change.fileName}}</span>
               <i class="c-pointer cloud download icon" @click="downloadAsFile(item)"></i>
             </div>
+          </div>
           </div>
         </div>
       </div>

@@ -102,17 +102,17 @@
   }
 }
 @keyframes loading-text {
-  0% {
-    content: "Loading";
+  15% {
+    transform: translateX(0);
   }
-  25% {
-    content: "Loading.";
+  45% {
+    transform: translateX(230px);
   }
-  50% {
-    content: "Loading..";
+  65% {
+    transform: translateX(230px);
   }
-  75% {
-    content: "Loading...";
+  95% {
+    transform: translateX(0);
   }
 }
 

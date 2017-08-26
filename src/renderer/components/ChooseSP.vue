@@ -16,8 +16,7 @@
             :value="item">
           </el-option>
       </el-select> -->
-
-      <el-select style="width: 100%; height: 100px" size="large" v-model="selectedSP" filterable remote
+      <el-select style="width: 100%;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
@@ -30,7 +29,7 @@
 
     </div>
     <div class="three wide column">
-      <button @click="integrate()" style="width:100%" class="ui button background devcolordark">SEARCH</button>
+      <button @click="integrate()" style="width:100%; font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
     </div>
   </div>
 </template>
