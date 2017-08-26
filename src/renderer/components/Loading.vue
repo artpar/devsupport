@@ -101,19 +101,5 @@
     transform: translateX(0);
   }
 }
-@keyframes loading-text {
-  0% {
-    content: "Loading";
-  }
-  25% {
-    content: "Loading.";
-  }
-  50% {
-    content: "Loading..";
-  }
-  75% {
-    content: "Loading...";
-  }
-}
 
 </style>
