@@ -15,11 +15,7 @@
               <!--:class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>-->
           <!--</div>-->
           <div class="right item">
-            <a @click="goHome"><div class="c-pointer" style="height: 2.7em; width: 2.7em; border-radius:50%; background:#383A63">
-              <i class="material-icons" style="font-size: 2.7em; color: white;">close</i>
-            </div>
-              <!--<i class="circular large close link inverted primary icon"></i>-->
-            </a>
+            <img class="c-pointer" src="~@/images/close_Icon.svg" @click="goHome">
           </div>
         </div>
         <router-view></router-view>

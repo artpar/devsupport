@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui primary button" @click="hideErrModal">OK</div>
+        <div class="ui primary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
 
@@ -83,11 +83,8 @@
           name: "ApplyChanges",
         })
       },
-      showErrModal: function () {
-        jQuery('.ui.mini.modal').modal('show');
-      },
-      hideErrModal: function () {
-        jQuery('.ui.mini.modal').modal('hide');
+      errModal: function (action) {
+        jQuery('.ui.mini.modal').modal(action);
       },
       goBackStage() {
         var that = this;
@@ -119,7 +116,7 @@
 
         if (invalidFields.length > 0) {
           that.errorField=invalidFields[0].label;
-          that.showErrModal();
+          that.errModal('show');
 //          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
 //          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
           return

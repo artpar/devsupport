@@ -29,7 +29,23 @@
 
     </div>
     <div class="three wide column">
-      <button @click="integrate()" style="width:100%; font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
+      <button @click="searchButton()" style="width:100%; font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
+    </div>
+
+
+    <!--Error modal-->
+    <div class="ui mini modal">
+      <div class="header">
+        <h3>No Selection</h3>
+      </div>
+      <div class="content">
+        <div class="description">
+          Please select a merchant to integrate
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui primary button" @click="errModal('hide')">OK</div>
+      </div>
     </div>
   </div>
 </template>
@@ -87,7 +103,7 @@
           this.options4 = [];
         }
       },
-      integrate(){
+      searchButton(){
         let that = this;
 
         this.getEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
@@ -99,10 +115,7 @@
         console.log(this.message);
 
         if (that.selectedSP == []) {
-          that.$alert({
-            type: 'error',
-            message: "Please select a merchant to integrate"
-          });
+          that.errModal('show','No Selection','Please select a merchant to integrate');
           return
         }
 
@@ -112,6 +125,9 @@
             id: that.selectedSP.id
           }
         })
+      },
+      errModal: function (action,header,message) {
+        jQuery('.ui.mini.modal').modal(action);
       },
     },
     mounted(){
@@ -123,7 +139,7 @@
       jsonApi.findAll("merchant", {
         page: {number: 1, size: 50}
       }).then(function (r) {
-        console.log("r",r)
+        console.log("r",r);
         that.list = r;
         console.log("options4",that.list);
       });

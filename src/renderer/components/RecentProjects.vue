@@ -1,10 +1,10 @@
 <template>
 
   <div class="four wide column sidebar-wpr">
-<!--     <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
-      <h2 class="light">{{Project.name}}</h2>
-      <p>{{Project.projectDir}}</p>    "project.location != null"
-    </div> -->
+    <!--     <div class="ui raised segment background devcolordark" v-if="Project.projectDir != null">
+          <h2 class="light">{{Project.name}}</h2>
+          <p>{{Project.projectDir}}</p>    "project.location != null"
+        </div> -->
     <div class="sidebar-path" v-if="Project.projectDir != null && Project.projectDir != ''">
       <div class="content">
         <div class="heading">{{Project.name}}</div>
@@ -13,19 +13,22 @@
     </div>
     <div class="sidebar-heading">Recent Projects</div>
     <div class="sidebar-recent-project">
-      <div 
-        class="recent-project-item-wpr" 
-        v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)"
-        v-if="project.location != null">
-          <div class="title" @click="setProject(project)">{{project.name}}</div>
-          <div class="path" style="">{{project.location}}</div>
-          <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
+      <template v-if="Project.recentProjects.length!=0">
+      <div class="recent-project-item-wpr" v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)">
+        <div class="title" @click="setProject(project)">{{project.name}}</div>
+        <div class="path" style="">{{project.location}}</div>
+        <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
       </div>
-      <div class="recent-project-item-wpr" v-else>
-        <div class="path" style="font-size: 1em;">
-        Your recent Projects show up here. Go ahead, link one of your projects and see the magic ;)
-      </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="recent-project-item-wpr">
+          <div class="path" style="font-size: 1em;">
+            Your recent Projects show up here. Go ahead, link one of your projects and see the magic ;)
+          </div>
+        </div>
+      </template>
+
+
     </div>
 
 

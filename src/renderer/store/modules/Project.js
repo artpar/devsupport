@@ -154,7 +154,7 @@ const mutations = {
           state.recentProjects = state.recentProjects.slice(0, 5);
         }
         store.set("projects.recent", state.recentProjects);
-        //store.clear();
+        //store.delete("projects.recent");
         return
       }
     }
