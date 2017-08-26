@@ -19,12 +19,6 @@
   }
 </script>
 <style>
-.container {
-  height: 70vh;
-  width: 100vw;
-  font-family: Helvetica;
-}
-
 .loader {
   height: 20px;
   width: 250px;

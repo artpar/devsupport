@@ -12,18 +12,21 @@ import store from './store';
 import Loading from './components/Loading.vue'
 
 
+import 'typeface-raleway/index.css';
+import 'lato-font/css/lato-font.min.css'
 global.jQuery = require('jquery');
 import _Tether from 'tether';
 
 window.Tether = _Tether;
 require('@/assets/icons.css');
-require('lato-font/css/lato-font.css');
+// require('lato-font');
 require('material-design-icons-iconfont/dist/material-design-icons.css');
 require('glyphicons');
 require('material-icons/css/material-icons.min.css');
 require('@/assets/semantic/semantic.min.css');
 require('@/assets/semantic/semantic.min.js');
 require('@/assets/css/main.css');
+// require('@/assets/style.css');
 import Vue2Filters from 'vue2-filters'
 
 Vue.use(Vue2Filters)

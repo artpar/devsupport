@@ -1,6 +1,5 @@
 import { app, BrowserWindow, Menu } from 'electron' // eslint-disable-line
 // var Menu = require("menu");
-
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -38,6 +37,9 @@ function createWindow() {
     submenu: [
       { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
       { type: "separator" },
+      { label: "Console", selectaccelerator: "CmdOrCtrl+I", click: function () {
+        mainWindow.webContents.openDevTools();
+      } },
       { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
     ]}, {
     label: "Edit",
