@@ -27,6 +27,7 @@
 <script>
   import RecentProjects from './components/RecentProjects.vue';
   import {mapState, mapActions} from 'vuex';
+
   export default {
     data() {
       return {
@@ -60,6 +61,12 @@
         'setProjectDir'
       ]),
       goHome() {
+
+
+        if (window.drift && window.drift.reset) {
+          window.drift.hide()
+        }
+
         this.setPageDesc("/app", "home");
         this.$store.commit('PAGE_VIEW', this.pageDesc);
         this.setProjectDir({

@@ -21,6 +21,8 @@ export default function (params, expectations) {
         return
       }
 
+      params["timeout"] = 5000;
+
       console.log("creating new axios promise", params.url);
       axios(params).then(function (res) {
         console.log("response from validation", res);

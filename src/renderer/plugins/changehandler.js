@@ -223,7 +223,9 @@ const FileProcessorFactor = {
         if (!that.chosenFile) {
           that.chosenFile = {
             relative: ''
-          }
+          };
+          resolve();
+          return;
         }
 
         that.evaluateTemplates(contextMap);
