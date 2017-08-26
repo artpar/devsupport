@@ -1,11 +1,3 @@
-@font-face {
-    font-family: 'Raleway';
-    src: url('../fonts/Raleway-Regular.ttf') format('truetype');
-    src: url('../fonts/Raleway.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
 
 body{
     margin: 0;
