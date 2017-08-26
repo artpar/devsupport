@@ -1,5 +1,5 @@
 <template>
-<div class='container'>
+<div class='loadingContainer'>
   <div class='loader'>
     <div class='loader--dot'></div>
     <div class='loader--dot'></div>
@@ -19,6 +19,12 @@
   }
 </script>
 <style>
+  .loadingContainer {
+    height: 70vh;
+    width: 70vw;
+    /*overflow: hidden;*/
+    font-family: Helvetica;
+  }
 .loader {
   height: 20px;
   width: 250px;
