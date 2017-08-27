@@ -1,7 +1,7 @@
 <template>
   <div class="ui centered grid">
     <div class="super-coder">
-      <img src="~@/images/herofull.png" alt="image?">
+      <img src="~@/images/superhero_home.png" alt="image?">
     </div>
 
     <div class="task-list">
