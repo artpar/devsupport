@@ -221,9 +221,11 @@ const FileProcessorFactor = {
       return new Promise(function (resolve, reject) {
 
         if (!that.chosenFile) {
-          that.chosenFile = {
-            relative: ''
-          };
+          console.log("no chosen file - resolving", change)
+          // that.chosenFile = {
+          //   relative: ''
+          // };
+          that.change.status = "Completed"
           resolve();
           return;
         }
@@ -234,8 +236,8 @@ const FileProcessorFactor = {
           filepath: that.selectedFilePath,
           relative: that.chosenFile.relative,
         }, change.change).then(resolve, reject);
-        that.change.status = "Completed"
 
+        that.change.status = "Completed"
 
       })
       // that.selectedFiles.map(function (file) {
