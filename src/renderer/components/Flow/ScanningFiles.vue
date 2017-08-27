@@ -85,7 +85,7 @@
 
         let completeTimeout = setTimeout(function () {
           completed();
-        }, 20000);
+        }, 2000);
 
         var changes = [];
 
