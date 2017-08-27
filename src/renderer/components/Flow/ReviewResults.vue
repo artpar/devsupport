@@ -17,13 +17,18 @@
       </div>
       <br/>
       <div class="ui segment">
-        <img class="ui top aligned left floated image" style="margin-top: 6%" src="~@/images/launch.png"/>
-        <div class="ui center aligned basic segment"><span style="font-size: 22px"> Integration should be done now<br><br></span>
+        <div class="ui basic segment">
+        <div class="ui centered grid">
+            <div class="ui left floated"><img src="~@/images/launch.png"/></div>
+            <div class="ui right floated">
+          <span style="font-size: 22px"> Integration should be done now<br><br></span>
           <span style="font-size: 16px">You can now build and run the project<br><br></span>
           <span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>
           <button class="ui primary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
           <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
           <span><br>We are collecting this information for our feedback</span>
+          </div>
+        </div>
         </div>
       </div>
     </div>

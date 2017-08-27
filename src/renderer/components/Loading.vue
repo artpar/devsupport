@@ -20,11 +20,8 @@
   }
 </script>
 <style>
-  .loadingContainer {
-    height: 70vh;
-  }
   .loader {
-    margin-top: calc(40vh);
+    margin-top: calc(33vh);
   }
 
   .line {
@@ -33,7 +30,7 @@
     display: inline-block;
     transform-origin: center center;
     margin: 0 10px;
-    width: 1px;
+    width: 2px;
     height: 25px;
   }
 

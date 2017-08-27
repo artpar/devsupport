@@ -4,11 +4,11 @@
     <div class="sixteen wide column">
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="ui relaxed divided list">
-          <div class="item" v-for="item in changes" style="margin-bottom: 1em;margin-top: 1em;">
-            <label :for="item.name"><h3>{{item.change.name}}</h3></label>
+          <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
+            <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}</h3></label>
             <div class="relaxed list" style="padding-left: 1em;">
             <div class="item" v-for="file in item.selectedFiles">
-              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" style="margin-bottom: 0.2em;margin-top: 0.1em;"
+              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox"
                    @click="item.selectedFilePath = file.filepath">
                 <input
                     class="hidden"
@@ -21,7 +21,7 @@
             </div>
             <div v-if="item.change.changeType == 'fileDownload'" class="field download">
               <span>{{item.change.fileName}}</span>
-              <i class="c-pointer cloud download icon" style="font-size: 1.5em;margin-left: 0.5em" @click="downloadAsFile(item)"></i>
+              <i class="c-pointer cloud download icon" style="font-size: 1.8em;margin-left: 0.5em; color:#383a63; position: relative; top: 0.15em;" @click="downloadAsFile(item)"></i>
             </div>
           </div>
           </div>
