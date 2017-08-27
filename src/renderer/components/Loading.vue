@@ -21,9 +21,6 @@
 <style>
   .loadingContainer {
     height: 70vh;
-    width: 70vw;
-    overflow: hidden;
-    font-family: Helvetica;
   }
 .loader {
   height: 20px;

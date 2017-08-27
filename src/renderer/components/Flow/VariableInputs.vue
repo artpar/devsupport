@@ -30,10 +30,10 @@
 
     </div>
 
-    <div class="right floated sixteen wide column">
+    <div class="sixteen wide column">
       <button class="ui large primary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
       <button class="ui large primary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
-      <button class="ui large orange button right floated" v-if="!firstStage" @click="goBackStage">Back</button>
+      <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
     <div class="ui mini modal">
