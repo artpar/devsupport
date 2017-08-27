@@ -8,7 +8,7 @@
             <label :for="item.name"><h3>{{item.change.name}}</h3></label>
             <div class="relaxed list" style="padding-left: 1em;">
             <div class="item" v-for="file in item.selectedFiles">
-              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" style="margin-bottom: 0.2em;margin-top: 0.2em;"
+              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox" style="margin-bottom: 0.2em;margin-top: 0.1em;"
                    @click="item.selectedFilePath = file.filepath">
                 <input
                     class="hidden"
@@ -21,7 +21,7 @@
             </div>
             <div v-if="item.change.changeType == 'fileDownload'" class="field download">
               <span>{{item.change.fileName}}</span>
-              <i class="c-pointer cloud download icon" @click="downloadAsFile(item)"></i>
+              <i class="c-pointer cloud download icon" style="font-size: 1.5em;margin-left: 0.5em" @click="downloadAsFile(item)"></i>
             </div>
           </div>
           </div>
