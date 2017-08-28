@@ -60,21 +60,21 @@
 
               that.doChanges(function () {
                 console.log("Completed all changes");
-                that.$notify({
-                  title: "Success",
-                  message: "All changes were completed."
-                });
+//                that.$notify({
+//                  title: "Success",
+//                  message: "All changes were completed."
+//                });
 
                 that.callbackChangeComplete();
               })
 
             } else {
               that.setError(response.validation.errorLabel);
-              that.$notify({
-                message: response.validation.errorLabel,
-                title: "Failed",
-                type: "error"
-              });
+//              that.$notify({
+//                message: response.validation.errorLabel,
+//                title: "Failed",
+//                type: "error"
+//              });
 
 
               that.setStage(response.validation.stage);
@@ -102,22 +102,22 @@
 
               that.doChanges(function () {
                 console.log("Completed all changes");
-                that.$notify({
-                  title: "Success",
-                  message: "All changes were completed.",
-                  type: "success"
-                });
+//                that.$notify({
+//                  title: "Success",
+//                  message: "All changes were completed.",
+//                  type: "success"
+//                });
 
                 that.callbackChangeComplete();
               })
 
             } else {
               that.setError(response.validation.errorLabel);
-              that.$notify({
-                message: response.validation.errorLabel,
-                title: "Failed",
-                type: "error"
-              });
+//              that.$notify({
+//                message: response.validation.errorLabel,
+//                title: "Failed",
+//                type: "error"
+//              });
 
               switch (response.validation.stage) {
                 case 1:

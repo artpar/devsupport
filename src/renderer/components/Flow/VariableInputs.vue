@@ -7,8 +7,10 @@
     <div class="sixteen wide column" style="overflow-y: auto; max-height: calc(100vh - 180px);">
       <h2>Please enter the following details:</h2>
       <br>
-      <div class="ui icon warning message" v-if="Project.error != null">
-        <i class="warning sign icon"></i>
+      <div class="ui icon negative message" v-if="Project.error != null">
+        <!--<i class="close icon"></i>-->
+        <i class="material-icons" style="margin-right: 0.5em; font-size: 3.5em;">error</i>
+        <!--<i class="warning circle icon"></i>-->
         <div class="content">
           <div class="header">
             There was an error while validating inputs
@@ -78,6 +80,16 @@
       }
     },
     methods: {
+//      closeError(){
+//        jquery('.message .close')
+//        .on('click', function() {
+//          $(this)
+//            .closest('.message')
+//            .transition('fade')
+//          ;
+//        });
+//
+//      },
       applyChanges() {
         this.$router.push({
           name: "ApplyChanges",
