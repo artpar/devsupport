@@ -16,7 +16,7 @@
             :value="item">
           </el-option>
       </el-select> -->
-      <el-select style="width: 100%;" size="large" v-model="selectedSP" filterable remote
+      <el-select style="width: 100%; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
@@ -29,7 +29,7 @@
 
     </div>
     <div class="three wide column">
-      <button @click="searchButton()" style="width:100%; font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
+      <button @click="searchButton()" style="font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
     </div>
 
 
@@ -58,7 +58,7 @@
     data(){
       return {
         options4: [],
-        selectedSP: [],
+        selectedSP: null,
         list: [],
         loading: false,
         newsp: [],
@@ -149,3 +149,8 @@
   }
 
 </script>
+<style>
+  input.el-input__inner {
+    font-family: 'Raleway',sans-serif;
+  }
+</style>

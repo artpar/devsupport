@@ -16,19 +16,25 @@
                     :name="item.name"
                     v-model="item.selectedFilePath"
                     :value="file.filepath">
-                <label>{{file.relative}}</label>
+                <label><div class="devblue">{{file.relative}}</div></label>
               </div>
             </div>
-            <div v-if="item.change.changeType == 'fileDownload'" class="field download">
-              <span>{{item.change.fileName}}</span>
-              <i class="c-pointer cloud download icon" style="font-size: 1.8em;margin-left: 0.5em; color:#383a63; position: relative; top: 0.15em;" @click="downloadAsFile(item)"></i>
+            <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
+              {{item.change.fileName}}
+                                                                                                                 <!--<i class="c-pointer cloud download icon" style="font-size: 1.8em;margin-left: 0.5em; color:#383a63; position: relative; top: 0.15em;" @click="downloadAsFile(item)"></i>-->
+              <i class="c-pointer material-icons" @click="downloadAsFile(item)" style="margin-left: 0.3em; font-size: 2em; vertical-align: middle;">file_download</i>
             </div>
           </div>
           </div>
         </div>
+        <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
+        <div v-if="downloadNum > 0" class="ui icon message">
+          <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
+          <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
+            Download and host these files on your servers and provide the URL's of these files. Make sure the URL's are publicaly available.
+          </div>
+        </div>
       </div>
-
-
     </div>
 
 
@@ -92,6 +98,7 @@
       return {
         lastStage: false,
         changes: [],
+        downloadNum:0
       }
     },
     mounted() {
@@ -102,13 +109,20 @@
       console.log("entered review changes", that.Project);
       for (var i = 0; i < that.Project.changes.length; i++) {
         let changes = that.Project.changes[i];
+
         if (changes.change.stage == that.Project.stage) {
           that.changes.push(changes)
         }
       }
 
+
       if (that.changes.length == 0) {
         that.nextStage();
+      }
+      for(let i=0;i<that.changes.length;i++) {
+        if(that.changes[i].change.changeType=='fileDownload'){
+          that.downloadNum=1;
+        }
       }
     },
     computed: {

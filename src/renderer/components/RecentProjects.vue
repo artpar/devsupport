@@ -7,8 +7,12 @@
         </div> -->
     <div class="sidebar-path" v-if="Project.projectDir != null && Project.projectDir != ''">
       <div class="content">
+        <img class="c-pointer" style="height: 1.6em; position: absolute; left: calc(95% - 20px);" src="~@/images/close_Icon.svg" @click="goHome">
         <div class="heading">{{Project.name}}</div>
-        <div class="data" style="">{{Project.projectDir}}</div>
+
+        <div v-if="Project.projectDir.length > 32" class="data" style="">....{{Project.projectDir.slice(Project.projectDir.length-30, Project.projectDir.length)}}</div>
+        <div v-else>{{Project.projectDir}}</div>
+
       </div>
     </div>
     <div class="sidebar-heading">Recent Projects</div>
@@ -65,7 +69,21 @@
         });
 
       },
+      goHome() {
+
+
+        if (window.drift && window.drift.reset) {
+          window.drift.hide()
+        }
+        this.setProjectDir({
+          projectDir: null
+        });
+        this.$router.push({
+          name: 'select-project'
+        })
+      },
     },
+
     computed: {
       ...mapState({
         'Project': 'Project',

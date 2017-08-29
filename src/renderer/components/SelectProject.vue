@@ -21,6 +21,19 @@
         </div>
       </el-upload>
     </div>
+    <div class="ui mini modal">
+      <div class="header">
+        <h3>Unknown project type</h3>
+      </div>
+      <div class="content">
+        <div class="description">
+          Unable to identify project. Try something else.
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui primary button" @click="errModal3('hide')">OK</div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -58,6 +71,9 @@
         this.$router.push({
           name: 'select-action'
         });
+      },
+      errModal3: function (action) {
+        jQuery('.ui.mini.modal').modal(action);
       },
       ...mapActions(['setProjectDir', 'setSessionAction', 'addProject']),
       open(link) {
@@ -107,11 +123,12 @@
 
 
         if (identification == null) {
-          that.$alert('Unable to identify project', 'Unknown project type', {
-            confirmButtonText: 'Try something else',
-            callback: action => {
-            }
-          });
+          that.errModal3('show');
+//          that.$alert('Unable to identify project', 'Unknown project type', {
+//            confirmButtonText: 'Try something else',
+//            callback: action => {
+//            }
+//          });
           return;
         }
         this.setProjectDir({
