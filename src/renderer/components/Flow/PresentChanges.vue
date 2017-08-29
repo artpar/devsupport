@@ -22,7 +22,7 @@
             <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
               {{item.change.fileName}}
                                                                                                                  <!--<i class="c-pointer cloud download icon" style="font-size: 1.8em;margin-left: 0.5em; color:#383a63; position: relative; top: 0.15em;" @click="downloadAsFile(item)"></i>-->
-              <i class="c-pointer material-icons" @click="downloadAsFile(item)" style="margin-left: 0.3em; font-size: 2em; vertical-align: middle;">file_download</i>
+              <i class="c-pointer material-icons" @click="downloadAsFile(item)" style="background-color: #383a63; padding: .2em; border-radius: 15%; color: white; margin-left: 0.3em; font-size: 1.3em; vertical-align: middle;">file_download</i>
             </div>
           </div>
           </div>
