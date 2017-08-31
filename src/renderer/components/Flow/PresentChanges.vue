@@ -21,7 +21,7 @@
             </div>
             <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
               {{item.change.fileName}}
-                                                                                                                 <!--<i class="c-pointer cloud download icon" style="font-size: 1.8em;margin-left: 0.5em; color:#383a63; position: relative; top: 0.15em;" @click="downloadAsFile(item)"></i>-->
+
               <i class="c-pointer material-icons" @click="downloadAsFile(item)" style="background-color: #383a63; padding: .2em; border-radius: 15%; color: white; margin-left: 0.3em; font-size: 1.3em; vertical-align: middle;">file_download</i>
             </div>
           </div>
@@ -31,8 +31,12 @@
         <div v-if="downloadNum > 0" class="ui icon message">
           <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
           <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
-            Download and host these files on your servers and provide the URL's of these files. Make sure the URL's are publicaly available.
-          </div>
+            <ul class="list">
+
+                <li v-for="item in changes" v-if="item.change.changeType == 'fileDownload'">{{item.change.help}}</li>
+
+          </ul>
+        </div>
         </div>
       </div>
     </div>

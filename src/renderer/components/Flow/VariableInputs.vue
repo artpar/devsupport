@@ -29,9 +29,9 @@
       <div style="margin-bottom: 1.7em"></div>
       <div class="ui icon message">
         <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
-        <div class="content devblue" style="font-family: 'Raleway',sans-serif">
-          <ul class="list" style="font-size: medium" v-for="variable in variables">
-            <li>{{variable.description}}</li>
+        <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
+          <ul class="list">
+            <li v-for="variable in variables">{{variable.description}}</li>
           </ul>
         </div>
       </div>
