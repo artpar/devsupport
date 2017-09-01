@@ -25,7 +25,7 @@
           <span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>
           <span class="devblue" style="font-size: 16px">You can now build and run the project<br><br></span>
           <span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>
-          <button class="ui primary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
+          <button class="ui secondary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
           <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
           <span><br>We are collecting this information for our feedback</span>
           </div>

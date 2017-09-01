@@ -29,7 +29,7 @@
 
     </div>
     <div class="three wide column">
-      <button @click="searchButton()" style="font-family: 'Raleway', sans-serif;" class="ui primary button">SEARCH</button>
+      <button @click="searchButton()" class="ui secondary button">SEARCH</button>
     </div>
 
 
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui primary button" @click="errModal('hide')">OK</div>
+        <div class="ui secondary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
   </div>

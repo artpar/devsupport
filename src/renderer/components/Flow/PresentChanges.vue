@@ -7,6 +7,16 @@
           <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
             <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}</h3></label>
             <div class="relaxed list" style="padding-left: 1em;">
+              <div v-if="(item.selectedFiles=='' && item.change.changeType != 'fileDownload')" class="item">
+
+                <div class="ui icon message">
+                  <i class="material-icons" style="margin-right: 0.5em;">warning</i>
+                  <div class="content devblue">
+                    Cant {{item.change.name}} because either no suitable files were found or they already have the required changes.
+                  </div>
+                </div>
+
+              </div>
             <div class="item" v-for="file in item.selectedFiles">
               <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox"
                    @click="item.selectedFilePath = file.filepath">
@@ -16,7 +26,7 @@
                     :name="item.name"
                     v-model="item.selectedFilePath"
                     :value="file.filepath">
-                <label><div class="devblue">{{file.relative}}</div></label>
+                <label><div class="devblue">{{typeof(file.relative)}} {{file.relative}}</div></label>
               </div>
             </div>
             <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
@@ -43,8 +53,8 @@
 
 
     <div class="sixteen wide column">
-      <button class="ui large primary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large primary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
       <button class="ui large orange button left floated" @click="goBackStage">Back</button>
     </div>
   </div>

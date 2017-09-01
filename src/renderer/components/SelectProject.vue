@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui primary button" @click="errModal3('hide')">OK</div>
+        <div class="ui secondary button" @click="errModal3('hide')">OK</div>
       </div>
     </div>
   </div>

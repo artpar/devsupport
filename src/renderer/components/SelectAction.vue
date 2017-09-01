@@ -5,17 +5,37 @@
     </div>
 
     <div class="task-list">
-      <div class="pull-left c-pointer" @click="setAction('integrate')">
+      <div class="ui secondary button pull-left" @click="setAction('integrate')">
         <!--<i class="huge settings icon"></i>-->
         <img src="~@/images/integration_icon1.svg" height="60%">
-        <div style="font-size:20px; padding-top: 0.5em">Integrate</div>
+        <div style="font-size:20px; padding-top: 0.5em; font-weight: 400;">Integrate</div>
       </div>
-      <div class="button pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
+
+
+      <div class="ui secondary button pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
         <img src="~@/images/fix_icon1.svg" height="60%">
         <!--<i class="huge configure icon"></i>-->
-        <div style="font-size:20px; padding-top: 0.5em" v-if="active">Coming Soon</div>
-        <div style="font-size:20px; padding-top: 0.5em" v-else="active">Fix</div>
+        <div style="font-size:20px; padding-top: 0.5em;font-weight: 400;" v-if="active">Coming Soon</div>
+        <div style="font-size:20px; padding-top: 0.5em;font-weight: 400;" v-else="active">Fix</div>
       </div>
+
+      <!--<div class="ui animated fade secondary button pull-right c-pointer" @click="showModal()">-->
+
+        <!--<div class="visible content">-->
+        <!--<img src="~@/images/fix_icon1.svg" height="70px">-->
+        <!--&lt;!&ndash;<i class="huge configure icon"></i>&ndash;&gt;-->
+        <!--<div class="visible content" style="font-size:20px; padding-top: 0.5em;font-weight: 400;">Coming Soon</div>-->
+        <!--</div>-->
+
+
+        <!--<div class="hidden content">-->
+          <!--&lt;!&ndash;<img src="~@/images/fix_icon1.svg" height="60%">&ndash;&gt;-->
+          <!--&lt;!&ndash;<i class="huge configure icon"></i>&ndash;&gt;-->
+          <!--<div class="visible content" style="font-size:20px; padding-top: 0.5em;font-weight: 400;">what the</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+
     </div>
 
     <div class="ui mini modal">
@@ -28,7 +48,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui primary button" @click="hideModal">OK</div>
+        <div class="ui secondary button" @click="hideModal">OK</div>
       </div>
     </div>
   </div>

@@ -39,8 +39,8 @@
     </div>
 
     <div class="sixteen wide column">
-      <button class="ui large primary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large primary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
       <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui primary button" @click="errModal('hide')">OK</div>
+        <div class="ui secondary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
 
