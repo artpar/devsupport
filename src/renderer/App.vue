@@ -3,7 +3,7 @@
     <div class="ui grid">
       <recent-projects></recent-projects>
       <div class="twelve wide column content-wpr">
-        <div class="ui secondary menu" v-if="Project.currentProject != null">
+        <div class="ui secondary menu" style="height: 60px">
           <!--<div class="item"-->
                <!--v-if="Project.currentProject.identification != null && Project.currentProject.identification.language != null">-->
             <!--<i class="circular big icon"><i-->
@@ -15,7 +15,7 @@
               <!--:class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>-->
           <!--</div>-->
           <div class="right item">
-            <img class="c-pointer" src="~@/images/close_Icon.svg" @click="goHome">
+            <img class="c-pointer" v-if="Project.currentProject != null" src="~@/images/close_Icon.svg" @click="goHome">
           </div>
         </div>
         <router-view></router-view>

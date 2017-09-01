@@ -16,7 +16,7 @@
             :value="item">
           </el-option>
       </el-select> -->
-      <el-select style="width: 100%; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
+      <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
@@ -152,5 +152,12 @@
 <style>
   input.el-input__inner {
     font-family: 'Raleway',sans-serif;
+  }
+  .el-select-dropdown__item.selected {
+    color: #fff;
+    background-color: #383a63;
+  }
+  .el-select-dropdown__item.selected.hover {
+    background-color: #383a63;
   }
 </style>

@@ -132,10 +132,10 @@ body{
 }
 .content-wpr .super-coder{
     width: 100vw;
-    margin: calc(7.5vh - 20px) auto calc(7.5vh - 10px) auto;
+    margin: 0vh auto;
 }
 .super-coder>img{
-    width: 70vh;
+    height: calc(100vh - 290px);
 }
 .get-source-folder{
     width: 80%;

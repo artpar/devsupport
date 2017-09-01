@@ -10,7 +10,7 @@
         <img src="~@/images/integration_icon1.svg" height="60%">
         <div style="font-size:20px; padding-top: 0.5em">Integrate</div>
       </div>
-      <div class="pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
+      <div class="button pull-right c-pointer" @click="showModal()" @mouseover="active = true" @mouseleave="active = false">
         <img src="~@/images/fix_icon1.svg" height="60%">
         <!--<i class="huge configure icon"></i>-->
         <div style="font-size:20px; padding-top: 0.5em" v-if="active">Coming Soon</div>
