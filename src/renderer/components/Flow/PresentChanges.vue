@@ -26,7 +26,7 @@
                     :name="item.name"
                     v-model="item.selectedFilePath"
                     :value="file.filepath">
-                <label><div class="devblue">{{typeof(file.relative)}} {{file.relative}}</div></label>
+                <label><div class="devblue">{{file.relative}}</div></label>
               </div>
             </div>
             <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
