@@ -14,7 +14,10 @@
             <!--<i class="circular big icon"><i-->
               <!--:class="'devicon devicon-'+Project.currentProject.identification.stack+'-plain'"></i></i>-->
           <!--</div>-->
+          <i class="material-icons" @click="testPage">bug_report</i>
           <div class="right item">
+
+
             <img class="c-pointer" v-if="Project.currentProject != null" src="~@/images/close_Icon.svg" @click="goHome">
           </div>
         </div>
@@ -74,6 +77,15 @@
         });
         this.$router.push({
           name: 'select-project'
+        })
+      },
+      testPage() {
+
+        this.setProjectDir({
+          projectDir: null
+        });
+        this.$router.push({
+          name: 'testPage'
         })
       },
       setPageDesc(path, title) {

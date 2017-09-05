@@ -18,7 +18,6 @@
         <div style="font-size:20px; padding-top: 0.5em;font-weight: 400;" v-if="active">Coming Soon</div>
         <div style="font-size:20px; padding-top: 0.5em;font-weight: 400;" v-else="active">Fix</div>
       </div>
-
       <!--<div class="ui animated fade secondary button pull-right c-pointer" @click="showModal()">-->
 
         <!--<div class="visible content">-->
@@ -113,7 +112,7 @@
       console.log("pageDesc", getPageDesc("/app/selectAction", "SelectAction"));
       this.$store.commit('PAGE_VIEW', getPageDesc("/app/selectAction", "SelectAction"));
       jQuery('.ui.mini.modal').modal();
-      console.log("loaded select action")
+      console.log("loaded select action");
     }
   }
 </script>

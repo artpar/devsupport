@@ -11,7 +11,7 @@ dot.templateSettings.strip = false;
 
 const FileProcessorFactor = {
   ForType: function (fileType, logger) {
-    console.log("return new file processor for ", fileType);
+        console.log("return new file processor for: ", fileType,"and the logger: ",logger);
     switch (fileType) {
       case "gradle":
         return NewSearchAndReplace(fileType, logger);
@@ -70,6 +70,7 @@ const FileProcessorFactor = {
     that.addFile = function (file) {
       console.log("Call add file for ", file.filepath);
       const reg = new RegExp(that.change.fileSelector);
+      console.log("that.change.fileSelector",that.change.fileSelector);
       let nameMatch = false;
       if (file.filename.match(reg)) {
         console.log("File Name matches the regex", file.filepath, that.change.fileSelector, reg);
