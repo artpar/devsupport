@@ -4,7 +4,7 @@ const AppConfig = function () {
 
   console.log("define app config", window.location.protocol, window.location.hostname);
 
-  that.apiRoot = "https://devsupport.devsupport.authme.host";
+  that.apiRoot = "https://api.devsupport.ai";
 
   that.location = {
     protocol: window.location.protocol,
