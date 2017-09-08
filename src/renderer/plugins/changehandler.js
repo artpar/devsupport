@@ -1,6 +1,6 @@
-import NewSearchAndReplace from './handlers/searchreplacefilehandler'
-import NewXmlFileHandler from './handlers/xmlfilehandler'
-import NewJavaFileHandler from './handlers/javafilehandler'
+import NewSearchAndReplace from './localfilehandlers/searchreplacefilehandler'
+import NewXmlFileHandler from './localfilehandlers/xmlfilehandler'
+import NewJavaFileHandler from './localfilehandlers/javafilehandler'
 
 
 import NewHttpValidator from './validators/httpvalidator';
@@ -9,21 +9,27 @@ import dot from 'dot';
 
 dot.templateSettings.strip = false;
 
-const FileProcessorFactor = {
-  ForType: function (fileType, logger) {
-    console.log("return new file processor for ", fileType);
-    switch (fileType) {
-      case "gradle":
-        return NewSearchAndReplace(fileType, logger);
-      case "java":
-        return NewSearchAndReplace(fileType, logger);
-        return NewJavaFileHandler(fileType, logger);
-      case "php":
-        return NewSearchAndReplace(fileType, logger);
-        return NewJavaFileHandler(fileType, logger);
-      case "xml":
-        return NewSearchAndReplace(fileType, logger);
-        return NewXmlFileHandler(fileType, logger);
+const ChangeProcessorFactory = {
+  ForType: function (changeType, params, logger) {
+    // console.log("return new file processor for ", fileType);
+
+    if (changeType == "file") {
+      switch (params.fileType) {
+        case "gradle":
+          return NewSearchAndReplace(params, logger);
+        case "java":
+          return NewSearchAndReplace(params, logger);
+          return NewJavaFileHandler(params, logger);
+        case "php":
+          return NewSearchAndReplace(params, logger);
+          return NewJavaFileHandler(params, logger);
+        case "xml":
+          return NewSearchAndReplace(params, logger);
+          return NewXmlFileHandler(params, logger);
+      }
+
+    } else if (changeType == "ftp") {
+      return NewFtpChangeHandler(params, logger);
     }
   },
   ChangeHandler: function (change) {
@@ -47,7 +53,7 @@ const FileProcessorFactor = {
     that.logs = [];
 
     that.log = function (file, message) {
-      console.log("message", file, message);
+      // console.log("message", file, message);
       // that.logs.push("[" + file.relative + "] " + message)
     };
 
@@ -65,10 +71,17 @@ const FileProcessorFactor = {
 
     console.log("change handler for ", change);
 
-    that.fileProcessor = FileProcessorFactor.ForType(change.fileType, that.log);
+    if (change.fileType) {
+      change.params = {
+        fileType: change.fileType
+      }
+      delete change['params']
+    }
+
+    that.changeProcessor = ChangeProcessorFactory.ForType(change.changeType, change.params, that.log);
 
     that.addFile = function (file) {
-      console.log("Call add file for ", file.filepath);
+      // console.log("Call add file for ", file.filepath);
       const reg = new RegExp(that.change.fileSelector);
       let nameMatch = false;
       if (file.filename.match(reg)) {
@@ -98,7 +111,7 @@ const FileProcessorFactor = {
         }
         return;
       }
-      that.fileProcessor.validate(file, validations).then(function (res) {
+      that.changeProcessor.validate(file, validations).then(function (res) {
         const failedValidations = res.failed;
         const passedValidations = res.success;
         if (failedValidations + passedValidations === totalValidations) {
@@ -154,7 +167,7 @@ const FileProcessorFactor = {
         }
         validatorInstance.evaluate().then(function (res) {
           resolve(res);
-        }).catch(function(res){
+        }).catch(function (res) {
           reject({result: false, validation: validation, failedExpectation: res})
         })
       });
@@ -204,7 +217,7 @@ const FileProcessorFactor = {
           Promise.all(results).then(function (validationResults) {
             console.log("valiation results", validationResults);
             resolve(results);
-          }).catch(function(failures){
+          }).catch(function (failures) {
             console.log("validation failures", failures);
             reject(failures);
           })
@@ -232,7 +245,7 @@ const FileProcessorFactor = {
 
         that.evaluateTemplates(contextMap);
 
-        that.fileProcessor.doChange({
+        that.changeProcessor.doChange({
           filepath: that.selectedFilePath,
           relative: that.chosenFile.relative,
         }, change.change).then(resolve, reject);
@@ -252,4 +265,4 @@ const FileProcessorFactor = {
 };
 
 
-export default FileProcessorFactor;
+export default ChangeProcessorFactory;

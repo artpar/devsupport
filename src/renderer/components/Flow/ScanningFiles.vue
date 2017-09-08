@@ -46,7 +46,7 @@
         this.selectedIntegration.changes.map(function (change) {
           console.log("Push change", change);
           that.liveChanges.push(new FileProcessorFactor.ChangeHandler(change));
-          console.log("variables from changes");
+//          console.log("variables from changes");
         });
 
 
@@ -61,7 +61,7 @@
         }
 
         that.setVariables(that.variables);
-        console.log("Set variables and second stage variables", that.variables);
+//        console.log("Set variables and second stage variables", that.variables);
 
         that.files = [];
 
@@ -105,7 +105,7 @@
         fs.recurse(that.Project.projectDir,
             ['**/*.java', '**/*.xml', '**/build.gradle'], function (filepath, relative, filename) {
 
-              console.log("callback point 1", filepath, relative, filename);
+//              console.log("callback point 1", filepath, relative, filename);
               if (typeof filename != "undefined") {
 
 
@@ -157,7 +157,7 @@
                     relative: relative,
                   };
                   that.liveChanges.map(function (liveChange) {
-                    console.log("add file to live change", liveChange, file);
+//                    console.log("add file to live change", liveChange, file);
                     liveChange.addFile(file)
                   });
                 }

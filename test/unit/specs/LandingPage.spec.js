@@ -11,3 +11,4 @@ describe('SelectProject.vue', () => {
     expect(vm.$el.querySelector('.title').textContent).to.contain('Welcome to your new project!');
   });
 });
+  

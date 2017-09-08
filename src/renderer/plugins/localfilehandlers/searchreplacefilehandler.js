@@ -3,9 +3,9 @@
  */
 var fs = require('file-system');
 
-export default function (fileType, logger) {
+export default function (params, logger) {
   var that = {};
-  that.fileType = fileType;
+  that.params = params;
 
   that.applyChange = function (file, change, fileLines) {
     switch (change.changeType) {
