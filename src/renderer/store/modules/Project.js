@@ -150,8 +150,8 @@ const mutations = {
           rp.identification = projectProperties.identification;
         }
         state.recentProjects[i].lastAccess = new Date();
-        if (state.recentProjects.length > 5) {
-          state.recentProjects = state.recentProjects.slice(0, 5);
+        if (state.recentProjects.length > 4) {
+          state.recentProjects = state.recentProjects.slice(0, 4);
         }
         store.set("projects.recent", state.recentProjects);
         //store.delete("projects.recent");

@@ -18,7 +18,7 @@
       </el-select> -->
       {{selectedSP}}
       <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
-                 placeholder="What do you want to integrate"
+                 placeholder="What do you want to integrate (eg. Instamojo)"
                  :remote-method="remoteMethod" :loading="loading">
         <el-option
           v-for="item in options4"
