@@ -16,6 +16,7 @@
             :value="item">
           </el-option>
       </el-select> -->
+      {{selectedSP}}
       <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate"
                  :remote-method="remoteMethod" :loading="loading">
@@ -80,6 +81,25 @@
       }
     },
     methods: {
+      reloadMerchantList() {
+        let that = this;
+        console.log("reload merchant list")
+
+        jsonApi.findAll("merchant", {
+          page: {number: 1, size: 50}
+        }).then(function (r) {
+          console.log("merchants",r);
+          that.list = r;
+          console.log("options4",that.list);
+          if (that.list.length == 0) {
+            this.$notify({
+              type: 'warn',
+              title: 'No providers',
+              message: 'No providers are currently active'
+            })
+          }
+        });
+      },
       setPageDesc(path,title) {
         this.pageDesc.path=path;
         this.pageDesc.title=title;
@@ -90,17 +110,28 @@
         this.eventDesc.label=label;
       },
       remoteMethod(query) {
-        console.log("input box active");
-        if (query !== '') {
+        var that = this;
+        this.selectedSP = null;
+        console.log("input box active", query);
+        if (query && query !== '') {
           this.loading = true;
           this.options4 = this.list.filter(item => {
             return item.name.toLowerCase()
                 .indexOf(query.toLowerCase()) > -1;
+          }).map(function(o){
+            return {
+              id: o.id,
+              name: o.name
+            }
           });
+          if (this.options4.length == 0) {
+            that.reloadMerchantList()
+          }
           this.loading = false;
 
         } else {
           this.options4 = [];
+          that.reloadMerchantList();
         }
       },
       searchButton(){
@@ -134,15 +165,7 @@
       this.setPageDesc("/app/chooseSP","ChooseSP");
       console.log("pageDesc",this.pageDesc);
       this.$store.commit('PAGE_VIEW',this.pageDesc);
-      let that = this;
-
-      jsonApi.findAll("merchant", {
-        page: {number: 1, size: 50}
-      }).then(function (r) {
-        console.log("r",r);
-        that.list = r;
-        console.log("options4",that.list);
-      });
+      this.reloadMerchantList();
 
 
     }
