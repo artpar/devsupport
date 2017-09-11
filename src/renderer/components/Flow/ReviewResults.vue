@@ -22,33 +22,41 @@
             <div class="ui centered grid">
 
 
-
-
-
               <!--for php-->
-              <div v-if="Project.integration=='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'" class="ui right floated">
+              <template v-if="Project.integration==='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'">
+              <div class="ui right floated">
                 <h3 style="font-size: 16px;"> Hey, you just completed PHP integration!</h3>
                 <span class="devblue" style="font-size: 16px">You are few seconds away from  accepting payments with Instamojo :)<br></span>
 
                 <div class="ui divider"></div>
 
 
-                <h3 style="font-size: 16px;">New Transaction URL</h3>
-                <span class="devblue">
-              {{Project.contextMap.new_transaction_url}}<br></span>
-                <textarea id="urlcp" style="position: absolute; left: -999em;">{{Project.contextMap.new_transaction_url}}</textarea>
+                <!--<h3 style="font-size: 16px;">New Transaction URL</h3>-->
+                <!--<span class="devblue">-->
+              <!--{{Project.contextMap.new_transaction_url}}<br></span>-->
 
-                <button class="ui secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
-                        @click="feedback('yes')">
-                  Copy and Proceed to Android Integration
+                <textarea id="urlCopy" style="position: absolute; left: -999em;">{{Project.contextMap.new_transaction_url}}</textarea>
+
+                <button v-if="Project.currentProject.identification.stack==='android'"
+                        class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
+                        @click="resultStartIntegration('cb8c902e-b4d0-49de-a416-358bc4771487',Project.contextMap.new_transaction_url)">
+                  <div class="visible content">
+                  <i class="android icon" style="font-size: 1.3em;"></i>
+                  Go to Android Integration
+                  </div>
+                  <div class="hidden content">
+                    <i class="right arrow icon" style="font-size: 1.3em;"></i>
+                  </div>
                 </button>
 
 
               </div>
+              </template>
 
 
               <!--for android  {{Project.changes}} -->
-              <div v-else-if="Project.integration=='cb8c902e-b4d0-49de-a416-358bc4771487'" class="ui right floated">
+              <template v-else-if="Project.integration==='cb8c902e-b4d0-49de-a416-358bc4771487'">
+              <div class="ui right floated">
                 <h3 class="devblue" style="font-size: 16px; font-weight: 700">Hey, your Android integration is
                   done!</h3>
                 <div class="ui divider"></div>
@@ -62,25 +70,26 @@
                   <b>callInstamojopay(email,phone,amount,purpose,buyername);</b></div>
               </div>
               </div>
+              </template>
 
 
-              <!--&lt;!&ndash;old box content&ndash;&gt;-->
-              <!--<div v-else class="ui left floated"><img src="~@/images/launch.png"/></div>-->
-              <!--<div class="ui right floated">-->
-              <!--<span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>-->
-              <!--<span class="devblue" style="font-size: 16px">You can now build and run the project<br><br></span>-->
-              <!--<span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>-->
-              <!--<button class="ui secondary button" style="margin: 1em" @click="feedback('yes')">Yes</button>-->
-              <!--<button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>-->
-              <!--<span><br>We are collecting this information for our feedback</span>-->
-              <!--</div>-->
-
+              <!--old box content-->
+              <template v-else>
+              <div class="ui left floated"><img src="~@/images/launch.png"/></div>
+              <div class="ui right floated">
+              <span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>
+              <span class="devblue" style="font-size: 16px">You can now build and run the project<br><br></span>
+              <span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>
+              <button class="ui secondary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
+              <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
+              <span><br>We are collecting this information for our feedback</span>
+              </div>
+              </template>
 
             </div>
           </div>
         </div>
       </div>
-
       <div id="snackbar">Url Copied to Clipboard</div>
     </div>
   </div>
@@ -124,12 +133,24 @@
 
     },
     methods: {
+      resultStartIntegration(integrationId,newTxnUrl) {
+
+        console.log("start integration ", integrationId);
+        window.drift.hide();
+        this.copyText('urlCopy');
+
+        this.setSessionAction(null);
+
+        this.$router.push({
+          name: 'ScanningFiles', params: {id: integrationId, newTxnUrl: newTxnUrl}
+        })
+      },
       copyText(id) {
         console.log("can you pritn this", id);
         var copyTextarea = document.querySelector('#' + id);
         copyTextarea.select();
         document.execCommand('copy');
-        this.toast();
+
 
       },
       toast() {
@@ -151,7 +172,7 @@
 
         if (answer == "yes") {
           window.drift.hide();
-          this.copyText('urlcp');
+          this.copyText('urlCopy');
           let that = this;
           setTimeout(function(){ that.reset(); }, 1300)
         } else {
