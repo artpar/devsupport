@@ -16,7 +16,6 @@
             :value="item">
           </el-option>
       </el-select> -->
-      {{selectedSP}}
       <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
                  placeholder="What do you want to integrate (eg. Instamojo)"
                  :remote-method="remoteMethod" :loading="loading">
@@ -111,7 +110,6 @@
       },
       remoteMethod(query) {
         var that = this;
-        this.selectedSP = null;
         console.log("input box active", query);
         if (query && query !== '') {
           this.loading = true;
@@ -130,8 +128,8 @@
           this.loading = false;
 
         } else {
-          this.options4 = [];
-          that.reloadMerchantList();
+//          this.options4 = [];
+//          that.reloadMerchantList();
         }
       },
       searchButton(){
