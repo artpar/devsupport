@@ -32,7 +32,7 @@
         </div>
       </template>
 
-
+      <span @click="faqLayout()">click here for a magical journey</span>
     </div>
 
 
@@ -66,6 +66,12 @@
         });
         this.$router.push({
           name: 'select-action'
+        });
+
+      },
+      faqLayout() {
+        this.$router.push({
+          name: 'ShowFaq'
         });
 
       },

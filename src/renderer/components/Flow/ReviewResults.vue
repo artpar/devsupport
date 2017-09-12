@@ -26,7 +26,8 @@
 
 
               <!--for php-->
-              <div v-if="Project.integration=='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'" class="ui right floated">
+              <template v-if="Project.integration=='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'">
+              <div class="ui right floated">
                 <h3 style="font-size: 16px;"> Hey, you just completed PHP integration!</h3>
                 <span class="devblue" style="font-size: 16px">You are few seconds away from  accepting payments with Instamojo :)<br></span>
 
@@ -45,10 +46,12 @@
 
 
               </div>
+              </template>
 
 
-              <!--for android  {{Project.changes}} -->
-              <div v-else-if="Project.integration=='cb8c902e-b4d0-49de-a416-358bc4771487'" class="ui right floated">
+              <!--for android-->
+              <template v-else-if="Project.integration=='cb8c902e-b4d0-49de-a416-358bc4771487'">
+              <div class="ui right floated">
                 <h3 class="devblue" style="font-size: 16px; font-weight: 700">Hey, your Android integration is
                   done!</h3>
                 <div class="ui divider"></div>
@@ -62,18 +65,21 @@
                   <b>callInstamojopay(email,phone,amount,purpose,buyername);</b></div>
               </div>
               </div>
+              </template>
 
 
-              <!--&lt;!&ndash;old box content&ndash;&gt;-->
-              <!--<div v-else class="ui left floated"><img src="~@/images/launch.png"/></div>-->
-              <!--<div class="ui right floated">-->
-              <!--<span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>-->
-              <!--<span class="devblue" style="font-size: 16px">You can now build and run the project<br><br></span>-->
-              <!--<span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>-->
-              <!--<button class="ui secondary button" style="margin: 1em" @click="feedback('yes')">Yes</button>-->
-              <!--<button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>-->
-              <!--<span><br>We are collecting this information for our feedback</span>-->
-              <!--</div>-->
+              <!--old box content-->
+              <template v-else>
+              <div class="ui left floated"><img src="~@/images/launch.png"/></div>
+              <div class="ui right floated">
+              <span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>
+              <span class="devblue" style="font-size: 16px">You can now build and run the project<br><br></span>
+              <span style="color:#383a63; font-size: 20px; margin:1em">Did it help?</span>
+              <button class="ui secondary button" style="margin: 1em" @click="feedback('yes')">Yes</button>
+              <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
+              <span><br>We are collecting this information for our feedback</span>
+              </div>
+              </template>
 
 
             </div>

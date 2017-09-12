@@ -61,6 +61,11 @@ export default new Router({
       component: require('@/components/ChooseSP')
     },
     {
+      path: '/showFaq',
+      name: 'ShowFaq',
+      component: require('@/components/ShowFaq')
+    },
+    {
       path: '*',
       redirect: '/',
     },
