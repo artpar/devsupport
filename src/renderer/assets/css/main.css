@@ -31,6 +31,16 @@ body{
 }
 
 /*Sidebar*/
+.tags{
+    color: #fff;
+    line-height: 17px;
+    font-size: 11px;
+    padding: 0 10px;
+    border-radius: 2px;
+}
+.tags.PAYU {
+    background: rgba(188, 207, 0, 1);
+}
 .sidebar-wpr{
     min-height: 1px;
     position: relative;

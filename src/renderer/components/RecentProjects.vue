@@ -7,14 +7,18 @@
         </div> -->
     <div class="sidebar-path" v-if="Project.projectDir != null && Project.projectDir != ''">
       <div class="content">
-        <img class="c-pointer" style="height: 1.6em; position: absolute; left: calc(95% - 20px);" src="~@/images/close_Icon.svg" @click="goHome">
+        <img class="c-pointer" style="height: 1.6em; position: absolute; left: calc(95% - 20px);"
+             src="~@/images/close_Icon.svg" @click="goHome">
         <div class="heading">{{Project.name}}</div>
 
-        <div v-if="Project.projectDir.length > 32" class="data" style="">....{{Project.projectDir.slice(Project.projectDir.length-30, Project.projectDir.length)}}</div>
+        <div v-if="Project.projectDir.length > 34" class="data" style="">
+          ....{{Project.projectDir.slice(Project.projectDir.length-29, Project.projectDir.length)}}
+        </div>
         <div v-else>{{Project.projectDir}}</div>
 
       </div>
     </div>
+    <template v-if="false">
     <div class="sidebar-heading">Recent Projects</div>
     <div class="sidebar-recent-project">
       <template v-if="Project.recentProjects.length!=0">
@@ -32,8 +36,24 @@
         </div>
       </template>
 
-      <span @click="faqLayout()">click here for a magical journey</span>
     </div>
+    </template>
+
+<!--side bar faq starts-->
+    <template v-else>
+      <div class="sidebar-heading">FAQ's</div>
+      <div class="sidebar-recent-project">
+        <div class="recent-project-item-wpr" v-for="n in 5">
+        <div class="title" @click="faqLayout()">Hash/Signature doesn't Match</div>
+        <div class="path" style="">Fix: This is the fix here/it should fix the issue...</div>
+          <i class="path" style="color: #383a63">This fix helped 300 other developers</i>
+          <span class="tags PAYU pull-right">PAYU</span>
+
+        </div>
+      </div>
+    </template>
+
+
 
 
     <!--<h3></h3>-->
