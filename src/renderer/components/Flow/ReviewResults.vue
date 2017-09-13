@@ -90,7 +90,7 @@
           </div>
         </div>
       </div>
-      <div id="snackbar">Url Copied to Clipboard</div>
+      <div id="snackbar">New Transaction Url Copied</div>
     </div>
   </div>
 </template>
@@ -138,12 +138,15 @@
         console.log("start integration ", integrationId);
         window.drift.hide();
         this.copyText('urlCopy');
+        this.toast();
 
         this.setSessionAction(null);
-
-        this.$router.push({
+        let that = this;
+        setTimeout(function(){ that.$router.push({
           name: 'ScanningFiles', params: {id: integrationId, newTxnUrl: newTxnUrl}
-        })
+        }) }, 1300)
+
+
       },
       copyText(id) {
         console.log("can you pritn this", id);
@@ -163,7 +166,7 @@
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () {
           x.className = x.className.replace("show", "");
-        }, 2800);
+        }, 1200);
       },
       ...mapActions(['setProjectDir', 'setSessionAction']),
       feedback(answer) {
@@ -174,7 +177,7 @@
           window.drift.hide();
           this.copyText('urlCopy');
           let that = this;
-          setTimeout(function(){ that.reset(); }, 1300)
+          setTimeout(function(){ that.reset(); }, 1000)
         } else {
           window.drift.api.showWelcomeMessage()
         }
