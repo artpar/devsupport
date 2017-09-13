@@ -136,6 +136,7 @@
       resultStartIntegration(integrationId,newTxnUrl) {
 
         console.log("start integration ", integrationId);
+        this.setError(null);
         window.drift.hide();
         this.copyText('urlCopy');
         this.toast();
@@ -158,7 +159,7 @@
       },
       toast() {
         // Get the snackbar DIV
-        var x = document.getElementById("snackbar")
+        var x = document.getElementById("snackbar");
 
         // Add the "show" class to DIV
         x.className = "show";
@@ -168,7 +169,7 @@
           x.className = x.className.replace("show", "");
         }, 1200);
       },
-      ...mapActions(['setProjectDir', 'setSessionAction']),
+      ...mapActions(['setProjectDir', "setError", 'setSessionAction']),
       feedback(answer) {
         this.$store.commit('GA_EVENT', getEventDesc("feedBack", answer, "did it help?"));
         this.$store.commit('PAGE_VIEW', getPageDesc("/app", "home"));
