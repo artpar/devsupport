@@ -21,12 +21,11 @@
     <!--side bar faq starts-->
       <div class="sidebar-heading">FAQ's</div>
       <div class="sidebar-recent-project">
-        <div class="recent-project-item-wpr" v-for="n in 2">
-          <div class="title" @click="faqLayout()">Hash/Signature doesn't Match</div>
-          <div class="path" style="">Fix: This is the fix here/it should fix the issue...</div>
-          <i class="path" style="color: #383a63">This fix helped 300 other developers</i>
-          <span class="tags PAYU pull-right">PAYU</span>
-
+        <div class="recent-project-item-wpr" v-for="faq in Faq">
+          <div class="title" @click="faqLayout()">{{faq.question_content}}</div>
+          <div class="path" style="">{{faq.summary}}</div>
+          <i class="path" style="color: #383a63">This fix helped {{faq.help_count}} other developers</i>
+          <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
         </div>
       </div>
 
@@ -45,13 +44,26 @@
 <script>
 
   import {mapState, mapActions} from 'vuex';
+  import jsonApi from '../plugins/jsonApi';
 
   export default {
     data() {
-      return {}
+      return {
+        Faq: []
+      }
     },
     mounted() {
+      var that = this;
       console.log("this is faq component");
+      jsonApi.one("merchant", this.Project.faq.merchant.id).all("faq_id").get({
+        page: {
+          number: 1,
+          size: 10,
+        }
+      }).then(function (rs) {
+        console.log("all Faqs", rs);
+        that.Faq = rs;
+      })
 //      debugger
     },
     methods: {

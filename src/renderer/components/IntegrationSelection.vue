@@ -37,7 +37,6 @@
     data() {
       return {
         integrations: [],
-        Faq:[],
         pageDesc: [
           {
             path: null,
@@ -72,15 +71,6 @@
 
       });
 
-      jsonApi.one("merchant", merchantReferenceId).all("faq_id").get({
-        page: {
-          number: 1,
-          size: 10,
-        }
-      }).then(function (rs) {
-        console.log("all Faqs", rs);
-        that.Faq = rs;
-      })
 
     },
     methods: {
