@@ -37,6 +37,7 @@
     data() {
       return {
         integrations: [],
+        Faq:[],
         pageDesc: [
           {
             path: null,
@@ -56,9 +57,9 @@
       this.$store.commit('PAGE_VIEW', getPageDesc("/app/integrationSelection", "IntegrationSelection"));
       var that = this;
       let merchantReferenceId = this.$route.params.id;
-      console.log("started integration selection", merchantReferenceId);
+      console.log("started integration selection, merchantReferenceId:", merchantReferenceId);
 
-
+      //Api calls for integrations
       jsonApi.one("merchant", merchantReferenceId).all("integration_id").get({
         page: {
           number: 1,
@@ -69,6 +70,16 @@
         that.integrations = r;
         jQuery('#myInfo').show()
 
+      });
+
+      jsonApi.one("merchant", merchantReferenceId).all("faq_id").get({
+        page: {
+          number: 1,
+          size: 10,
+        }
+      }).then(function (rs) {
+        console.log("all Faqs", rs);
+        that.Faq = rs;
       })
 
     },

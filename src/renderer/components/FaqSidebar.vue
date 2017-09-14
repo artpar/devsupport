@@ -18,27 +18,22 @@
 
       </div>
     </div>
-
-
-<!--side bar recent projects-->
-      <div class="sidebar-heading">Recent Projects</div>
+    <!--side bar faq starts-->
+      <div class="sidebar-heading">FAQ's</div>
       <div class="sidebar-recent-project">
-        <template v-if="Project.recentProjects.length!=0">
-          <div class="recent-project-item-wpr" v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)">
-            <div class="title" @click="setProject(project)">{{project.name}}</div>
-            <div class="path" style="">{{project.location}}</div>
-            <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="recent-project-item-wpr">
-            <div class="path" style="font-size: 1em;">
-              Your recent Projects show up here. Go ahead, link one of your projects and see the magic ;)
-            </div>
-          </div>
-        </template>
+        <div class="recent-project-item-wpr" v-for="n in 2">
+          <div class="title" @click="faqLayout()">Hash/Signature doesn't Match</div>
+          <div class="path" style="">Fix: This is the fix here/it should fix the issue...</div>
+          <i class="path" style="color: #383a63">This fix helped 300 other developers</i>
+          <span class="tags PAYU pull-right">PAYU</span>
+
+        </div>
+      </div>
+
+
 
       </div>
+    </template>
 
 
 
@@ -56,14 +51,8 @@
       return {}
     },
     mounted() {
-      console.log("loaded recent projects", this.recentProjects);
+      console.log("this is faq component");
 //      debugger
-      this.Project.recentProjects.map(function (e) {
-        if (!e || !e.location) {
-          console.log("not e or e location, so no name");
-          return;
-        }
-      })
     },
     methods: {
       ...mapActions(['setProjectDir', 'setFaq']),

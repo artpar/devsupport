@@ -37,7 +37,7 @@ function GetJsonApiModel(columnModel) {
 
 };
 
-var models = ["user", "usergroup", "merchant", "integration"];
+var models = ["user", "usergroup", "merchant", "integration","faq"];
 models.map(function (mode) {
   axios(appConfig.apiRoot + '/jsmodel/' + mode + '.js', {
     headers: {},

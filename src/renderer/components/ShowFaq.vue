@@ -6,8 +6,8 @@
           <h3 style="font-size: 20px">What kind of friend are you?</h3>
         </div>
         <div class="ui two wide column right floated">
-          <div class="devblue" style="background: #ececed;">
-            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">remove_red_eye</i> 1000000
+          <div class="devblue" style="background: #ececed; border-radius: 2px; padding: 3px;">
+            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">remove_red_eye</i> 100000
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@
         Content.<br>
 
         <br>
-        <span style="background: #ffeced; padding: 0.3em; color: #af6063;">http://www.someurl.com</span>
+        <span style="background: #ffeced; padding: 0.3em; color: #af6063; border-radius: 2px;">http://www.someurl.com</span>
       </div>
       <div class="ui message">
         <span class="devblue" style="line-height: 1.5em; font-size: 14px">

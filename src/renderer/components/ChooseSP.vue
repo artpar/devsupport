@@ -52,6 +52,8 @@
 
 <script>
   import jsonApi from '../plugins/jsonApi';
+  import {mapState} from 'vuex';
+  import {mapActions} from 'vuex';
   import {Notification} from 'element-ui';
 
   export default {
@@ -80,6 +82,7 @@
       }
     },
     methods: {
+      ...mapActions(['setFaq']),
       reloadMerchantList() {
         let that = this;
         console.log("reload merchant list")
@@ -147,6 +150,8 @@
           that.errModal('show','No Selection','Please select a merchant to integrate');
           return
         }
+        this.setFaq(that.selectedSP);
+        console.log("project object after setting faq",that.Project);
 
         this.$router.push({
           name: 'SelectIntegration',
@@ -158,6 +163,9 @@
       errModal: function (action,header,message) {
         jQuery('.ui.mini.modal').modal(action);
       },
+    },
+    computed: {
+      ...mapState(['Project'])
     },
     mounted(){
       this.setPageDesc("/app/chooseSP","ChooseSP");

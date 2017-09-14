@@ -6,6 +6,10 @@ const store = new Store();
 
 console.log("load projects store");
 const state = {
+  faq: {
+    visibility: false,
+    merchant: false,
+  },
   projectDir: null,
   sessionAction: null,
   integration: null,
@@ -25,6 +29,19 @@ const state = {
 };
 
 const mutations = {
+  SET_FAQ(state, merchant) {
+    if( merchant === null){
+      state.faq.visibility = false;
+      state.faq.merchant = false;
+      return;
+    }
+    else {
+      state.faq.visibility = true;
+      state.faq.merchant = merchant;
+    }
+
+
+  },
   SET_VARIABLE_VALIDATIONS(state, validations) {
     state.variableValidations = validations;
   },
@@ -182,6 +199,9 @@ const mutations = {
 const actions = {
   setError({commit}, error) {
     commit('SET_ERROR', error);
+  },
+  setFaq({commit}, merchant) {
+    commit('SET_FAQ', merchant);
   },
   setProjectDir({commit}, projectProperties) {
     console.log("set project dir", projectProperties.projectDir);

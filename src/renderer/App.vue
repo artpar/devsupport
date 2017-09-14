@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="container fluid pad-1em">
     <div class="ui grid">
-      <recent-projects></recent-projects>
+      <faq-sidebar v-if="Project.faq.visibility===true"></faq-sidebar>
+      <recent-projects v-else></recent-projects>
       <div class="twelve wide column content-wpr">
         <div class="ui secondary menu" style="height: 60px">
           <!--<div class="item"-->
@@ -26,6 +27,7 @@
 
 <script>
   import RecentProjects from './components/RecentProjects.vue';
+  import FaqSidebar from './components/FaqSidebar.vue';
   import {mapState, mapActions} from 'vuex';
 
   export default {
@@ -48,7 +50,8 @@
       }
     },
     components: {
-      'recent-projects': RecentProjects
+      'recent-projects': RecentProjects,
+      'faq-sidebar': FaqSidebar
     },
     computed: {
       ...mapState({
@@ -58,7 +61,8 @@
     },
     methods: {
       ...mapActions([
-        'setProjectDir'
+        'setProjectDir',
+        'setFaq'
       ]),
       goHome() {
 
@@ -72,6 +76,7 @@
         this.setProjectDir({
           projectDir: null
         });
+        this.setFaq(null);
         this.$router.push({
           name: 'select-project'
         })
