@@ -28,6 +28,26 @@ body{
 }
 
 /*Sidebar*/
+.faqinput{
+    position: relative;
+    padding: 10px 0px 20px 20px;
+}
+.faqinput>input{
+    width: calc(100% - 15px);
+    border: 1px solid;
+    padding: 0 10px;
+    border-radius: 5px;
+    line-height: 43px;
+    font-size: 16px;
+}
+.faqinput>i{
+    position: absolute;
+    top: 17px;
+    right: 18px;
+    font-weight: 100;
+    font-size: 30px;
+    background-color: white;
+}
 .redspan{
     background: #ffeced; padding: 0.3em; color: #af6063; border-radius: 2px;
 }
@@ -195,7 +215,7 @@ body{
 
 /*Card UI*/
 .integration.list-wpr{
-    margin: 5vh 5em;
+    margin: 35px 5em;
 }
 .integration .list-item{
     display: table;

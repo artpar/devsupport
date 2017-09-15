@@ -6,8 +6,8 @@
           <h3 style="font-size: 20px">{{faq.question_content}}</h3>
         </div>
         <div class="ui two wide column right floated">
-          <div class="devblue" style="background: #ececed; border-radius: 2px; padding: 3px;">
-            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">remove_red_eye</i> 100000
+          <div class="devblue">
+            <span style="background: #ececed; border-radius: 2px; padding: 4px;"><i class="material-icons" style="vertical-align: middle; font-size: 18px;">check_box</i> {{faq.help_count}}</span>
           </div>
         </div>
       </div>

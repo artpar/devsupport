@@ -20,9 +20,13 @@
     </div>
     <!--side bar faq starts-->
     <div class="sidebar-heading">FAQ's</div>
+    <div class="faqinput">
+      <input type="text" v-model="query">
+      <i class="material-icons">search</i>
+    </div>
     <div class="sidebar-recent-project">
       <div class="recent-project-item-wpr" v-for="faq in Faq">
-        <div class="title" @click="faqLayout(faq)">{{faq.question_content}}</div>
+        <div class="title" @click="faqLayout(faq)">{{faq.title}}</div>
         <div class="path" style="">Fix: {{faq.summary}}</div>
         <i class="path" style="color: #383a63">This helped {{faq.help_count}} other developers</i>
         <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
@@ -40,7 +44,8 @@
   export default {
     data() {
       return {
-        Faq: []
+        Faq: [],
+        query: null
       }
     },
     mounted() {
@@ -49,11 +54,12 @@
         page: {
           number: 1,
           size: 10,
-        }
+        },
+        filter : "",
       }).then(function (rs) {
         console.log("all Faqs", rs);
         that.Faq = rs;
-      })
+      });
 //      debugger
     },
     methods: {
@@ -90,6 +96,22 @@
           name: 'select-project'
         })
       },
+    },
+    watch:{
+      'query' : function (query) {
+        var that = this;
+        jsonApi.one("merchant", this.Project.faq.merchant.id).all("faq_id").get({
+          page: {
+            number: 1,
+            size: 10,
+          },
+          filter : query,
+        }).then(function (rs) {
+          console.log("all Faqs", rs);
+          that.Faq = rs;
+        });
+
+      }
     },
 
     computed: {
