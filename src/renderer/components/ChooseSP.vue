@@ -178,15 +178,3 @@
   }
 
 </script>
-<style>
-  input.el-input__inner {
-    font-family: 'Raleway',sans-serif;
-  }
-  .el-select-dropdown__item.selected {
-    color: #fff;
-    background-color: #383a63;
-  }
-  .el-select-dropdown__item.selected.hover {
-    background-color: #383a63;
-  }
-</style>
