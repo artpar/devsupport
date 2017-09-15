@@ -22,9 +22,9 @@
       <div class="sidebar-heading">FAQ's</div>
       <div class="sidebar-recent-project">
         <div class="recent-project-item-wpr" v-for="faq in Faq">
-          <div class="title" @click="faqLayout()">{{faq.question_content}}</div>
-          <div class="path" style="">{{faq.summary}}</div>
-          <i class="path" style="color: #383a63">This fix helped {{faq.help_count}} other developers</i>
+          <div class="title" @click="faqLayout(faq)">{{faq.question_content}}</div>
+          <div class="path" style="">Fix: {{faq.summary}}</div>
+          <i class="path" style="color: #383a63">This helped {{faq.help_count}} other developers</i>
           <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
         </div>
       </div>
@@ -54,7 +54,6 @@
     },
     mounted() {
       var that = this;
-      console.log("this is faq component");
       jsonApi.one("merchant", this.Project.faq.merchant.id).all("faq_id").get({
         page: {
           number: 1,
@@ -77,9 +76,24 @@
         });
 
       },
-      faqLayout() {
+      faqLayout(faq) {
+        console.log("new faq clicked");
+        let thisfaq= {
+          answer_box_content : faq.answer_box_content,
+          answer_content : faq.answer_content,
+          help_count: faq.help_count,
+          question_content : faq.question_content
+
+        };
+        console.log("thisfaq:",thisfaq);
         this.$router.push({
-          name: 'ShowFaq'
+          name: 'hack',
+        });
+        this.$router.push({
+          name: 'ShowFaq',
+          params:{
+            thisfaq: thisfaq
+          }
         });
 
       },

@@ -3,7 +3,7 @@
     <div class="ui fifteen wide column grid">
       <div class="ui grid" style="margin-bottom: 1em;">
         <div class="ui fourteen wide column left floated">
-          <h3 style="font-size: 20px">What kind of friend are you?</h3>
+          <h3 style="font-size: 20px">{{newfaq.question_content}}</h3>
         </div>
         <div class="ui two wide column right floated">
           <div class="devblue" style="background: #ececed; border-radius: 2px; padding: 3px;">
@@ -12,25 +12,15 @@
         </div>
       </div>
       <div class="devblue" style="line-height: 1.5em;">
-        The product key is located inside the product packaging, on the receipt or confirmation page for a digital
-        purchase or in a confirmation e-mail that shows you purchased Windows. If you purchased a digital copy from
-        Microsoft Store, you can locate your product key in your Account under Digital Content.
-        <br><br>Windows 7<br><br>
-        The product key is located inside the box that the Windows DVD came in, on the DVD, on the receipt or
-        confirmation page for a digital purchase or in a confirmation e-mail that shows you purchased Windows. If you
-        purchased a digital copy from Microsoft Store, you can locate your product key in your Account under Digital
-        Content.<br>
-
+        <div v-html="newfaq.answer_content"></div>
         <br>
-        <span style="background: #ffeced; padding: 0.3em; color: #af6063; border-radius: 2px;">http://www.someurl.com</span>
+
       </div>
+
       <div class="ui message">
-        <span class="devblue" style="line-height: 1.5em; font-size: 14px">
-        Card no: 121231213<br>
-        Mike: 123123123123<br>
-        Moon: earth<br>
-          Card no: 121231213
-          </span>
+        <div class="devblue" style="line-height: 1.5em; font-size: 14px" v-html="newfaq.answer_box_content">
+
+          </div>
 
       </div>
       <div class="ui centered grid" style="margin-top: 30px">
@@ -47,8 +37,27 @@
   export default {
     data() {
       return {
+//        faq: "this is empty"
 
       }
+    },
+    computed: {
+      newfaq: function () {
+        return this.$route.params.thisfaq;
+        
+      }
+
+    },
+    methods: {
+      feedback(value){
+        console.log("he clicked", value);
+      }
+    },
+    mounted() {
+      console.log("mounted function executed")
+      var that = this;
+//    this.faq = this.$route.params.thisfaq;
+//      debugger
     }
   }
 

@@ -108,7 +108,6 @@
 
       }
     },
-
     mounted() {
       console.log("pageDesc", getPageDesc("/app/selectAction", "SelectAction"));
       this.$store.commit('PAGE_VIEW', getPageDesc("/app/selectAction", "SelectAction"));

@@ -6,9 +6,6 @@ body{
     overflow: hidden;
     position: relative;
 }
-.defont{
-    font-family: 'Raleway', sans-serif;
-}
 .pad-1em{
     padding: 1em;
 }
@@ -31,6 +28,13 @@ body{
 }
 
 /*Sidebar*/
+.redspan{
+    background: #ffeced; padding: 0.3em; color: #af6063; border-radius: 2px;
+}
+.greenspan{
+    background: #fcfff5; padding: 0.3em; color: #1a531b; border-radius: 2px;
+}
+
 .tags{
     color: #fff;
     line-height: 17px;
