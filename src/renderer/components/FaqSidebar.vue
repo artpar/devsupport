@@ -12,32 +12,23 @@
         <div class="heading">{{Project.name}}</div>
 
         <div v-if="Project.projectDir.length > 34" class="data" style="">
-          ....{{Project.projectDir.slice(Project.projectDir.length-29, Project.projectDir.length)}}
+          ....{{Project.projectDir.slice(Project.projectDir.length - 29, Project.projectDir.length)}}
         </div>
         <div v-else>{{Project.projectDir}}</div>
 
       </div>
     </div>
     <!--side bar faq starts-->
-      <div class="sidebar-heading">FAQ's</div>
-      <div class="sidebar-recent-project">
-        <div class="recent-project-item-wpr" v-for="faq in Faq">
-          <div class="title" @click="faqLayout(faq)">{{faq.question_content}}</div>
-          <div class="path" style="">Fix: {{faq.summary}}</div>
-          <i class="path" style="color: #383a63">This helped {{faq.help_count}} other developers</i>
-          <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
-        </div>
+    <div class="sidebar-heading">FAQ's</div>
+    <div class="sidebar-recent-project">
+      <div class="recent-project-item-wpr" v-for="faq in Faq">
+        <div class="title" @click="faqLayout(faq)">{{faq.question_content}}</div>
+        <div class="path" style="">Fix: {{faq.summary}}</div>
+        <i class="path" style="color: #383a63">This helped {{faq.help_count}} other developers</i>
+        <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
       </div>
+    </div>
 
-
-
-      </div>
-    </template>
-
-
-
-
-    <!--<h3></h3>-->
   </div>
 
 </template>
@@ -77,22 +68,10 @@
 
       },
       faqLayout(faq) {
-        console.log("new faq clicked");
-        let thisfaq= {
-          answer_box_content : faq.answer_box_content,
-          answer_content : faq.answer_content,
-          help_count: faq.help_count,
-          question_content : faq.question_content
-
-        };
-        console.log("thisfaq:",thisfaq);
-        this.$router.push({
-          name: 'hack',
-        });
         this.$router.push({
           name: 'ShowFaq',
-          params:{
-            thisfaq: thisfaq
+          params: {
+            faq_id: faq.id
           }
         });
 

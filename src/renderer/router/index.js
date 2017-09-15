@@ -61,7 +61,7 @@ export default new Router({
       component: require('@/components/ChooseSP')
     },
     {
-      path: '/showFaq/:thisfaq',
+      path: '/showFaq/:faq_id',
       name: 'ShowFaq',
       component: require('@/components/ShowFaq')
     },
