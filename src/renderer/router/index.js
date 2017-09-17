@@ -66,6 +66,11 @@ export default new Router({
       component: require('@/components/ShowFaq')
     },
     {
+      path: '/creator/java',
+      name: 'JavaCreator',
+      component: require('@/components/creator/JavaCreator.vue')
+    },
+    {
       path: '*',
       redirect: '/',
     },

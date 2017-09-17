@@ -92,6 +92,18 @@
       },
     },
     mounted() {
+      var that = this;
+      window.onkeyup = function(e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+//        console.log("key pressed", key)
+        if (key == 52) {
+          that.$router.push({
+            name: 'JavaCreator'
+          })
+        }
+      }
+
+
       this.$store.commit('SET_VISITOR');
       console.log("store", this.$store);
       this.setPageDesc("/app", "home");
