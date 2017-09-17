@@ -24,13 +24,16 @@
       <input type="text" v-model="query">
       <i class="material-icons">search</i>
     </div>
-    <div class="sidebar-recent-project">
+    <div class="sidebar-recent-project" style="overflow-y: auto" v-if="Faq.length!==0">
       <div class="recent-project-item-wpr" v-for="faq in Faq">
         <div class="title" @click="faqLayout(faq)">{{faq.title}}</div>
         <div class="path" style="">Fix: {{faq.summary}}</div>
         <i class="path" style="color: #383a63">This helped {{faq.help_count}} other developers</i>
         <span class="tags PAYU pull-right">{{Project.faq.merchant.name}}</span>
       </div>
+    </div>
+    <div class="sidebar-recent-project" style="overflow-y: auto" v-else>
+      No FAQ's available
     </div>
 
   </div>

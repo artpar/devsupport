@@ -13,18 +13,18 @@
       </div>
       <div class="devblue" style="line-height: 1.5em;">
         <div v-html="faq.answer_content"></div>
-        <br>
 
-      </div>
+        <div class="ui message">
+          <div class="devblue" style="line-height: 1.5em; font-size: 14px" v-html="faq.answer_box_content">
 
-      <div class="ui message">
-        <div class="devblue" style="line-height: 1.5em; font-size: 14px" v-html="faq.answer_box_content">
+          </div>
 
         </div>
 
       </div>
-      <div class="ui centered grid" style="margin-top: 30px">
 
+
+      <div id="feedBackBox" class="ui centered grid" style="margin-top: 30px;">
         <span
             style="color:#383a63; font-size: 16px; font-weight: 600; margin:1em; vertical-align: middle">Did it help?</span>
         <button class="ui secondary small button" style="margin: 1em" @click="feedback('yes')">Yes</button>
@@ -45,6 +45,7 @@
     methods: {
       feedback(value) {
         console.log("he clicked", value);
+        jQuery("#feedBackBox").hide();
       },
       updateFaq() {
         var that = this;
@@ -53,7 +54,9 @@
         jsonApi.one("faq", faqId).get().then(function(res){
           console.log("faq", res);
           that.faq = res;
+          jQuery("#feedBackBox").show();
         })
+
       }
     },
     mounted() {
