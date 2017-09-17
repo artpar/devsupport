@@ -60,6 +60,7 @@ input.el-input__inner {
 }
 .redspan{
     background: #ffeced; padding: 0.3em; color: #af6063; border-radius: 2px;
+    line-height: 3em;
 }
 .greenspan{
     background: #fcfff5; padding: 0.3em; color: #1a531b; border-radius: 2px;
