@@ -85,6 +85,10 @@ const FileProcessorFactor = {
       }
 
       let validations = that.change.validations;
+      if (!validations) {
+        validations = [];
+      }
+
       if (!(validations instanceof Array)) {
         validations = [validations];
       }
