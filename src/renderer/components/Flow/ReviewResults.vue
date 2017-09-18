@@ -22,11 +22,8 @@
             <div class="ui centered grid">
 
 
-
-
-
               <!--for php-->
-              <template v-if="Project.integration=='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'">
+              <template v-if="Project.integration==='0b0c8aa9-68c9-4fdc-bff4-e7e1163d530c'">
               <div class="ui right floated">
                 <h3 style="font-size: 16px;"> Hey, you just completed PHP integration!</h3>
                 <span class="devblue" style="font-size: 16px">You are few seconds away from  accepting payments with Instamojo :)<br></span>
@@ -34,14 +31,22 @@
                 <div class="ui divider"></div>
 
 
-                <h3 style="font-size: 16px;">New Transaction URL</h3>
-                <span class="devblue">
-              {{Project.contextMap.new_transaction_url}}<br></span>
-                <textarea id="urlcp" style="position: absolute; left: -999em;">{{Project.contextMap.new_transaction_url}}</textarea>
+                <!--<h3 style="font-size: 16px;">New Transaction URL</h3>-->
+                <!--<span class="devblue">-->
+              <!--{{Project.contextMap.new_transaction_url}}<br></span>-->
 
-                <button class="ui secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
-                        @click="feedback('yes')">
-                  Copy and Proceed to Android Integration
+                <textarea id="urlCopy" style="position: absolute; left: -999em;">{{Project.contextMap.new_transaction_url}}</textarea>
+
+                <button v-if="Project.currentProject.identification.stack==='android'"
+                        class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
+                        @click="resultStartIntegration('cb8c902e-b4d0-49de-a416-358bc4771487',Project.contextMap.new_transaction_url)">
+                  <div class="visible content">
+                  <i class="android icon" style="font-size: 1.3em;"></i>
+                  Go to Android Integration
+                  </div>
+                  <div class="hidden content">
+                    <i class="right arrow icon" style="font-size: 1.3em;"></i>
+                  </div>
                 </button>
 
 
@@ -49,8 +54,8 @@
               </template>
 
 
-              <!--for android-->
-              <template v-else-if="Project.integration=='cb8c902e-b4d0-49de-a416-358bc4771487'">
+              <!--for android  {{Project.changes}} -->
+              <template v-else-if="Project.integration==='cb8c902e-b4d0-49de-a416-358bc4771487'">
               <div class="ui right floated">
                 <h3 class="devblue" style="font-size: 16px; font-weight: 700">Hey, your Android integration is
                   done!</h3>
@@ -81,13 +86,11 @@
               </div>
               </template>
 
-
             </div>
           </div>
         </div>
       </div>
-
-      <div id="snackbar">Url Copied to Clipboard</div>
+      <div id="snackbar">New Transaction Url Copied</div>
     </div>
   </div>
 </template>
@@ -130,17 +133,33 @@
 
     },
     methods: {
+      resultStartIntegration(integrationId,newTxnUrl) {
+
+        console.log("start integration ", integrationId);
+        this.setError(null);
+        window.drift.hide();
+        this.copyText('urlCopy');
+        this.toast();
+
+        this.setSessionAction(null);
+        let that = this;
+        setTimeout(function(){ that.$router.push({
+          name: 'ScanningFiles', params: {id: integrationId, newTxnUrl: newTxnUrl}
+        }) }, 1300)
+
+
+      },
       copyText(id) {
         console.log("can you pritn this", id);
         var copyTextarea = document.querySelector('#' + id);
         copyTextarea.select();
         document.execCommand('copy');
-        this.toast();
+
 
       },
       toast() {
         // Get the snackbar DIV
-        var x = document.getElementById("snackbar")
+        var x = document.getElementById("snackbar");
 
         // Add the "show" class to DIV
         x.className = "show";
@@ -148,18 +167,18 @@
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () {
           x.className = x.className.replace("show", "");
-        }, 2800);
+        }, 1200);
       },
-      ...mapActions(['setProjectDir', 'setSessionAction']),
+      ...mapActions(['setProjectDir', "setError", 'setSessionAction']),
       feedback(answer) {
         this.$store.commit('GA_EVENT', getEventDesc("feedBack", answer, "did it help?"));
         this.$store.commit('PAGE_VIEW', getPageDesc("/app", "home"));
 
         if (answer == "yes") {
           window.drift.hide();
-          this.copyText('urlcp');
+          this.copyText('urlCopy');
           let that = this;
-          setTimeout(function(){ that.reset(); }, 1300)
+          setTimeout(function(){ that.reset(); }, 1000)
         } else {
           window.drift.api.showWelcomeMessage()
         }

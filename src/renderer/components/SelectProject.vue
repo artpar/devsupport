@@ -15,10 +15,14 @@
           drag>
         <!--<i class="el-icon-upload"></i>-->
         <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">Drop your source folder here <br>or<br>Click here to locate the folder</div>
-        <div class="el-upload__tip" slot="tip">
-          Root folder of your project OR 
-          <span class="skip" @click="skip()">Skip</span>
-        </div>
+
+        <!--skip project selection line-->
+
+        <!--<div class="el-upload__tip" slot="tip">-->
+          <!--Root folder of your project OR -->
+          <!--<span class="skip" @click="skip()">Skip</span>-->
+        <!--</div>-->
+
       </el-upload>
     </div>
     <div class="ui mini modal">

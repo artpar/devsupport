@@ -3,8 +3,7 @@
     <div class="sixteen wide column">
       <template>
         <div class="integration list-wpr" style="min-height: calc(100vh - 320px)">
-          <div class="list-item" v-for="integration in integrations" @click="startIntegration(integration)">
-            <div
+          <div class="list-item" v-if="integration.stack!=='frontend'" v-for="integration in integrations" @click="startIntegration(integration)">
                 :style="{float: 'bottom', color: integration.color, fontSize: '60px'}"
                 :class="'ui image devicon pull-left ' + integration.icon"></div>
             <div class="pull-left content-data">
