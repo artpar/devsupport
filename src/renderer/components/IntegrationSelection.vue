@@ -3,9 +3,10 @@
     <div class="sixteen wide column">
       <template>
         <div class="integration list-wpr" style="min-height: calc(100vh - 320px)">
-          <div class="list-item" v-if="integration.stack!=='frontend'" v-for="integration in integrations" @click="startIntegration(integration)">
-                :style="{float: 'bottom', color: integration.color, fontSize: '60px'}"
-                :class="'ui image devicon pull-left ' + integration.icon"></div>
+          <div class="list-item" v-for="integration in integrations" v-if="integration.stack!=='frontend'" @click="startIntegration(integration)">
+            <div
+              :style="{float: 'bottom', color: integration.color, fontSize: '60px'}"
+              :class="'ui image devicon pull-left ' + integration.icon"></div>
             <div class="pull-left content-data">
               <div class="title devblue">{{integration.name}}</div>
               <div class="desc">{{integration.description}}</div>
@@ -15,14 +16,14 @@
 
         </div>
         <div class="integration list-wpr">
-        <div id="myInfo" class="ui icon message" style="display: none;">
-          <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
-          <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
-            Complete your server (PHP/Go/Java/Python etc) integration first.
-            Devsupport AI will give you files to download. Host these files on your server and get the URLs to these files.
-            <br><br>In the next step, complete your front end (Android/iOS) integration.
+          <div id="myInfo" class="ui icon message" style="display: none;">
+            <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
+            <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
+              Complete your server (PHP/Go/Java/Python etc) integration first.
+              Devsupport AI will give you files to download. Host these files on your server and get the URLs to these files.
+              <br><br>In the next step, complete your front end (Android/iOS) integration.
+            </div>
           </div>
-        </div>
         </div>
       </template>
     </div>
