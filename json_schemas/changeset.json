@@ -1,0 +1,294 @@
+{
+	"type": "object",
+	"headerTemplate": "{{self.name}}",
+	"properties": {
+		"name": {
+			"title": "Change set title",
+			"$ref": "#/definitions/name"
+		},
+		"variables": {
+			"title": "Variables",
+			"type": "array",
+			"format": "tabs",
+			"options": {
+				"disable_array_reorder": true
+			},
+			"items": {
+				"$ref": "#/definitions/variable"
+			}
+		},
+		"variableValidations": {
+			"title": "Variable Validations",
+			"type": "array",
+			"options": {
+				"disable_array_reorder": true
+			},
+			"format": "tabs",
+			"items": {
+				"$ref": "#/definitions/variableValidation"
+			}
+		},
+		"changes": {
+			"type": "array",
+			"title": "Changes",
+			"format": "tabs",
+			"options": {
+				"disable_array_reorder": true
+			},
+			"items": {
+				"$ref": "#/definitions/change"
+			}
+		}
+	},
+	"definitions": {
+		"change": {
+			"type": "object",
+			"headerTemplate": "{{self.name}}",
+			"properties": {
+				"name": {
+					"type": "string",
+					"title": "Name"
+				},
+				"fileSelector": {
+					"type": "string",
+					"title": "File selector query"
+				},
+				"fileName": {
+					"type": "string",
+					"title": "File name (if change type file download)"
+				},
+				"help": {
+					"type": "string",
+					"title": "Help text"
+				},
+				"fileType": {
+					"type": "string",
+					"title": "File type"
+				},
+				"changeType": {
+					"type": "string",
+					"title": "Change type",
+					"enumSource": [{
+						"source": [
+							"fileEdit",
+							"fileDownload"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				},
+				"stage": {
+					"type": "number"
+				},
+				"change": {
+					"type": "array",
+					"format": "tabs",
+					"title": "Change set",
+					"items": {
+						"$ref": "#/definitions/individialChange"
+					}
+				},
+				"validations": {
+					"type": "array",
+					"title": "Project scan time validations",
+					"format": "tabs",
+					"items": {
+						"$ref": "#/definitions/validation"
+					}
+				}
+			}
+		},
+		"individialChange": {
+			"type": "object",
+			"headerTemplate": "{{self.changeType}}",
+			"properties": {
+				"changeType": {
+					"type": "string",
+					"enumSource": [{
+						"source": [
+							"add.line", "file.download"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				},
+				"unzip": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"headerTemplate": "{{source}}",
+						"properties": {
+							"source": {
+								"type": "string"
+							},
+							"target": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"line": {
+					"type": "string",
+					"format": "php"
+				},
+				"url": {
+					"type": "string",
+				},
+				"action": {
+					"type": "string",
+					"enumSource": [{
+						"source": [
+							"append",
+							"prepend",
+							"unzip"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				},
+				"query": {
+					"type": "string",
+					"title": "Search query string"
+				},
+				"validations": {
+					"type": "array",
+					"title": "Validations before change ",
+					"items": {
+						"$ref": "#/definitions/validation"
+					}
+				}
+			}
+		},
+		"validation": {
+			"type": "object",
+			"headerTemplate": "{{ self.checkType }} for {{ self.query }}",
+			"properties": {
+				"checkType": {
+					"type": "string",
+					"title": "Check type",
+					"enumSource": [{
+						"source": [
+							"positive",
+							"negative"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				},
+				"query": {
+					"type": "string",
+					"title": "Query string"
+				}
+			}
+		},
+		"variableValidations": {
+			"type": "object",
+			"headerTemplate": "{{self.validationType}} network call",
+			"properties": {
+				"validationType": "string",
+				"errorLabel": "string",
+				"parmas": {
+					"title": "Validation parameters",
+					"type": "json"
+				},
+				"expectations": {
+					"title": "Expectation",
+					"type": "array",
+					"format": "tab",
+					"$ref": "#/definitions/expectation"
+				},
+				"stage": "number"
+			}
+		},
+		"expectation": {
+			"type": "object",
+			"headerTemplate": "{{ self.field }} {{ self.operator }} {{self.value}}",
+			"properties": {
+				"field": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string"
+				},
+				"operator": {
+					"type": "string",
+					"enumSource": [{
+						"source": [
+							"eq",
+							"ne",
+							"lt",
+							"gt",
+							"lte",
+							"gte"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				}
+			}
+		},
+		"name": {
+			"type": "string",
+			"minLength": 5
+		},
+		"parmas": {
+			"type": "object",
+			"properties": {
+				"method": {
+					"type": "string",
+					"enumSource": [{
+						"source": [
+							"GET",
+							"POST",
+							"PUT",
+							"DELETE"
+						],
+						"title": "{{item}}",
+						"value": "{{item}}"
+					}]
+				},
+				"body": {
+					"type": "string",
+					"format": "json"
+				},
+				"headers": {
+					"type": "string",
+					"format": "json"
+				},
+				"url": {
+					"type": "string"
+				}
+			}
+		},
+		"variable": {
+			"type": "object",
+			"headerTemplate": "{{ self.label }}",
+			"properties": {
+				"name": {
+					"type": "string",
+					"title": "Name",
+					"minLength": 3
+				},
+				"label": {
+					"type": "string",
+					"title": "Label",
+					"minLength": 3
+				},
+				"description": {
+					"type": "string",
+					"title": "Description",
+					"minLength": 3
+				},
+				"help": {
+					"type": "string",
+					"title": "Help text",
+					"minLength": 3
+				},
+				"stage": {
+					"type": "integer",
+					"title": "stage"
+				}
+			}
+		}
+	}
+}

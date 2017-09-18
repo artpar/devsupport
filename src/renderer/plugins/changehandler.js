@@ -1,6 +1,7 @@
 import NewSearchAndReplace from './handlers/searchreplacefilehandler'
 import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
+import NewDownloadHandler from './handlers/filedownloadhandler'
 
 
 import NewHttpValidator from './validators/httpvalidator';
@@ -18,6 +19,8 @@ const FileProcessorFactor = {
       case "java":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
+      case "download":
+        return NewDownloadHandler(fileType, logger);
       case "php":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
@@ -129,6 +132,11 @@ const FileProcessorFactor = {
 
         // console.log("dot is not defined", dot.template);
         let line = change.change[i].line;
+
+        if (!line) {
+          continue
+        }
+
         if (!change.change[i].originalLine) {
           change.change[i].originalLine = line
         } else {
@@ -158,7 +166,7 @@ const FileProcessorFactor = {
         }
         validatorInstance.evaluate().then(function (res) {
           resolve(res);
-        }).catch(function(res){
+        }).catch(function (res) {
           reject({result: false, validation: validation, failedExpectation: res})
         })
       });
@@ -208,7 +216,7 @@ const FileProcessorFactor = {
           Promise.all(results).then(function (validationResults) {
             console.log("valiation results", validationResults);
             resolve(results);
-          }).catch(function(failures){
+          }).catch(function (failures) {
             console.log("validation failures", failures);
             reject(failures);
           })

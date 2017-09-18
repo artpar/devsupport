@@ -58,8 +58,8 @@
             if (response.result) {
 
 
-              that.doChanges(function () {
-                console.log("Completed all changes");
+              that.doChanges(function (result) {
+                console.log("Completed all changes, result : ", result);
 //                that.$notify({
 //                  title: "Success",
 //                  message: "All changes were completed."

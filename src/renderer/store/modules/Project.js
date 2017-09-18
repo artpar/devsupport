@@ -128,17 +128,21 @@ const mutations = {
   },
   DO_CHANGES(state, callback) {
 
+    var resultMap = {}
+
     function doIndex(ith, doIndex) {
       console.log("do change", ith);
       if (state.changes.length == ith) {
         if (callback) {
-          callback();
+          callback(resultMap);
         }
         return;
       }
       state.changes[ith].doChanges(state.contextMap).then(function () {
+        resultMap[ith] = true
         doIndex(ith + 1, doIndex);
       }).catch(function () {
+        resultMap[ith] = false
         doIndex(ith + 1, doIndex);
       });
     }

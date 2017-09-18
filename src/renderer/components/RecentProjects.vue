@@ -24,8 +24,8 @@
       <div class="sidebar-heading">Recent Projects</div>
       <div class="sidebar-recent-project">
         <template v-if="Project.recentProjects.length!=0">
-          <div class="recent-project-item-wpr" v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)">
-            <div class="title" @click="setProject(project)">{{project.name}}</div>
+          <div @click="setProject(project)" style="cursor: pointer;" class="recent-project-item-wpr" v-for="project in  orderBy(Project.recentProjects, 'lastAccess', -1)">
+            <div class="title">{{project.name}}</div>
             <div class="path" style="">{{project.location}}</div>
             <div class="note">Last opened <i>{{project.lastAccess | timeSinceNow}}</i> ago</div>
           </div>
