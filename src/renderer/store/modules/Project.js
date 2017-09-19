@@ -20,6 +20,7 @@ const state = {
   changes: [],
   currentProject: null,
   error: null,
+  results: {},
   contextMap: {},
   stage: 1,
   lastStage: 1,
@@ -30,7 +31,7 @@ const state = {
 
 const mutations = {
   SET_FAQ(state, merchant) {
-    if( merchant === null){
+    if (merchant === null) {
       state.faq.visibility = false;
       state.faq.merchant = false;
       return;
@@ -47,6 +48,9 @@ const mutations = {
   },
   SET_ERROR(state, error) {
     state.error = error;
+  },
+  SET_RESULTS(state, results) {
+    state.results = results;
   },
   SET_PROJECT_DIR(state, dir) {
     state.projectDir = dir;
@@ -120,7 +124,7 @@ const mutations = {
     } else {
       state.changes[0].runVariableValidations(state.contextMap, state.variableValidations).then(function (result) {
         callback(result);
-      }).catch(function(failure){
+      }).catch(function (failure) {
         callback(failure);
       })
     }
@@ -141,7 +145,9 @@ const mutations = {
       state.changes[ith].doChanges(state.contextMap).then(function () {
         resultMap[ith] = true
         doIndex(ith + 1, doIndex);
-      }).catch(function () {
+      }).catch(function (err) {
+        console.log("change failed", arguments);
+        state.changes[ith].error = err;
         resultMap[ith] = false
         doIndex(ith + 1, doIndex);
       });
@@ -157,7 +163,7 @@ const mutations = {
   },
 
   ADD_PROJECT(state, projectProperties) {
-    window.console.log("this is the state object",state);
+    window.console.log("this is the state object", state);
     //debugger
     if (!projectProperties.projectDir) {
       return
@@ -213,6 +219,9 @@ const actions = {
     commit('ADD_PROJECT', projectProperties);
     commit("SET_ERROR", null);
   },
+  setResults({commit}, results) {
+    commit("SET_RESULTS", setResults)
+  },
   runVariableValidations({commit}, callback) {
     commit("RUN_VARIABLE_VALIDATIONS", callback)
   },
@@ -233,10 +242,10 @@ const actions = {
     console.log("integation set ", integration);
     commit('SET_INTEGRATION', integration)
   },
-  setLastStage({commit}, lastStage){
+  setLastStage({commit}, lastStage) {
     commit("SET_LAST_STAGE", lastStage)
   },
-  setStage({commit}, stage){
+  setStage({commit}, stage) {
     commit("SET_STAGE", stage)
   },
   setChanges({commit}, changes) {

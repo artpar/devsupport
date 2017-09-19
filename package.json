@@ -84,6 +84,7 @@
     "material-design-icons-iconfont": "^3.0.3",
     "material-icons": "^0.1.0",
     "mustache": "^2.3.0",
+    "request": "^2.81.0",
     "tether": "^1.4.0",
     "typeface-raleway": "0.0.35",
     "universal-analytics": "^0.4.13",
@@ -91,7 +92,6 @@
     "vue-data-tables": "^1.1.1",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
-    "vue2-ace": "^1.0.6",
     "vue2-filters": "^0.1.9",
     "vuex": "^2.3.1"
   },

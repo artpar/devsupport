@@ -1,7 +1,9 @@
 import fs from 'fs';
 import request from 'request';
+
 var AdmZip = require('adm-zip');
 const path = require('path');
+import axios from 'axios';
 
 export default function (fileType, logger) {
   var that = {};
@@ -19,34 +21,23 @@ export default function (fileType, logger) {
       uri: file_url
     });
 
-    var out = fs.createWriteStream(targetPath);
-    req.pipe(out);
+    // var out = fs.createWriteStream(targetPath);
+    axios.get(file_url, {
+      responseType: 'arraybuffer'
+    }).then((response) => {
+      console.log("Write response to ", targetPath);
+      var out = fs.createWriteStream(targetPath);
+      out.write(new Buffer(response.data), function () {
+        console.log("fs write completed", arguments);
+        out.close();
+        completed(true);
+      });
+    }).catch(function (err) {
+      console.log("Failed to connect to ", file_url);
+      completed(false, err);
+    })
 
-    req.on('response', function (data) {
-      // Change the total bytes value to get progress later.
-      total_bytes = parseInt(data.headers['content-length']);
-    });
-
-    req.on('data', function (chunk) {
-      // Update the received bytes
-      received_bytes += chunk.length;
-
-      that.showProgress(received_bytes, total_bytes);
-    });
-
-    req.on('end', function () {
-      if (completed) {
-        completed();
-      }
-    });
   }
-
-  that.showProgress = function (received, total) {
-    var percentage = (received * 100) / total;
-    console.log(percentage + "% | " + received + " bytes out of " + total + " bytes.");
-    // 50% | 50000 bytes received out of 100000 bytes.
-  }
-
 
   that.rename_or_copy_and_delete = function (oldPath, newPath, callback) {
 
@@ -100,21 +91,27 @@ export default function (fileType, logger) {
       let urlParts = change.url.split("/");
       var filename = urlParts[urlParts.length - 1]
 
-      that.downloadFile(change.url, filename, function () {
+      that.downloadFile(change.url, filename, function (result, err) {
+
+        if (!result) {
+          console.log("File download failed");
+          reject(err);
+          return;
+        }
         console.log('File written!', filename);
 
         var zip = null;
         try {
           zip = new AdmZip(filename);
         } catch (e) {
-          fs.unlink(filename);
-          reject();
+          console.log("Failed to read file as zip file", e);
+          // fs.unlink(filename);
+          reject(e);
           return;
         }
 
-
         var zipEntries = zip.getEntries(); // an array of ZipEntry records
-
+        console.log("Start reading sip entries");
         zipEntries.forEach(function (zipEntry) {
           if (unzipMap[zipEntry.entryName]) {
             var unzipTarget = unzipMap[zipEntry.entryName].target;
@@ -132,9 +129,7 @@ export default function (fileType, logger) {
 
           }
         });
-        fs.unlink(filename);
-        resolve();
-
+        fs.unlink(filename, resolve);
       });
 
 

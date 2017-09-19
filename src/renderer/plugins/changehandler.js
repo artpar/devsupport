@@ -247,9 +247,15 @@ const FileProcessorFactor = {
         that.fileProcessor.doChange({
           filepath: that.selectedFilePath,
           relative: that.chosenFile.relative,
-        }, change.change).then(resolve, reject);
+        }, change.change).then(function () {
+          that.change.status = "Completed";
+          resolve();
+        }, function (err) {
+          console.log("change failed", err);
+          that.change.status = "Failed"
+          reject(err);
+        });
 
-        that.change.status = "Completed"
 
       })
       // that.selectedFiles.map(function (file) {

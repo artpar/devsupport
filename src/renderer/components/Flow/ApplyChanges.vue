@@ -20,7 +20,7 @@
       this.applyChanges();
     },
     methods: {
-      ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage"]),
+      ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage", "setResults"]),
       applyChanges() {
         var that = this;
         that.loading = true;
@@ -60,22 +60,11 @@
 
               that.doChanges(function (result) {
                 console.log("Completed all changes, result : ", result);
-//                that.$notify({
-//                  title: "Success",
-//                  message: "All changes were completed."
-//                });
-
-                that.callbackChangeComplete();
+                that.callbackChangeComplete(result);
               })
 
             } else {
               that.setError(response.validation.errorLabel);
-//              that.$notify({
-//                message: response.validation.errorLabel,
-//                title: "Failed",
-//                type: "error"
-//              });
-
 
               that.setStage(response.validation.stage);
               that.$router.push({
@@ -100,15 +89,9 @@
 
             if (finalResult) {
 
-              that.doChanges(function () {
-                console.log("Completed all changes");
-//                that.$notify({
-//                  title: "Success",
-//                  message: "All changes were completed.",
-//                  type: "success"
-//                });
-
-                that.callbackChangeComplete();
+              that.doChanges(function (result) {
+                console.log("Completed all changes", result);
+                that.callbackChangeComplete(result);
               })
 
             } else {
@@ -143,8 +126,8 @@
 
         this.$store.commit('PAGE_VIEW', getPageDesc("/app/results", "Results"));
       },
-      callbackChangeComplete() {
-        console.log("change complete callback");
+      callbackChangeComplete(results) {
+        console.log("change complete callback", results);
         var that = this;
         var remaining = that.Project.changes.filter(function (e) {
           return e.change.status == "pending";
