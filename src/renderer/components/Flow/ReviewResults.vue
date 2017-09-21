@@ -10,7 +10,8 @@
             <div class="content"><!--<i class="info circle aligned primary icon"></i>-->
               {{liveChange.change.name}}
               <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
-              <i v-else="" class="right floated large warning circle orange icon" v-bind:data-content="liveChange.error"></i>
+              <i v-else="" class="right floated large warning circle orange icon"
+                 v-bind:data-content="liveChange.error"></i>
             </div>
           </div>
         </template>
@@ -38,7 +39,7 @@
                   <textarea id="urlCopy"
                             style="position: absolute; left: -999em;">{{Project.contextMap.new_transaction_url}}</textarea>
 
-                  <button v-if="Project.currentProject.identification.stack==='android'"
+                  <button v-if="Project.currentProject.identification.stack ==='android'"
                           class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
                           @click="resultStartIntegration('cb8c902e-b4d0-49de-a416-358bc4771487',Project.contextMap.new_transaction_url)">
                     <div class="visible content">
@@ -55,8 +56,9 @@
               </template>
 
 
+
               <!--for android  {{Project.changes}} -->
-              <template v-else-if="Project.integration==='cb8c902e-b4d0-49de-a416-358bc4771487'">
+              <template v-else-if="Project.integration ==='cb8c902e-b4d0-49de-a416-358bc4771487'">
                 <div class="ui right floated">
                   <h3 class="devblue" style="font-size: 16px; font-weight: 700">Hey, your Android integration is
                     done!</h3>
@@ -158,6 +160,10 @@
         var copyTextarea = document.querySelector('#' + id);
         copyTextarea.select();
         document.execCommand('copy');
+
+        if (something != "not null") {
+
+        }
 
 
       },

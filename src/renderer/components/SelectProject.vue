@@ -14,13 +14,15 @@
           :auto-upload="false"
           drag>
         <!--<i class="el-icon-upload"></i>-->
-        <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">Drop your source folder here <br>or<br>Click here to locate the folder</div>
+        <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">
+          Drop your source folder here <br>or<br>Click here to locate the folder
+        </div>
 
         <!--skip project selection line-->
 
         <!--<div class="el-upload__tip" slot="tip">-->
-          <!--Root folder of your project OR -->
-          <!--<span class="skip" @click="skip()">Skip</span>-->
+        <!--Root folder of your project OR -->
+        <!--<span class="skip" @click="skip()">Skip</span>-->
         <!--</div>-->
 
       </el-upload>
@@ -59,10 +61,36 @@
               "language": "java",
               "stack": "android",
             },
-            "checks": [{
-              "checkType": "fileExists",
-              "value": "build.gradle",
-            }]
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "build.gradle",
+              }
+            ]
+          },
+          {
+            "result": {
+              "language": "php",
+              "stack": "backend",
+            },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "phpunit.xml",
+              }
+            ]
+          },
+          {
+            "result": {
+              "language": "php",
+              "stack": "backend",
+            },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "web",
+              }
+            ]
           }
         ]
       }
@@ -101,7 +129,7 @@
 
           let isOk = true;
 
-          for (var w=0;w<rule.checks.length && isOk;w++) {
+          for (var w = 0; w < rule.checks.length && isOk; w++) {
             let check = rule.checks[w];
             switch (check.checkType) {
               case "fileExists":
