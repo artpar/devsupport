@@ -74,7 +74,7 @@
         return r.stage == that.Project.stage;
       });
       this.variables = variables;
-      if (that.Project.lastStage == that.Project.stage) {
+      if (that.Project.lastStage >= that.Project.stage) {
         that.lastStage = true;
       }
       if (that.Project.stage == 1) {

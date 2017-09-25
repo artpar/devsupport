@@ -85,6 +85,10 @@
           matchConditions: [
             new RegExp(".php$")
           ]
+        }, {
+          matchConditions: [
+            new RegExp(".html$")
+          ]
         }];
 
         let completeTimeout = setTimeout(function () {
@@ -107,7 +111,7 @@
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
-            ['**/*.java', '**/*.xml', '**/build.gradle', '**/*.php'], function (filepath, relative, filename) {
+            ['**/*.java', '**/*.xml', '**/build.gradle', '**/*.php', '**/*.html'], function (filepath, relative, filename) {
 
               console.log("callback point 1", filepath, relative, filename);
               if (typeof filename != "undefined") {

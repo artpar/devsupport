@@ -19,6 +19,9 @@ const FileProcessorFactor = {
       case "java":
         return NewSearchAndReplace(fileType, logger);
         return NewJavaFileHandler(fileType, logger);
+      case "html":
+        return NewSearchAndReplace(fileType, logger);
+        return NewJavaFileHandler(fileType, logger);
       case "download":
         return NewDownloadHandler(fileType, logger);
       case "php":

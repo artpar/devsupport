@@ -6,9 +6,10 @@ const AppConfig = function () {
 
 
   that.apiRoot = "https://api.devsupport.ai"
-  if (process.env.NODE_ENV !== "production") {
-    that.apiRoot = "http://sandbox.devsupport.ai:6336";
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   that.apiRoot = "http://sandbox.devsupport.ai:6336";
+  // }
+
   console.log("Api root is", that.apiRoot);
 
   that.location = {
