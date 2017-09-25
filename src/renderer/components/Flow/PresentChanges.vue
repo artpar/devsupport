@@ -17,24 +17,28 @@
                 </div>
 
               </div>
-            <div class="item" v-for="file in item.selectedFiles">
-              <div v-if="item.change.changeType != 'fileDownload'" class="ui radio checkbox"
-                   @click="item.selectedFilePath = file.filepath">
-                <input
-                    class="hidden"
-                    type="radio"
-                    :name="item.name"
-                    v-model="item.selectedFilePath"
-                    :value="file.filepath">
-                <label><div class="devblue">{{file.relative}}</div></label>
+              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType != 'fileDownload'">
+                <div class="ui radio checkbox"
+                     @click="item.selectedFilePath = file.filepath">
+                  <input
+                      class="hidden"
+                      type="radio"
+                      :name="item.name"
+                      v-model="item.selectedFilePath"
+                      :value="file.filepath">
+                  <label>
+                    <div class="devblue">{{file.relative}}</div>
+                  </label>
+                </div>
+              </div>
+              <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
+                <textarea >{{item.change.line}}</textarea>
+              </div>
+              <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
+                {{item.change.fileName}}
+                <i class="download_as_file_button c-pointer material-icons" @click="downloadAsFile(item)">file_download</i>
               </div>
             </div>
-            <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
-              {{item.change.fileName}}
-
-              <i class="c-pointer material-icons" @click="downloadAsFile(item)" style="background-color: #383a63; padding: .2em; border-radius: 15%; color: white; margin-left: 0.3em; font-size: 1.3em; vertical-align: middle;">file_download</i>
-            </div>
-          </div>
           </div>
         </div>
         <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
@@ -43,10 +47,10 @@
           <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
             <ul class="list">
 
-                <li v-for="item in changes" v-if="item.change.changeType == 'fileDownload'">{{item.change.help}}</li>
+              <li v-for="item in changes" v-if="item.change.changeType == 'fileDownload'">{{item.change.help}}</li>
 
-          </ul>
-        </div>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -54,7 +58,8 @@
 
     <div class="sixteen wide column">
       <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+      </button>
       <button class="ui large orange button left floated" @click="goBackStage">Back</button>
     </div>
   </div>
@@ -112,7 +117,7 @@
       return {
         lastStage: false,
         changes: [],
-        downloadNum:0
+        downloadNum: 0
       }
     },
     mounted() {
@@ -133,9 +138,9 @@
       if (that.changes.length == 0) {
         that.nextStage();
       }
-      for(let i=0;i<that.changes.length;i++) {
-        if(that.changes[i].change.changeType=='fileDownload'){
-          that.downloadNum=1;
+      for (let i = 0; i < that.changes.length; i++) {
+        if (that.changes[i].change.changeType == 'fileDownload') {
+          that.downloadNum = 1;
         }
       }
     },

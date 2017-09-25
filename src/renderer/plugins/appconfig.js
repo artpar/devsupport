@@ -4,7 +4,12 @@ const AppConfig = function () {
 
   console.log("define app config", window.location.protocol, window.location.hostname);
 
-  that.apiRoot = "https://api.devsupport.ai";
+
+  that.apiRoot = "https://api.devsupport.ai"
+  if (process.env.NODE_ENV !== "production") {
+    that.apiRoot = "http://sandbox.devsupport.ai:6336";
+  }
+  console.log("Api root is", that.apiRoot);
 
   that.location = {
     protocol: window.location.protocol,

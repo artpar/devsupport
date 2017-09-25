@@ -90,7 +90,7 @@
     name: "JavaCreator",
     data() {
       return {
-        allData: {
+        allData:  {
           gradleRepo: "",
           gradleImport: "compile 'com.android.support:appcompat-v7:25.3.1'\n" +
           "compile 'com.android.support:design:25.3.1'\n" +
@@ -144,7 +144,13 @@
     },
     computed: {
       afterViewInitJson: function () {
-        return this.allData.afterViewInit.split("\n").filter(function (ee) {
+
+        let line = this.allData.afterViewInit;
+        if (!line || line.trim().length < 2) {
+          return null;
+        }
+
+        return line.split("\n").filter(function (ee) {
           return !!ee && ee.trim().length > 1
         }).map(function (line) {
           return {
@@ -467,6 +473,11 @@
       androidManifestActivityJson: function () {
 
         let line = this.allData.androidManifestActivity;
+
+        if (!line || line.trim().length < 2) {
+          return null;
+        }
+
         return line.split("\n").filter(function (e) {
           return e.trim().length > 2;
         }).map(function (line) {
@@ -496,6 +507,13 @@
       },
       mainActivityImportsJson: function () {
         let line = this.allData.mainActivityImports;
+
+
+        if (!line || line.trim().length < 2) {
+          return null;
+        }
+
+
         return line.split("\n").filter(function (e) {
           return !!e && e.trim().length > 2
         }).map(function (line) {
@@ -556,6 +574,11 @@
     mounted() {
       console.log("loaded java creator");
       this.load();
+    },
+    watch: {
+      'allData': function(){
+        console.log("Final json", this.finalJson)
+      }
     }
   }
 </script>
