@@ -26,12 +26,22 @@ export default function (fileType, logger) {
       responseType: 'arraybuffer'
     }).then((response) => {
       console.log("Write response to ", targetPath);
+
       var out = fs.createWriteStream(targetPath);
-      out.write(new Buffer(response.data), function () {
-        console.log("fs write completed", arguments);
-        out.close();
-        completed(true);
-      });
+
+      out.on("open", function(fd){
+        out.write(new Buffer(response.data), function () {
+          console.log("fs write completed", arguments);
+          out.end();
+          completed(true);
+        });
+
+      })
+
+
+
+
+
     }).catch(function (err) {
       console.log("Failed to connect to ", file_url);
       completed(false, err);
@@ -76,7 +86,7 @@ export default function (fileType, logger) {
     return new Promise(function (resolve, reject) {
 
       var targetRootPath = path.dirname(file.filepath);
-
+      console.log("target root path", targetRootPath);
       var change = changes[0];
 
 
@@ -89,7 +99,7 @@ export default function (fileType, logger) {
       }
 
       let urlParts = change.url.split("/");
-      var filename = urlParts[urlParts.length - 1]
+      var filename = targetRootPath + "/" + urlParts[urlParts.length - 1]
 
       that.downloadFile(change.url, filename, function (result, err) {
 
