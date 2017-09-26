@@ -146,10 +146,10 @@
         console.log("start integration ", integrationId);
         this.setError(null);
         window.drift.hide();
-        this.copyText('urlCopy');
-        this.toast();
+        // this.copyText('urlCopy');
+        // this.toast();
 
-        this.setSessionAction(null);
+        // this.setSessionAction(null);
         let that = this;
         setTimeout(function () {
           that.$router.push({

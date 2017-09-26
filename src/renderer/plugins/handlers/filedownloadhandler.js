@@ -35,18 +35,11 @@ export default function (fileType, logger) {
           out.end();
           completed(true);
         });
-
-      })
-
-
-
-
-
+      });
     }).catch(function (err) {
       console.log("Failed to connect to ", file_url);
       completed(false, err);
     })
-
   }
 
   that.rename_or_copy_and_delete = function (oldPath, newPath, callback) {
