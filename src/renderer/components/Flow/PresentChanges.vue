@@ -106,7 +106,10 @@
       nextStage() {
 
         var that = this;
-        that.setStage(that.Project.stage + 1);
+        if (that.changes.length > 0) {
+          that.setStage(that.Project.stage + 1);
+        }
+
         that.$router.push({
           name: "VariableInputs"
         })
@@ -122,7 +125,7 @@
     },
     mounted() {
       var that = this;
-      if (that.Project.lastStage == that.Project.stage) {
+      if (that.Project.stage >= that.Project.lastStage) {
         that.lastStage = true;
       }
       console.log("entered review changes", that.Project);
@@ -136,9 +139,12 @@
 
 
       if (that.changes.length == 0) {
+        console.log("no changes to do in ", that.Project.stage)
         that.nextStage();
+        return
       }
       for (let i = 0; i < that.changes.length; i++) {
+        console.log("check for file download changes")
         if (that.changes[i].change.changeType == 'fileDownload') {
           that.downloadNum = 1;
         }

@@ -74,7 +74,7 @@
         return r.stage == that.Project.stage;
       });
       this.variables = variables;
-      if (that.Project.lastStage >= that.Project.stage) {
+      if (that.Project.stage >= that.Project.lastStage) {
         that.lastStage = true;
       }
       if (that.Project.stage == 1) {
@@ -82,7 +82,8 @@
       }
 
       if (variables.length == 0) {
-        that.nextStage();
+        console.log("no changes to do in ", that.Project.stage)
+         that.nextStage();
       }
     },
     methods: {
@@ -144,7 +145,9 @@
 
         console.log("live changes  :evaluate", that.Project.changes);
         that.evaluateTemplates();
-        that.setStage(that.Project.stage +1 );
+        if (that.variables.length > 0) {
+          that.setStage(that.Project.stage +1 );
+        }
         that.$router.push({
           name: "PresentChanges",
         })
