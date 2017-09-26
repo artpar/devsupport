@@ -13,6 +13,7 @@ const state = {
   projectDir: null,
   sessionAction: null,
   integration: null,
+  reviewResultContent: null,
   identification: null,
   variables: [],
   secondStageVariables: [],
@@ -161,6 +162,10 @@ const mutations = {
       liveChange.evaluateTemplates(state.contextMap)
     });
   },
+  SET_REVIEW_RESULT_CONTENT(state, content){
+    state.reviewResultContent = content
+
+  },
 
   ADD_PROJECT(state, projectProperties) {
     window.console.log("this is the state object", state);
@@ -256,6 +261,9 @@ const actions = {
   },
   setVariables({commit}, variables) {
     commit("SET_VARIABLES", variables);
+  },
+  setReviewResultContent({commit}, reviewResultsContent) {
+    commit("SET_REVIEW_RESULT_CONTENT", reviewResultsContent)
   },
   setSecondStageVariables({commit}, variables) {
     commit("SET_SECOND_STAGE_VARIABLES", variables)

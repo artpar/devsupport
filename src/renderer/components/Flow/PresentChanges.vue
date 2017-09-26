@@ -47,7 +47,7 @@
           <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
             <ul class="list">
 
-              <li v-for="item in changes" v-if="item.change.changeType == 'fileDownload'">{{item.change.help}}</li>
+              <li v-for="item in changes">{{item.change.help}}</li>
 
             </ul>
           </div>
@@ -144,8 +144,8 @@
         return
       }
       for (let i = 0; i < that.changes.length; i++) {
-        console.log("check for file download changes")
-        if (that.changes[i].change.changeType == 'fileDownload') {
+        console.log("check for file download changes", that.changes[i].change.changeType)
+        if (that.changes[i].change.changeType == 'fileDownload' || that.changes[i].change.changeType == 'fileAdd') {
           that.downloadNum = 1;
         }
       }

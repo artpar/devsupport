@@ -78,7 +78,7 @@
 
 
               <!--old box content-->
-              <template v-else>
+              <template v-else-if="Project.reviewResultContent == null">
                 <div class="ui left floated"><img src="~@/images/launch.png"/></div>
                 <div class="ui right floated">
                   <span class="devblue" style="font-size: 22px"> Integration should be done now<br><br></span>
@@ -88,6 +88,10 @@
                   <button class="ui orange button" style="margin: 1em" @click="feedback('no')">No</button>
                   <span><br>We are collecting this information for our feedback</span>
                 </div>
+              </template>
+
+              <template v-else v-html>
+                {{Project.reviewResultContent}}
               </template>
 
             </div>

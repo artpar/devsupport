@@ -29,6 +29,7 @@
       ...mapActions([
         'setProjectDir',
         'setChanges',
+        'setReviewResultContent',
         'setStage',
         'setLastStage',
         'setIntegration',
@@ -190,7 +191,7 @@
         console.log("found integration", obj);
         var changeSet = JSON.parse(obj.change_set);
         that.selectedIntegration = changeSet;
-
+        that.setReviewResultContent(changeSet.reviewResultContent)
 
         var lastStage = 1;
         changeSet.changes.map(function (c) {
