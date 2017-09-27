@@ -33,7 +33,7 @@
               </div>
               <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
 
-                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line"  :lang="'php'"></editor>
+                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line"  :lang="'html'"></editor>
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
                 {{item.change.fileName}}
@@ -69,7 +69,7 @@
   import {mapActions} from 'vuex';
   import {mapState} from 'vuex';
   import editor from 'vue2-ace';
-  import 'brace/mode/php';
+  import 'brace/mode/html';
   import 'brace/theme/chrome';
 
   export default {
