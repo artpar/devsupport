@@ -90,7 +90,9 @@
                 </div>
               </template>
 
-              <template v-else v-html="Project.reviewResultContent"></template>
+              <template v-else>
+                <div v-html="Project.reviewResultContent"></div>
+              </template>
 
             </div>
           </div>
