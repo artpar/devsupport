@@ -42,17 +42,37 @@
             </div>
           </div>
         </div>
-        <div v-if="downloadNum > 0 ||  item.change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>
-        <div v-if="downloadNum > 0 ||  item.change.changeType == 'fileShow'" class="ui icon message">
+
+        <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
+        <div v-if="downloadNum > 0" class="ui icon message">
           <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
           <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
             <ul class="list">
 
-              <li v-for="item in changes">{{item.change.help}}</li>
+
+              <li v-for="item in changes">
+                {{item.change.help}}
+              </li>
 
             </ul>
           </div>
         </div>
+
+
+        <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>-->
+        <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" class="ui icon message">-->
+          <!--<i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>-->
+          <!--<div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">-->
+            <!--<ul class="list">-->
+
+              <!--<li v-for="item in changes">{{changes[0].change.help}}</li>-->
+
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+
+
+
       </div>
     </div>
 
@@ -155,7 +175,7 @@
       }
       for (let i = 0; i < that.changes.length; i++) {
         console.log("check for file download changes", that.changes[i].change.changeType)
-        if (that.changes[i].change.changeType == 'fileDownload' || that.changes[i].change.changeType == 'fileAdd') {
+        if (that.changes[i].change.changeType == 'fileDownload' || that.changes[i].change.changeType == 'fileAdd' || that.changes[i].change.changeType == 'fileShow') {
           that.downloadNum = 1;
         }
       }
