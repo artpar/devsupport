@@ -33,7 +33,7 @@
               </div>
               <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
 
-                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line" lang="php"></editor>
+                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line"  :lang="'php'"></editor>
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
                 {{item.change.fileName}}
@@ -129,7 +129,7 @@
         changes: [],
         downloadNum: 0,
         options: {
-          fontSize: '14pt'
+          fontSize: '12pt'
         }
       }
     },
