@@ -185,6 +185,8 @@
         changes = changes.concat(this.mainActivityJson);
         changes = changes.concat(this.androidManifestActivityJson);
         changes = changes.concat(this.mainActivityImportsJson);
+        changes = changes.concat(this.mainActivityMethod1Json);
+        changes = changes.concat(this.mainActivityMethod2Json);
         changes = changes.concat(this.androidManifestServiceJson);
         changes = changes.concat(this.afterViewInitJson);
         changes = changes.concat(this.phpFile1Json);
@@ -199,7 +201,7 @@
           "name": "PeachPay Android Integration",
           "variables": [
             {
-              "name": "serverurl",
+              "name": "server_url",
               "label": "Url pointing to your txn generating URL",
               "stage": 1,
               "description": "In order to proceed, you need to complete server integration first",
@@ -211,7 +213,7 @@
               "validationType": "http",
               "errorLabel": "Server is not properly configured at the given url",
               "params": {
-                "url": "{{=it.serverurl}}",
+                "url": "{{=it.server_url}}",
                 "method": "GET",
                 "headers": {},
                 "body": {}

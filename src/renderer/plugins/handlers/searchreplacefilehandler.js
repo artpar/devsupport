@@ -22,7 +22,7 @@ export default function (fileType, logger) {
             var firstNonSpaceChar = fileLines[u].match(/[^ ]/).index;
 
             if (action == "prepend") {
-              fileLines.splice(u - 1, 0, " ".repeat(firstNonSpaceChar) + line);
+              fileLines.splice(u, 0, " ".repeat(firstNonSpaceChar) + line);
             } else if (action == "append") {
               fileLines.splice(u + 1, 0, " ".repeat(firstNonSpaceChar) + line);
             } else if (action == "replace") {
