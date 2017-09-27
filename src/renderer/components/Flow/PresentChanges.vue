@@ -69,7 +69,7 @@
   import {mapActions} from 'vuex';
   import {mapState} from 'vuex';
   import editor from 'vue2-ace';
-  import 'brace/mode/javascript';
+  import 'brace/mode/php';
   import 'brace/theme/chrome';
 
   export default {
