@@ -17,7 +17,7 @@
                 </div>
 
               </div>
-              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType != 'fileDownload'">
+              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType != 'fileDownload' && item.change.changeType != 'fileShow'">
                 <div class="ui radio checkbox"
                      @click="item.selectedFilePath = file.filepath">
                   <input
@@ -32,7 +32,8 @@
                 </div>
               </div>
               <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
-                <textarea >{{item.change.line}}</textarea>
+
+                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line" :lang="php  "></editor>
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
                 {{item.change.fileName}}
@@ -67,8 +68,14 @@
 <script>
   import {mapActions} from 'vuex';
   import {mapState} from 'vuex';
+  import editor from 'vue2-ace';
+  import 'brace/mode/javascript';
+  import 'brace/theme/chrome';
 
   export default {
+    components: {
+      editor
+    },
     methods: {
       applyChanges() {
         this.$router.push({
@@ -120,7 +127,10 @@
       return {
         lastStage: false,
         changes: [],
-        downloadNum: 0
+        downloadNum: 0,
+        options: {
+          fontSize: '14pt'
+        }
       }
     },
     mounted() {

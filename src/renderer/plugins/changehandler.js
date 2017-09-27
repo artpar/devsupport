@@ -2,7 +2,7 @@ import NewSearchAndReplace from './handlers/searchreplacefilehandler'
 import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
 import NewDownloadHandler from './handlers/filedownloadhandler'
-import NewPhpFileHandler from './handlers/phpfilehandler'
+// import NewPhpFileHandler from './handlers/phpfilehandler'
 
 
 import NewHttpValidator from './validators/httpvalidator';
@@ -27,7 +27,7 @@ const FileProcessorFactor = {
         return NewDownloadHandler(fileType, logger);
       case "php":
         return NewSearchAndReplace(fileType, logger);
-        return NewPhpFileHandler(fileType, logger);
+        // return NewPhpFileHandler(fileType, logger);
         // return NewJavaFileHandler(fileType, logger);
       case "xml":
         return NewSearchAndReplace(fileType, logger);
