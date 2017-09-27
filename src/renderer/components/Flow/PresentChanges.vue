@@ -7,7 +7,7 @@
           <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
             <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}</h3></label>
             <div class="relaxed list" style="padding-left: 1em;">
-              <div v-if="(item.selectedFiles=='' && item.change.changeType != 'fileDownload')" class="item">
+              <div v-if="(item.selectedFiles=='' && item.change.changeType != 'fileDownload') && item.change.changeType != 'fileShow'" class="item">
 
                 <div class="ui icon message">
                   <i class="material-icons" style="margin-right: 0.5em;">warning</i>
@@ -42,8 +42,8 @@
             </div>
           </div>
         </div>
-        <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
-        <div v-if="downloadNum > 0" class="ui icon message">
+        <div v-if="downloadNum > 0 ||  item.change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>
+        <div v-if="downloadNum > 0 ||  item.change.changeType == 'fileShow'" class="ui icon message">
           <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
           <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
             <ul class="list">
@@ -129,7 +129,7 @@
         changes: [],
         downloadNum: 0,
         options: {
-          fontSize: '12pt'
+          fontSize: '10pt'
         }
       }
     },
