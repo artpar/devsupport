@@ -8,7 +8,7 @@
     <div class="get-source-folder">
       <div class="heading">Before we start please link your source folder here</div>
       <el-upload
-          class="upload-demo box"
+          class="upload-demo box" :file-list="selectionList"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
           :auto-upload="false"
@@ -55,6 +55,7 @@
     name: 'select-project',
     data() {
       return {
+        selectionList: [],
         ProjectIdentificationRules: [
           {
             "result": {
@@ -123,7 +124,7 @@
       open(link) {
         this.$electron.shell.openExternal(link);
       },
-      folderSelect: function (file) {
+      folderSelect: function (file, filelist) {
         var that = this;
 
         var rawFile = file.raw;
@@ -150,7 +151,7 @@
                   console.log("file", check.value, "exists")
                 } else {
                   isOk = false;
-                  console.log("file", rule.value, "doesnt exists")
+                  console.log("file", check.value, "doesnt exists")
                 }
                 break;
               default:
@@ -167,13 +168,14 @@
 
 
         if (identification == null) {
+          filelist.splice(0, 1);
           that.errModal3('show');
 //          that.$alert('Unable to identify project', 'Unknown project type', {
 //            confirmButtonText: 'Try something else',
 //            callback: action => {
 //            }
 //          });
-          return;
+          return false;
         }
         this.setProjectDir({
           projectDir: rawFile.path,

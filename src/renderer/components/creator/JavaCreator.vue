@@ -186,6 +186,7 @@
         changes = changes.concat(this.androidManifestActivityJson);
         changes = changes.concat(this.mainActivityImportsJson);
         changes = changes.concat(this.mainActivityMethod1Json);
+        changes = changes.concat(this.gradleRepoJson);
         changes = changes.concat(this.mainActivityMethod2Json);
         changes = changes.concat(this.androidManifestServiceJson);
         changes = changes.concat(this.afterViewInitJson);
@@ -360,14 +361,12 @@
       },
       gradleRepoJson: function () {
         let line = this.allData.gradleRepo;
-        return line.split("\n").map(function (importLine) {
 
-          if (!importLine) {
+          if (!line) {
             return
           }
-          return
 
-          let lineParts = importLine.split(":");
+          let lineParts = line.split(":");
 
           return {
             "name": "Add dependency for InstaMojo SDK",
@@ -378,28 +377,12 @@
             "change": [
               {
                 "changeType": "add.line",
-                "line": "mavenCentral()\n    maven {\n        url \"https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/\"\n    }",
+                "line": line,
                 "action": "append",
                 "query": "repositories[ \t]*{",
                 "validations": [
                   {
                     "checkType": "positive",
-                    "query": "repositories"
-                  },
-                  {
-                    "checkType": "negative",
-                    "query": "godel-release/godel"
-                  }
-                ]
-              },
-              {
-                "changeType": "add.line",
-                "line": "repositories {\n    mavenCentral()\n    maven {\n        url \"https://s3-ap-southeast-1.amazonaws.com/godel-release/godel/\"\n    }\n}\n",
-                "action": "prepend",
-                "query": "dependencies[ \t]*{",
-                "validations": [
-                  {
-                    "checkType": "negative",
                     "query": "repositories"
                   },
                   {
@@ -418,9 +401,6 @@
           }
 
 
-        }).filter(function (r) {
-          return !!r
-        })
       },
       settingsGradleJson: function () {
       },
