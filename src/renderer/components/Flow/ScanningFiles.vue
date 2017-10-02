@@ -76,11 +76,11 @@
           ]
         }, {
           matchConditions: [
-            new RegExp("build.gradle")
+            new RegExp(".gradle")
           ]
         }, {
           matchConditions: [
-            new RegExp("AndroidManifest.xml")
+            new RegExp(".xml")
           ]
         }, {
           matchConditions: [
@@ -112,7 +112,7 @@
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
-            ['**/*.java', '**/*.xml', '**/build.gradle', '**/*.php', '**/*.html'], function (filepath, relative, filename) {
+            ['**/*.java', '**/*.xml', '**/*.gradle', '**/*.php', '**/*.html'], function (filepath, relative, filename) {
 
               console.log("callback point 1", filepath, relative, filename);
               if (typeof filename != "undefined") {

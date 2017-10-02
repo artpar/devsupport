@@ -25,6 +25,8 @@ export default function (fileType, logger) {
               fileLines.splice(u, 0, " ".repeat(firstNonSpaceChar) + line);
             } else if (action == "append") {
               fileLines.splice(u + 1, 0, " ".repeat(firstNonSpaceChar) + line);
+            } else if (action == "appendInline") {
+              fileLines[u] = fileLines[u] + line;
             } else if (action == "replace") {
               fileLines[u] = " ".repeat(firstNonSpaceChar) + line;
             } else if (action == "delete") {
