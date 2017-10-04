@@ -22,7 +22,6 @@
         selectedIntegration: null,
         liveChanges: [],
         variables: [],
-        secondStageVariables: [],
       }
     },
     methods: {
@@ -34,6 +33,7 @@
         'setLastStage',
         'setIntegration',
         'setVariables',
+        'setContextMap',
         'setVariableValidations',
       ]),
       beginValidateProject() {
@@ -42,7 +42,6 @@
         that.actions = [];
         that.liveChanges = [];
         that.variables = [];
-        that.secondStageVariables = [];
 
         this.selectedIntegration.changes.map(function (change) {
           console.log("Push change", change);
@@ -61,8 +60,15 @@
           that.setVariableValidations(this.selectedIntegration.variableValidations)
         }
 
+
         that.setVariables(that.variables);
+        console.log
         console.log("Set variables and second stage variables", that.variables);
+
+
+        console.log("variable captures", that.selectedIntegration.captures);
+
+        var captureMap = {};
 
         that.files = [];
 
@@ -105,10 +111,21 @@
           that.setChanges(that.liveChanges);
           console.log("set changes", that.liveChanges);
           that.setStage(1);
+          console.log("set context map", captureMap)
+          that.setContextMap(captureMap);
           that.$router.push({
             name: 'VariableInputs',
           })
         }
+
+        var captures = [];
+        if (that.selectedIntegration.captures && that.selectedIntegration.captures.length > 0) {
+
+          captures = that.selectedIntegration.captures;
+
+
+        }
+
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
@@ -124,6 +141,33 @@
                     completed();
                   }, 700);
                 }
+
+
+                captures.map(function (capture) {
+//                  console.log("capture attempt", filepath, filename);
+
+                  if (filepath.match(capture.fileSelector)) {
+                    console.log("capture file matched", filepath, capture);
+
+                    var fileContentString = fs.readFileSync(filepath).toString();
+
+                    var regexToMatch = new RegExp(capture.regex);
+                    var matches = regexToMatch.exec(fileContentString);
+                    if (!matches || matches.length == 0) {
+                      return;
+                    }
+
+                    var captureValue = matches[capture.extract];
+                    console.log("captured variable", capture.name, captureValue)
+                    captureMap[capture.name] = captureValue;
+
+
+                  }
+
+
+                })
+
+
                 var matched = false;
                 for (var k = 0; k < filesToEdit.length; k++) {
 
@@ -148,6 +192,7 @@
                     for (var o = 0; o < conditions.nonMatchConditions.length; o++) {
                       if (filepath.match(conditions.nonMatchConditions[o])) {
                         matching = false;
+                        break;
                         // console.log("match for ", conditions.nonMatchConditions[o], filepath)
 
                       }
@@ -219,7 +264,7 @@
         that.setLastStage(lastStage);
 
         that.loading = true;
-        setTimeout(function(){
+        setTimeout(function () {
           that.beginValidateProject();
         }, 1000)
       });

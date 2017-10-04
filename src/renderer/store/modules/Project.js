@@ -65,7 +65,15 @@ const mutations = {
     state.currentProject = {};
   },
   SET_CONTEXT_MAP(state, contextMap) {
-    state.contextMap = contextMap;
+    console.log("adding context values", contextMap);
+    var newKeys = Object.keys(contextMap);
+    for (var i = 0; i < newKeys.length; i++) {
+      let newKey = newKeys[i];
+      state.contextMap[newKey] = contextMap[newKey];
+    }
+  },
+  CLEAR_CONTEXT_MAP(state) {
+    state.contextMap = {};
   },
   SET_LAST_STAGE(state, lastStage) {
     state.lastStage = lastStage;
@@ -162,7 +170,7 @@ const mutations = {
       liveChange.evaluateTemplates(state.contextMap)
     });
   },
-  SET_REVIEW_RESULT_CONTENT(state, content){
+  SET_REVIEW_RESULT_CONTENT(state, content) {
     state.reviewResultContent = content
 
   },
@@ -258,6 +266,9 @@ const actions = {
   },
   setContextMap({commit}, contextMap) {
     commit("SET_CONTEXT_MAP", contextMap)
+  },
+  clearContextMap({commit}) {
+    commit("CLEAR_CONTEXT_MAP")
   },
   setVariables({commit}, variables) {
     commit("SET_VARIABLES", variables);

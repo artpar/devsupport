@@ -4,6 +4,9 @@ import request from 'request';
 var AdmZip = require('adm-zip');
 const path = require('path');
 import axios from 'axios';
+import dot from 'dot';
+
+
 
 export default function (fileType, logger) {
   var that = {};
@@ -29,7 +32,7 @@ export default function (fileType, logger) {
 
       var out = fs.createWriteStream(targetPath);
 
-      out.on("open", function(fd){
+      out.on("open", function (fd) {
         out.write(new Buffer(response.data), function () {
           console.log("fs write completed", arguments);
           out.end();
@@ -41,6 +44,7 @@ export default function (fileType, logger) {
       completed(false, err);
     })
   }
+
 
   that.rename_or_copy_and_delete = function (oldPath, newPath, callback) {
 
@@ -74,7 +78,7 @@ export default function (fileType, logger) {
     );
   }
 
-  that.doChange = function (file, changes) {
+  that.doChange = function (file, changes, contextMap) {
     console.log("file downloader do change", file, changes)
     return new Promise(function (resolve, reject) {
 
@@ -122,12 +126,28 @@ export default function (fileType, logger) {
             console.log(zipEntry.toString(), " to ", unzipTarget); // outputs zip entries information
 
 
-            zip.extractEntryTo(
-                /*entry name*/ zipEntry.entryName,
-                /*target path*/ unzipTarget,
-                /*maintainEntryPath*/ false,
-                /*overwrite*/ true
-            );
+            var fileContent = zipEntry.getData().toString('utf8');
+
+
+            var targetBase = path.parse(zipEntry.entryName);
+            if (targetBase.ext != "") {
+              var zipEntryName = path.parse(zipEntry.entryName).base;
+              console.log("target base", targetBase, zipEntryName);
+
+              const tempFn = dot.template(fileContent);
+              var contentToWrite = tempFn(contextMap);
+
+              fs.writeFile(unzipTarget +  zipEntryName, contentToWrite, 'utf8', function(){
+                console.log("file written", arguments);
+              });
+            } else {
+              zip.extractEntryTo(
+                  /*entry name*/ zipEntry.entryName,
+                  /*target path*/ unzipTarget,
+                  /*maintainEntryPath*/ false,
+                  /*overwrite*/ true
+              );
+            }
 
 
           }
