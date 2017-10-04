@@ -136,13 +136,13 @@ const mutations = {
     var resultMap = {}
 
     function doIndex(ith, doIndex) {
-      console.log("do change", ith);
       if (state.changes.length == ith) {
         if (callback) {
           callback(resultMap);
         }
         return;
       }
+      console.log("do change", ith);
       state.changes[ith].doChanges(state.contextMap).then(function () {
         resultMap[ith] = true
         doIndex(ith + 1, doIndex);

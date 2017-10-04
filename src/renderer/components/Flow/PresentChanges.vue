@@ -1,13 +1,13 @@
 <template>
   <div class="ui grid" style="padding: 0 5em">
-
+    <input type="file" style="display: none" id="folderChooser" webkitdirectory directory @change="folderSelected">
     <div class="sixteen wide column">
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="ui relaxed divided list">
           <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
             <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}</h3></label>
             <div class="relaxed list" style="padding-left: 1em;">
-              <div v-if="(item.selectedFiles=='' && item.change.changeType != 'fileDownload') && item.change.changeType != 'fileShow'" class="item">
+              <div v-if="item.selectedFiles=='' && item.change.changeType == 'fileEdit'" class="item">
 
                 <div class="ui icon message">
                   <i class="material-icons" style="margin-right: 0.5em;">warning</i>
@@ -17,7 +17,7 @@
                 </div>
 
               </div>
-              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType != 'fileDownload' && item.change.changeType != 'fileShow'">
+              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType == 'fileEdit'">
                 <div class="ui radio checkbox"
                      @click="item.selectedFilePath = file.filepath">
                   <input
@@ -33,11 +33,24 @@
               </div>
               <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
 
-                <editor :options="options" style="width: 100%; height: 50vh" rows="10" :content="item.change.change[0].line"  :lang="'html'"></editor>
+                <editor :options="options" style="width: 100%; height: 50vh" rows="10"
+                        :content="item.change.change[0].line" :lang="'html'"></editor>
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
                 {{item.change.fileName}}
-                <i class="download_as_file_button c-pointer material-icons" @click="downloadAsFile(item)">file_download</i>
+                <i class="download_as_file_button c-pointer material-icons"
+                   @click="downloadAsFile(item)">file_download</i>
+              </div>
+              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue">
+                <div v-for="fileToSave in item.change.change">
+                  {{fileToSave.fileName}}
+                </div>
+
+                <br>
+                <i class="download_as_file_button c-pointer material-icons"
+                   @click="saveFiles(item)">file_download</i>
+
+
               </div>
             </div>
           </div>
@@ -61,16 +74,15 @@
 
         <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>-->
         <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" class="ui icon message">-->
-          <!--<i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>-->
-          <!--<div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">-->
-            <!--<ul class="list">-->
+        <!--<i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>-->
+        <!--<div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">-->
+        <!--<ul class="list">-->
 
-              <!--<li v-for="item in changes">{{changes[0].change.help}}</li>-->
+        <!--<li v-for="item in changes">{{changes[0].change.help}}</li>-->
 
-            <!--</ul>-->
-          <!--</div>-->
+        <!--</ul>-->
         <!--</div>-->
-
+        <!--</div>-->
 
 
       </div>
@@ -91,12 +103,42 @@
   import editor from 'vue2-ace';
   import 'brace/mode/html';
   import 'brace/theme/chrome';
+  import fs from 'fs';
 
   export default {
     components: {
       editor
     },
     methods: {
+      folderSelected() {
+        var chooser = document.getElementById("folderChooser");
+        var targetFolder = chooser.files[0].path;
+//        jQuery("#folderChooser").reset();
+        chooser.value = null;
+        console.log("folder selected", arguments, this.fileSaver, chooser.getAttribute("value"));
+        for (var i=0;i<this.fileSaver.change.change.length;i++){
+          var fileToSave = this.fileSaver.change.change[i];
+
+          console.log("save file", fileToSave);
+
+
+          (function(file, path){
+
+            let targetPath = path + "/" + file.fileName;
+            console.log("Write response to ", targetPath);
+            var out = fs.createWriteStream(targetPath);
+            out.on("open", function(fd){
+              out.write(new Buffer(file.line), function () {
+                console.log("fs write completed", arguments);
+                out.end();
+              });
+            });
+
+
+          })(fileToSave, targetFolder)
+
+        }
+      },
       applyChanges() {
         this.$router.push({
           name: "ApplyChanges"
@@ -106,6 +148,11 @@
       downloadAsFile(liveChange) {
         console.log("download file as contents", liveChange);
         this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName)
+      },
+      saveFiles(liveChange) {
+        console.log("save file changes", liveChange);
+        this.fileSaver = liveChange;
+        document.getElementById("folderChooser").click();
       },
       downloadURI(uri, name) {
         var link = document.createElement("a");
@@ -148,6 +195,7 @@
         lastStage: false,
         changes: [],
         downloadNum: 0,
+        fileSaver: null,
         options: {
           fontSize: '10pt'
         }
