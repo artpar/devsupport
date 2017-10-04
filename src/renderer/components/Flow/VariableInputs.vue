@@ -57,6 +57,7 @@
         <div class="ui secondary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
+    {{filteredValidations}}
 
   </div>
 </template>
@@ -70,10 +71,16 @@
       console.log("entered review updated: stage: ", this.Project.stage, this.Project);
       var that = this;
       var variables = [];
+      var filteredValidations = [];
       variables = this.Project.variables.filter(function(r){
         return r.stage == that.Project.stage;
       });
       this.variables = variables;
+      filteredValidations = this.Project.variableValidations.filter(function(r){
+        return r.stage == that.Project.stage;
+      });
+      this.filteredValidations=filteredValidations;
+
       if (that.Project.stage >= that.Project.lastStage) {
         that.lastStage = true;
       }
@@ -120,7 +127,7 @@
           name: "PresentChanges"
         })
       },
-      ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidation", "setError", "setStage"]),
+      ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidations", "setError", "setStage"]),
       nextStage() {
         console.log("validations before next stage");
         var that = this;
@@ -145,6 +152,79 @@
 
         console.log("live changes  :evaluate", that.Project.changes);
         that.evaluateTemplates();
+
+        that.runVariableValidations(this.filteredValidations, function(response) {
+          console.log("variable validation response", response);
+
+
+          if (typeof response == "object" && !(response instanceof Array)) {
+
+            if (response.result) {
+
+
+//              that.doChanges(function (result) {
+//                console.log("Completed all changes, result : ", result);
+//                that.callbackChangeComplete(result);
+//              })
+
+            } else {
+              that.setError(response.validation.errorLabel);
+
+              that.setStage(response.validation.stage);
+              that.$router.push({
+                name: "VariableInputs",
+              });
+              return
+            }
+
+          }
+
+          Promise.all(response).then(function (res) {
+            console.log("more response", res);
+            var finalResult = true;
+
+            for (var i = 0; i < res.length; i++) {
+              let response = res[i];
+              if (!response.result) {
+                finalResult = false;
+                break;
+              }
+            }
+
+            if (finalResult) {
+
+//              that.doChanges(function (result) {
+//                console.log("Completed all changes", result);
+//                that.callbackChangeComplete(result);
+//              })
+
+            } else {
+              that.setError(response.validation.errorLabel);
+//              that.$notify({
+//                message: response.validation.errorLabel,
+//                title: "Failed",
+//                type: "error"
+//              });
+
+              switch (response.validation.stage) {
+                case 1:
+                  that.$router.push({
+                    name: "ReviewUpdates",
+                  });
+                  return;
+                case 2:
+                  that.$router.push({
+                    name: "SecondInputs",
+                  });
+                  return;
+              }
+            }
+          }).catch(function (result) {
+            console.log("run of variable validations failed", result);
+          })
+        });
+
+
         if (that.variables.length > 0) {
           that.setStage(that.Project.stage +1 );
         }
@@ -160,7 +240,8 @@
         variables: [],
         loading: false,
         firstStage: false,
-        errorField: ""
+        errorField: "",
+        filteredValidations: []
 
       }
     },
