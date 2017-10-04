@@ -105,6 +105,27 @@
   import 'brace/theme/chrome';
   import fs from 'fs';
 
+  var path = require('path');
+  var pathSep = path.sep;
+
+
+  let mkdirSync = function (path) {
+
+    var dirs = path.split(pathSep);
+    var root = "";
+
+    while (dirs.length > 0) {
+      var dir = dirs.shift();
+      if (dir === "") {// If directory starts with a /, the first path will be an empty string.
+        root = pathSep;
+      }
+      if (!fs.existsSync(root + dir)) {
+        fs.mkdirSync(root + dir);
+      }
+      root += dir + pathSep;
+    }
+  };
+
   export default {
     components: {
       editor
@@ -116,18 +137,28 @@
 //        jQuery("#folderChooser").reset();
         chooser.value = null;
         console.log("folder selected", arguments, this.fileSaver, chooser.getAttribute("value"));
-        for (var i=0;i<this.fileSaver.change.change.length;i++){
+        for (var i = 0; i < this.fileSaver.change.change.length; i++) {
           var fileToSave = this.fileSaver.change.change[i];
 
           console.log("save file", fileToSave);
 
 
-          (function(file, path){
+          (function (file, folderPath) {
 
-            let targetPath = path + "/" + file.fileName;
+            let targetPath = folderPath + "/" + file.fileName;
+
+            var targetBase = path.parse(targetPath).dir;
+
+            console.log("check dir exists", targetBase);
+            if (!fs.existsSync(targetBase)) {
+              console.log("Target base doesnt exist, create one")
+              var resss  = mkdirSync(targetBase);
+              console.log("makdir result", resss)
+            }
+
             console.log("Write response to ", targetPath);
             var out = fs.createWriteStream(targetPath);
-            out.on("open", function(fd){
+            out.on("open", function (fd) {
               out.write(new Buffer(file.line), function () {
                 console.log("fs write completed", arguments);
                 out.end();
