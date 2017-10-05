@@ -5,7 +5,12 @@
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="ui relaxed divided list">
           <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
-            <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}</h3></label>
+            <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}
+              <span v-if="item.change.changeType === 'fileSave'" style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
+                <i class="download_as_file_button c-pointer material-icons" @click="saveFiles(item)">file_download</i>
+              </span></h3>
+
+            </label>
             <div class="relaxed list" style="padding-left: 1em;">
               <div v-if="item.selectedFiles=='' && item.change.changeType == 'fileEdit'" class="item">
 
@@ -41,16 +46,13 @@
                 <i class="download_as_file_button c-pointer material-icons"
                    @click="downloadAsFile(item)">file_download</i>
               </div>
-              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue">
-                <div v-for="fileToSave in item.change.change">
+
+              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue" >
+                <ul class="ui bulleted relaxed list">
+                <li class="item" v-for="fileToSave in item.change.change">
                   {{fileToSave.fileName}}
-                </div>
-
-                <br>
-                <i class="download_as_file_button c-pointer material-icons"
-                   @click="saveFiles(item)">file_download</i>
-
-
+                </li>
+                </ul>
               </div>
             </div>
           </div>
