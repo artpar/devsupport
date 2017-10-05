@@ -1,6 +1,10 @@
 <template>
+<div>
+  <div v-if='loading'>
+    <loading></loading>
+  </div>
+<div v-else-if='!loading'>
   <div class="ui grid" style="padding: 0 5em">
-
     <!--second stage variable screen ends-->
 
 
@@ -40,7 +44,8 @@
 
     <div class="sixteen wide column">
       <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+      </button>
       <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
@@ -57,8 +62,9 @@
         <div class="ui secondary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
-
   </div>
+</div>
+</div>
 </template>
 <script>
   import jsonApi from '../../plugins/jsonApi'
@@ -70,10 +76,16 @@
       console.log("entered review updated: stage: ", this.Project.stage, this.Project);
       var that = this;
       var variables = [];
-      variables = this.Project.variables.filter(function(r){
+      var filteredValidations = [];
+      variables = this.Project.variables.filter(function (r) {
         return r.stage == that.Project.stage;
       });
       this.variables = variables;
+      filteredValidations = this.Project.variableValidations.filter(function (r) {
+        return r.stage == that.Project.stage;
+      });
+      this.filteredValidations = filteredValidations;
+
       if (that.Project.stage >= that.Project.lastStage) {
         that.lastStage = true;
       }
@@ -83,7 +95,7 @@
 
       if (variables.length == 0) {
         console.log("no changes to do in ", that.Project.stage)
-         that.nextStage();
+        that.nextStage();
       }
     },
     methods: {
@@ -97,10 +109,86 @@
 //        });
 //
 //      },
+      updateVariables() {
+        var that = this;
+
+
+        var contextMap = {};
+        var invalidFields = that.Project.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return that.Project.stage == variable.stage && (variable.value == null || variable.value.length < 2);
+        });
+
+
+        that.setContextMap(contextMap);
+
+        if (invalidFields.length > 0) {
+          that.errorField = invalidFields[0].label;
+          that.errModal('show');
+          return false
+        }
+        return true
+
+
+      },
       applyChanges() {
-        this.$router.push({
-          name: "ApplyChanges",
-        })
+        var that = this;
+        if (!that.updateVariables()) {
+          return
+        }
+        that.setError(null);
+        that.loading = true;
+        that.runVariableValidations({
+          filteredValidations: this.filteredValidations,
+          callback: function (response) {
+            console.log("variable validation response", response);
+
+
+            if (typeof response == "object" && !(response instanceof Array)) {
+
+              if (response.result) {
+                that.loading = false;
+                that.$router.push({
+                  name: "ApplyChanges",
+                })
+              } else {
+                that.loading = false;
+                that.setError(response.validation.errorLabel);
+                that.setStage(response.validation.stage);
+              }
+              return
+            }
+
+            Promise.all(response).then(function (res) {
+              console.log("more response", res);
+              var finalResult = true;
+
+              for (var i = 0; i < res.length; i++) {
+                let response = res[i];
+                if (!response.result) {
+                  finalResult = false;
+                  break;
+                }
+              }
+
+              if (finalResult) {
+                that.loading = false;
+                that.$router.push({
+                  name: "ApplyChanges",
+                })
+
+              } else {
+                that.loading = false;
+                that.setError(response.validation.errorLabel);
+              }
+            }).catch(function (result) {
+              console.log("run of variable validations failed", result);
+            })
+          }
+        });
+
+        console.log("validation in applychanges buton finished");
+
       },
       errModal: function (action) {
         jQuery('.ui.mini.modal').modal(action);
@@ -120,24 +208,11 @@
           name: "PresentChanges"
         })
       },
-      ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidation", "setError", "setStage"]),
+      ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidations", "setError", "setStage"]),
       nextStage() {
         console.log("validations before next stage");
         var that = this;
-        var contextMap = {};
-        var invalidFields = that.Project.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return that.Project.stage == variable.stage && (variable.value == null || variable.value.length < 2);
-        });
-
-
-        that.setContextMap(contextMap);
-
-        if (invalidFields.length > 0) {
-          that.errorField=invalidFields[0].label;
-          that.errModal('show');
-//          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
-//          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
+        if (!that.updateVariables()) {
           return
         }
 
@@ -145,12 +220,70 @@
 
         console.log("live changes  :evaluate", that.Project.changes);
         that.evaluateTemplates();
-        if (that.variables.length > 0) {
-          that.setStage(that.Project.stage +1 );
-        }
-        that.$router.push({
-          name: "PresentChanges",
-        })
+
+        that.loading = true;
+        that.runVariableValidations({
+          filteredValidations: this.filteredValidations,
+          callback: function (response) {
+            console.log("variable validation response", response);
+
+
+            if (typeof response == "object" && !(response instanceof Array)) {
+
+              if (response.result) {
+                that.loading = false;
+                that.setStage(that.Project.stage + 1);
+                that.$router.push({
+                  name: "PresentChanges",
+                })
+              } else {
+                that.loading = false;
+                that.setError(response.validation.errorLabel);
+                that.setStage(response.validation.stage);
+                that.$router.push({
+                  name: "VariableInputs",
+                });
+              }
+              return
+            }
+
+            Promise.all(response).then(function (res) {
+              console.log("more response", res);
+              var finalResult = true;
+
+              for (var i = 0; i < res.length; i++) {
+                let response = res[i];
+                if (!response.result) {
+                  finalResult = false;
+                  break;
+                }
+              }
+
+              if (finalResult) {
+                that.loading = false;
+                that.setStage(that.Project.stage + 1);
+                that.$router.push({
+                  name: "PresentChanges",
+                })
+
+              } else {
+                that.loading = false;
+                that.setError(response.validation.errorLabel);
+              }
+            }).catch(function (result) {
+              console.log("run of variable validations failed", result);
+            })
+          }
+        });
+        console.log("validation in next button finished");
+
+
+//        if (that.variables.length > 0) {
+//          that.setStage(that.Project.stage + 1);
+//          that.$router.push({
+//            name: "PresentChanges",
+//          })
+//        }
       },
     },
     data() {
@@ -160,7 +293,8 @@
         variables: [],
         loading: false,
         firstStage: false,
-        errorField: ""
+        errorField: "",
+        filteredValidations: []
 
       }
     },
