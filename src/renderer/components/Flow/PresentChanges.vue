@@ -5,7 +5,9 @@
       <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
         <div class="ui relaxed divided list">
           <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
-            <label :for="item.name"><h3 style="margin-top: 1em;">{{item.change.name}}
+            <label :for="item.name">
+              <h3 style="margin-top: 1em;">
+                {{item.change.name}}
               <span v-if="item.change.changeType === 'fileSave'" style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
                 <i class="download_as_file_button c-pointer material-icons" @click="saveFiles(item)">file_download</i>
               </span></h3>
