@@ -22,6 +22,7 @@
     methods: {
       ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage", "setResults"]),
       applyChanges() {
+
         var that = this;
         that.loading = true;
 

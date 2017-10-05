@@ -40,7 +40,8 @@
 
     <div class="sixteen wide column">
       <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes</button>
+      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+      </button>
       <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
     </div>
 
@@ -72,14 +73,14 @@
       var that = this;
       var variables = [];
       var filteredValidations = [];
-      variables = this.Project.variables.filter(function(r){
+      variables = this.Project.variables.filter(function (r) {
         return r.stage == that.Project.stage;
       });
       this.variables = variables;
-      filteredValidations = this.Project.variableValidations.filter(function(r){
+      filteredValidations = this.Project.variableValidations.filter(function (r) {
         return r.stage == that.Project.stage;
       });
-      this.filteredValidations=filteredValidations;
+      this.filteredValidations = filteredValidations;
 
       if (that.Project.stage >= that.Project.lastStage) {
         that.lastStage = true;
@@ -90,7 +91,7 @@
 
       if (variables.length == 0) {
         console.log("no changes to do in ", that.Project.stage)
-         that.nextStage();
+        that.nextStage();
       }
     },
     methods: {
@@ -105,6 +106,81 @@
 //
 //      },
       applyChanges() {
+        var that = this;
+
+        that.runVariableValidations({
+          filteredValidations: this.filteredValidations,
+          callback: function (response) {
+            console.log("variable validation response", response);
+
+
+            if (typeof response == "object" && !(response instanceof Array)) {
+
+              if (response.result) {
+
+
+//              that.doChanges(function (result) {
+//                console.log("Completed all changes, result : ", result);
+//                that.callbackChangeComplete(result);
+//              })
+
+              } else {
+                that.setError(response.validation.errorLabel);
+
+                that.setStage(response.validation.stage);
+                that.$router.push({
+                  name: "VariableInputs",
+                });
+                return
+              }
+
+            }
+
+            Promise.all(response).then(function (res) {
+              console.log("more response", res);
+              var finalResult = true;
+
+              for (var i = 0; i < res.length; i++) {
+                let response = res[i];
+                if (!response.result) {
+                  finalResult = false;
+                  break;
+                }
+              }
+
+              if (finalResult) {
+
+//              that.doChanges(function (result) {
+//                console.log("Completed all changes", result);
+//                that.callbackChangeComplete(result);
+//              })
+
+              } else {
+                that.setError(response.validation.errorLabel);
+//              that.$notify({
+//                message: response.validation.errorLabel,
+//                title: "Failed",
+//                type: "error"
+//              });
+
+                switch (response.validation.stage) {
+                  case 1:
+                    that.$router.push({
+                      name: "ReviewUpdates",
+                    });
+                    return;
+                  case 2:
+                    that.$router.push({
+                      name: "SecondInputs",
+                    });
+                    return;
+                }
+              }
+            }).catch(function (result) {
+              console.log("run of variable validations failed", result);
+            })
+          }});
+
         this.$router.push({
           name: "ApplyChanges",
         })
@@ -141,7 +217,7 @@
         that.setContextMap(contextMap);
 
         if (invalidFields.length > 0) {
-          that.errorField=invalidFields[0].label;
+          that.errorField = invalidFields[0].label;
           that.errModal('show');
 //          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
 //          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
@@ -153,13 +229,15 @@
         console.log("live changes  :evaluate", that.Project.changes);
         that.evaluateTemplates();
 
-        that.runVariableValidations(this.filteredValidations, function(response) {
-          console.log("variable validation response", response);
+        that.runVariableValidations({
+          filteredValidations: this.filteredValidations,
+          callback: function (response) {
+            console.log("variable validation response", response);
 
 
-          if (typeof response == "object" && !(response instanceof Array)) {
+            if (typeof response == "object" && !(response instanceof Array)) {
 
-            if (response.result) {
+              if (response.result) {
 
 
 //              that.doChanges(function (result) {
@@ -167,66 +245,67 @@
 //                that.callbackChangeComplete(result);
 //              })
 
-            } else {
-              that.setError(response.validation.errorLabel);
+              } else {
+                that.setError(response.validation.errorLabel);
 
-              that.setStage(response.validation.stage);
-              that.$router.push({
-                name: "VariableInputs",
-              });
-              return
-            }
-
-          }
-
-          Promise.all(response).then(function (res) {
-            console.log("more response", res);
-            var finalResult = true;
-
-            for (var i = 0; i < res.length; i++) {
-              let response = res[i];
-              if (!response.result) {
-                finalResult = false;
-                break;
+                that.setStage(response.validation.stage);
+                that.$router.push({
+                  name: "VariableInputs",
+                });
+                return
               }
+
             }
 
-            if (finalResult) {
+            Promise.all(response).then(function (res) {
+              console.log("more response", res);
+              var finalResult = true;
+
+              for (var i = 0; i < res.length; i++) {
+                let response = res[i];
+                if (!response.result) {
+                  finalResult = false;
+                  break;
+                }
+              }
+
+              if (finalResult) {
 
 //              that.doChanges(function (result) {
 //                console.log("Completed all changes", result);
 //                that.callbackChangeComplete(result);
 //              })
 
-            } else {
-              that.setError(response.validation.errorLabel);
+              } else {
+                that.setError(response.validation.errorLabel);
 //              that.$notify({
 //                message: response.validation.errorLabel,
 //                title: "Failed",
 //                type: "error"
 //              });
 
-              switch (response.validation.stage) {
-                case 1:
-                  that.$router.push({
-                    name: "ReviewUpdates",
-                  });
-                  return;
-                case 2:
-                  that.$router.push({
-                    name: "SecondInputs",
-                  });
-                  return;
+                switch (response.validation.stage) {
+                  case 1:
+                    that.$router.push({
+                      name: "ReviewUpdates",
+                    });
+                    return;
+                  case 2:
+                    that.$router.push({
+                      name: "SecondInputs",
+                    });
+                    return;
+                }
               }
-            }
-          }).catch(function (result) {
-            console.log("run of variable validations failed", result);
-          })
+            }).catch(function (result) {
+              console.log("run of variable validations failed", result);
+            })
+          }
         });
 
 
         if (that.variables.length > 0) {
-          that.setStage(that.Project.stage +1 );
+          that.setStage(that.Project.stage + 1);
         }
         that.$router.push({
           name: "PresentChanges",
