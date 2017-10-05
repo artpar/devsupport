@@ -1,6 +1,10 @@
 <template>
+<div>
+  <div v-if='loading'>
+    <loading></loading>
+  </div>
+<div v-else-if='!loading'>
   <div class="ui grid" style="padding: 0 5em">
-
     <!--second stage variable screen ends-->
 
 
@@ -58,9 +62,9 @@
         <div class="ui secondary button" @click="errModal('hide')">OK</div>
       </div>
     </div>
-    {{filteredValidations}}
-
   </div>
+</div>
+</div>
 </template>
 <script>
   import jsonApi from '../../plugins/jsonApi'
@@ -105,9 +109,35 @@
 //        });
 //
 //      },
-      applyChanges() {
+      updateVariables() {
         var that = this;
 
+
+        var contextMap = {};
+        var invalidFields = that.Project.variables.filter(function (variable) {
+          contextMap[variable.name] = variable.value;
+          return that.Project.stage == variable.stage && (variable.value == null || variable.value.length < 2);
+        });
+
+
+        that.setContextMap(contextMap);
+
+        if (invalidFields.length > 0) {
+          that.errorField = invalidFields[0].label;
+          that.errModal('show');
+          return false
+        }
+        return true
+
+
+      },
+      applyChanges() {
+        var that = this;
+        if (!that.updateVariables()) {
+          return
+        }
+        that.setError(null);
+        that.loading = true;
         that.runVariableValidations({
           filteredValidations: this.filteredValidations,
           callback: function (response) {
@@ -117,23 +147,16 @@
             if (typeof response == "object" && !(response instanceof Array)) {
 
               if (response.result) {
-
-
-//              that.doChanges(function (result) {
-//                console.log("Completed all changes, result : ", result);
-//                that.callbackChangeComplete(result);
-//              })
-
-              } else {
-                that.setError(response.validation.errorLabel);
-
-                that.setStage(response.validation.stage);
+                that.loading = false;
                 that.$router.push({
-                  name: "VariableInputs",
-                });
-                return
+                  name: "ApplyChanges",
+                })
+              } else {
+                that.loading = false;
+                that.setError(response.validation.errorLabel);
+                that.setStage(response.validation.stage);
               }
-
+              return
             }
 
             Promise.all(response).then(function (res) {
@@ -149,41 +172,23 @@
               }
 
               if (finalResult) {
-
-//              that.doChanges(function (result) {
-//                console.log("Completed all changes", result);
-//                that.callbackChangeComplete(result);
-//              })
+                that.loading = false;
+                that.$router.push({
+                  name: "ApplyChanges",
+                })
 
               } else {
+                that.loading = false;
                 that.setError(response.validation.errorLabel);
-//              that.$notify({
-//                message: response.validation.errorLabel,
-//                title: "Failed",
-//                type: "error"
-//              });
-
-                switch (response.validation.stage) {
-                  case 1:
-                    that.$router.push({
-                      name: "ReviewUpdates",
-                    });
-                    return;
-                  case 2:
-                    that.$router.push({
-                      name: "SecondInputs",
-                    });
-                    return;
-                }
               }
             }).catch(function (result) {
               console.log("run of variable validations failed", result);
             })
-          }});
+          }
+        });
 
-        this.$router.push({
-          name: "ApplyChanges",
-        })
+        console.log("validation in applychanges buton finished");
+
       },
       errModal: function (action) {
         jQuery('.ui.mini.modal').modal(action);
@@ -207,20 +212,7 @@
       nextStage() {
         console.log("validations before next stage");
         var that = this;
-        var contextMap = {};
-        var invalidFields = that.Project.variables.filter(function (variable) {
-          contextMap[variable.name] = variable.value;
-          return that.Project.stage == variable.stage && (variable.value == null || variable.value.length < 2);
-        });
-
-
-        that.setContextMap(contextMap);
-
-        if (invalidFields.length > 0) {
-          that.errorField = invalidFields[0].label;
-          that.errModal('show');
-//          that.$alert(invalidFields[0].label + " is left empty.", 'Missing value');
-//          that.setError(invalidFields[0].label + " is left empty.", 'Missing value');
+        if (!that.updateVariables()) {
           return
         }
 
@@ -229,6 +221,7 @@
         console.log("live changes  :evaluate", that.Project.changes);
         that.evaluateTemplates();
 
+        that.loading = true;
         that.runVariableValidations({
           filteredValidations: this.filteredValidations,
           callback: function (response) {
@@ -238,23 +231,20 @@
             if (typeof response == "object" && !(response instanceof Array)) {
 
               if (response.result) {
-
-
-//              that.doChanges(function (result) {
-//                console.log("Completed all changes, result : ", result);
-//                that.callbackChangeComplete(result);
-//              })
-
+                that.loading = false;
+                that.setStage(that.Project.stage + 1);
+                that.$router.push({
+                  name: "PresentChanges",
+                })
               } else {
+                that.loading = false;
                 that.setError(response.validation.errorLabel);
-
                 that.setStage(response.validation.stage);
                 that.$router.push({
                   name: "VariableInputs",
                 });
-                return
               }
-
+              return
             }
 
             Promise.all(response).then(function (res) {
@@ -270,46 +260,30 @@
               }
 
               if (finalResult) {
-
-//              that.doChanges(function (result) {
-//                console.log("Completed all changes", result);
-//                that.callbackChangeComplete(result);
-//              })
+                that.loading = false;
+                that.setStage(that.Project.stage + 1);
+                that.$router.push({
+                  name: "PresentChanges",
+                })
 
               } else {
+                that.loading = false;
                 that.setError(response.validation.errorLabel);
-//              that.$notify({
-//                message: response.validation.errorLabel,
-//                title: "Failed",
-//                type: "error"
-//              });
-
-                switch (response.validation.stage) {
-                  case 1:
-                    that.$router.push({
-                      name: "ReviewUpdates",
-                    });
-                    return;
-                  case 2:
-                    that.$router.push({
-                      name: "SecondInputs",
-                    });
-                    return;
-                }
               }
             }).catch(function (result) {
               console.log("run of variable validations failed", result);
             })
           }
         });
+        console.log("validation in next button finished");
 
 
-        if (that.variables.length > 0) {
-          that.setStage(that.Project.stage + 1);
-        }
-        that.$router.push({
-          name: "PresentChanges",
-        })
+//        if (that.variables.length > 0) {
+//          that.setStage(that.Project.stage + 1);
+//          that.$router.push({
+//            name: "PresentChanges",
+//          })
+//        }
       },
     },
     data() {
