@@ -8,6 +8,8 @@ import NewDownloadHandler from './handlers/filedownloadhandler'
 import NewHttpValidator from './validators/httpvalidator';
 
 import dot from 'dot';
+var sha512 = require('js-sha512').sha512;
+window.sha512 = sha512;
 
 dot.templateSettings.strip = false;
 
