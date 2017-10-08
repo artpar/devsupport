@@ -210,7 +210,7 @@ const FileProcessorFactor = {
     };
 
 
-    that.runVariableValidations = function (contextMap, validations) {
+    that.runVariableValidations1 = function (contextMap, validations) {
 
       const that = this;
 

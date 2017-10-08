@@ -17,11 +17,13 @@
       ...mapState(['Project'])
     },
     mounted() {
+      console.log('%c ApplyChange.vue mounted ', 'background: #222; color: #E0FFFF');
       this.applyChanges();
     },
     methods: {
       ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage", "setResults"]),
       applyChanges() {
+
         var that = this;
         that.loading = true;
 
@@ -48,80 +50,12 @@
 
         that.setContextMap(contextMap);
 
-
-        that.runVariableValidations(function (response) {
-          console.log("variable validation response", response);
-
-
-          if (typeof response == "object" && !(response instanceof Array)) {
-
-            if (response.result) {
-
-
-              that.doChanges(function (result) {
-                console.log("Completed all changes, result : ", result);
-                that.callbackChangeComplete(result);
-              })
-
-            } else {
-              that.setError(response.validation.errorLabel);
-
-              that.setStage(response.validation.stage);
-              that.$router.push({
-                name: "VariableInputs",
-              });
-              return
-            }
-
-          }
-
-          Promise.all(response).then(function (res) {
-            console.log("more response", res);
-            var finalResult = true;
-
-            for (var i = 0; i < res.length; i++) {
-              let response = res[i];
-              if (!response.result) {
-                finalResult = false;
-                break;
-              }
-            }
-
-            if (finalResult) {
-
-              that.doChanges(function (result) {
-                console.log("Completed all changes", result);
-                that.callbackChangeComplete(result);
-              })
-
-            } else {
-              that.setError(response.validation.errorLabel);
-//              that.$notify({
-//                message: response.validation.errorLabel,
-//                title: "Failed",
-//                type: "error"
-//              });
-
-              switch (response.validation.stage) {
-                case 1:
-                  that.$router.push({
-                    name: "ReviewUpdates",
-                  });
-                  return;
-                case 2:
-                  that.$router.push({
-                    name: "SecondInputs",
-                  });
-                  return;
-              }
-            }
-          }).catch(function (result) {
-            console.log("run of variable validations failed", result);
-          })
-        });
-
-
         console.log("start doing changes");
+
+        that.doChanges(function (result) {
+          console.log("Completed all changes", result);
+          that.callbackChangeComplete(result);
+        })
 
 
         this.$store.commit('PAGE_VIEW', getPageDesc("/app/results", "Results"));

@@ -126,15 +126,15 @@ const mutations = {
     console.log("eventProperties", eventProperties);
     state.visitor.event(eventProperties.category, eventProperties.action, eventProperties.label).send();
   },
-  RUN_VARIABLE_VALIDATIONS(state, callback) {
+  RUN_VARIABLE_VALIDATIONS(state, payload) {
 
     if (state.changes.length === 0) {
-      callback([]);
+      payload.callback([]);
     } else {
-      state.changes[0].runVariableValidations(state.contextMap, state.variableValidations).then(function (result) {
-        callback(result);
+      state.changes[0].runVariableValidations1(state.contextMap, payload.filteredValidations).then(function (result) {
+        payload.callback(result);
       }).catch(function (failure) {
-        callback(failure);
+        payload.callback(failure);
       })
     }
 
@@ -235,8 +235,9 @@ const actions = {
   setResults({commit}, results) {
     commit("SET_RESULTS", setResults)
   },
-  runVariableValidations({commit}, callback) {
-    commit("RUN_VARIABLE_VALIDATIONS", callback)
+  runVariableValidations({commit}, payload) {
+    // console.log("run commit", callback, arguments);
+    commit("RUN_VARIABLE_VALIDATIONS", payload)
   },
   doChanges({commit}, callback) {
     commit("DO_CHANGES", callback)
