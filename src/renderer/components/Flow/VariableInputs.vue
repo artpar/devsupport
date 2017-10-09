@@ -1,70 +1,70 @@
 <template>
-<div>
-  <div v-if='loading'>
-    <loading></loading>
-  </div>
-<div v-else-if='!loading'>
-  <div class="ui grid" style="padding: 0 5em">
-    <!--second stage variable screen ends-->
+  <div>
+    <div v-if='loading'>
+      <loading></loading>
+    </div>
+    <div v-else-if='!loading'>
+      <div class="ui grid" style="padding: 0 5em">
+        <!--second stage variable screen ends-->
 
 
-    <div class="sixteen wide column" style="overflow-y: auto; max-height: calc(100vh - 180px);">
-      <h2>Please enter the following details:</h2>
-      <br>
-      <div class="ui icon negative message" v-if="Project.error != null">
-        <!--<i class="close icon"></i>-->
-        <i class="material-icons" style="margin-right: 0.5em; font-size: 3.5em;">error</i>
-        <!--<i class="warning circle icon"></i>-->
-        <div class="content">
-          <div class="header">
-            There was an error while validating inputs
+        <div class="sixteen wide column" style="overflow-y: auto; max-height: calc(100vh - 180px);">
+          <h2>Please enter the following details:</h2>
+          <br>
+          <div class="ui icon negative message" v-if="Project.error != null">
+            <!--<i class="close icon"></i>-->
+            <i class="material-icons" style="margin-right: 0.5em; font-size: 3.5em;">error</i>
+            <!--<i class="warning circle icon"></i>-->
+            <div class="content">
+              <div class="header">
+                There was an error while validating inputs
+              </div>
+              <p>
+                {{Project.error}}
+              </p>
+            </div>
           </div>
-          <p>
-            {{Project.error}}
-          </p>
-        </div>
-      </div>
-      <div class="ui large form">
-        <div class="sixteen wide required field" v-for="variable in variables">
-          <h3>{{variable.label}}</h3>
-          <input :placeholder="variable.help" v-model="variable.value" type="text">
-        </div>
-      </div>
-      <div style="margin-bottom: 1.7em"></div>
-      <div class="ui icon message">
-        <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
-        <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
-          <ul class="list">
-            <li v-for="variable in variables">{{variable.description}}</li>
-          </ul>
-        </div>
-      </div>
+          <div class="ui large form">
+            <div class="sixteen wide required field" v-for="variable in variables">
+              <h3>{{variable.label}}</h3>
+              <input :placeholder="variable.help" v-model="variable.value" type="text">
+            </div>
+          </div>
+          <div style="margin-bottom: 1.7em"></div>
+          <div class="ui icon message">
+            <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
+            <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
+              <ul class="list">
+                <li v-for="variable in variables">{{variable.description}}</li>
+              </ul>
+            </div>
+          </div>
 
-    </div>
-
-    <div class="sixteen wide column">
-      <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
-      </button>
-      <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
-    </div>
-
-    <div class="ui mini modal">
-      <div class="header">
-        <h3>Missing value</h3>
-      </div>
-      <div class="content">
-        <div class="description">
-          {{errorField}} is left empty.
         </div>
-      </div>
-      <div class="actions">
-        <div class="ui secondary button" @click="errModal('hide')">OK</div>
+
+        <div class="sixteen wide column">
+          <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+          <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+          </button>
+          <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
+        </div>
+
+        <div class="ui mini modal">
+          <div class="header">
+            <h3>Missing value</h3>
+          </div>
+          <div class="content">
+            <div class="description">
+              {{errorField}} is left empty.
+            </div>
+          </div>
+          <div class="actions">
+            <div class="ui secondary button" @click="errModal('hide')">OK</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</div>
 </template>
 <script>
   import jsonApi from '../../plugins/jsonApi'
@@ -238,6 +238,10 @@
                 })
               } else {
                 that.loading = false;
+                if (!response.validation) {
+                  that.setError("This flow is not ready yet, please try again later.");
+                  return
+                }
                 that.setError(response.validation.errorLabel);
                 that.setStage(response.validation.stage);
                 that.$router.push({

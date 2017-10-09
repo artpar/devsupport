@@ -191,7 +191,7 @@ const FileProcessorFactor = {
 
         if (variableValidation instanceof Array) {
           return variableValidation.map(function (obj) {
-            return that.evaluateTemplatesInObject(obj);
+            return that.evaluateTemplatesInObject(obj, contextMap);
           })
         } else {
           const retObj = {};

@@ -31,10 +31,16 @@ export default function (params, expectations) {
         for (var i = 0; i < expectations.length; i++) {
           const expectation = expectations[i];
           var result = false;
+          let actualValue = "";
           switch (expectation.operator) {
             case "eq":
-              let actualValue = jp.query(res, expectation.field)[0];
+              actualValue = jp.query(res, expectation.field)[0];
               result = actualValue == expectation.value;
+              break
+            case "regex-find":
+              actualValue = jp.query(res, expectation.field)[0];
+              result = actualValue.match(new RegExp(expectation.value)) !== null;
+              break
           }
 
           if (!result) {
