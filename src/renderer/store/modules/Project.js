@@ -101,8 +101,18 @@ const mutations = {
     state.integration = action
   },
   SET_VISITOR(state) {
+    let trackerid
+    if(process.env.NODE_ENV==='development')
+    {
+     trackerid = 'UA-103793943-1';
+    }
+    else {
+      trackerid = 'UA-103793943-3';
+    }
+
+
     if (state.cid == null) {
-      state.visitor = new Analytics('UA-103793943-1').debug();
+      state.visitor = new Analytics(trackerid).debug();
       // production: UA-103793943-1, testing: UA-103570663-2
 
       state.cid = state.visitor.cid;
@@ -110,7 +120,7 @@ const mutations = {
       store.set("cid", state.cid);
     }
     else {
-      state.visitor = new Analytics('UA-103793943-1', state.cid).debug();
+      state.visitor = new Analytics(trackerid, state.cid).debug();
       console.log("cid from response:", state.visitor.cid, "\n cid from store:", state.cid);
     }
   },
