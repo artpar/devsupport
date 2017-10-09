@@ -258,7 +258,12 @@
       }
       for (let i = 0; i < that.changes.length; i++) {
         console.log("check for file download changes", that.changes[i].change.changeType)
-        if (that.changes[i].change.changeType == 'fileDownload' || that.changes[i].change.changeType == 'fileAdd' || that.changes[i].change.changeType == 'fileShow') {
+        if (
+            that.changes[i].change.changeType == 'fileDownload'
+            || that.changes[i].change.changeType == 'fileAdd'
+            || that.changes[i].change.changeType == 'fileShow'
+            || that.changes[i].change.changeType == 'fileSave'
+        ) {
           that.downloadNum = 1;
         }
       }
