@@ -25,7 +25,7 @@
           v-for="item in options4"
           :key="item.id"
           :label="item.name"
-          :value="item.id">
+          :value="item">
         </el-option>
       </el-select>
 
@@ -147,7 +147,12 @@
       searchButton(){
         let that = this;
 
-        this.getEventDesc("SP-Selection", this.selectedSP,"SP-Selection");
+        if (that.selectedSP === null) {
+          that.errModal('show','No Selection','Please select a merchant to integrate');
+          return
+        }
+
+        this.getEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
         console.log("eventDesc",this.eventDesc);
         this.$store.commit('GA_EVENT',this.eventDesc);
 
@@ -155,17 +160,14 @@
         console.log("selectedSP",that.selectedSP);
         console.log(this.message);
 
-        if (that.selectedSP == []) {
-          that.errModal('show','No Selection','Please select a merchant to integrate');
-          return
-        }
+
         this.setFaq(that.selectedSP);
         console.log("project object after setting faq",that.Project);
 
         this.$router.push({
           name: 'SelectIntegration',
           params: {
-            id: this.selectedSP
+            id: that.selectedSP.id
           }
         })
       },
