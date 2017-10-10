@@ -88,7 +88,7 @@
             },
             "checks": [
               {
-                "checkType": "fileExists",
+                "checkType": "folderExists",
                 "value": "web",
               }
             ]
@@ -152,6 +152,15 @@
                 } else {
                   isOk = false;
                   console.log("file", check.value, "doesnt exists")
+                }
+                break;
+              case "folderExists":
+                console.log("check if file exists", check.value);
+                if (fs.existsSync(rawFile.path + "/" + check.value)) {
+                  console.log("folder", check.value, "exists")
+                } else {
+                  isOk = false;
+                  console.log("folder", check.value, "doesnt exists")
                 }
                 break;
               default:

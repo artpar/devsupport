@@ -16,14 +16,16 @@
             :value="item">
           </el-option>
       </el-select> -->
-      <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;" size="large" v-model="selectedSP" filterable remote
-                 placeholder="What do you want to integrate (eg. Instamojo)"
-                 :remote-method="remoteMethod" :loading="loading">
+      <h2>Product you'd like to integrate</h2>
+      <el-select style="width: 100%; overflow: hidden; font-family: 'Raleway !important', sans-serif;"
+                 size="large" v-model="selectedSP" filterable remote :value-key="'id'"
+                 placeholder="Type in the name to look up"
+                 :filter-method="remoteMethod" :loading="loading">
         <el-option
           v-for="item in options4"
           :key="item.id"
           :label="item.name"
-          :value="item">
+          :value="item.id">
         </el-option>
       </el-select>
 
@@ -113,7 +115,13 @@
       },
       remoteMethod(query) {
         var that = this;
-        console.log("input box active", query);
+
+        if ((!query || query == "") && this.selectedSP && this.selectedSP.name && this.selectedSP != ""){
+          query = this.selectedSP.name;
+        }
+        console.log("input box active", query, this.selectedSP);
+
+
         if (query && query !== '') {
           this.loading = true;
           this.options4 = this.list.filter(item => {
@@ -129,16 +137,17 @@
             that.reloadMerchantList()
           }
           this.loading = false;
-
+          console.log("final list", this.options4, this.selectedSP)
+//          return this.options4;
         } else {
-//          this.options4 = [];
+          this.options4 = [];
 //          that.reloadMerchantList();
         }
       },
       searchButton(){
         let that = this;
 
-        this.getEventDesc("SP-Selection",that.selectedSP.name,"SP-Selection");
+        this.getEventDesc("SP-Selection", this.selectedSP,"SP-Selection");
         console.log("eventDesc",this.eventDesc);
         this.$store.commit('GA_EVENT',this.eventDesc);
 
@@ -156,7 +165,7 @@
         this.$router.push({
           name: 'SelectIntegration',
           params: {
-            id: that.selectedSP.id
+            id: this.selectedSP
           }
         })
       },
