@@ -67,8 +67,7 @@
             <ul class="list">
 
 
-              <li v-for="item in changes">
-                {{item.change.help}}
+              <li v-for="item in changes" v-html="item.change.help">
               </li>
 
             </ul>
