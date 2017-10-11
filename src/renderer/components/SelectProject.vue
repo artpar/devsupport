@@ -104,6 +104,18 @@
                 "value": "index.html",
               }
             ]
+          },
+          {
+            "result": {
+              "language": "html",
+              "stack": "frontend",
+            },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "index.php",
+              }
+            ]
           }
         ]
       }

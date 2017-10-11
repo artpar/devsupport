@@ -152,6 +152,10 @@
                 })
               } else {
                 that.loading = false;
+                if (!response.validation) {
+                  that.setError("This flow is not ready yet, please try again later.");
+                  return
+                }
                 that.setError(response.validation.errorLabel);
                 that.setStage(response.validation.stage);
               }
