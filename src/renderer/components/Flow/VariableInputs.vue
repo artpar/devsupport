@@ -93,8 +93,12 @@
       }
 
       if (variables.length == 0) {
-        console.log("no changes to do in ", that.Project.stage)
-        that.nextStage();
+        console.log("no changes to do in ", that.Project.stage);
+        if (!that.lastStage) {
+          that.nextStage();
+        } else {
+          that.applyChanges();
+        }
       }
     },
     methods: {
