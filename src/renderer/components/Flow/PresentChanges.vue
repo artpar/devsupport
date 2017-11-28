@@ -24,7 +24,7 @@
                 </div>
 
               </div>
-              <div class="item" v-for="file in item.selectedFiles" v-if="item.change.changeType == 'fileEdit'">
+              <div class="item" v-for="file in item.selectedFiles" v-if="['fileEdit', 'fileAdd'].indexOf(item.change.changeType) > -1">
                 <div class="ui radio checkbox"
                      @click="item.selectedFilePath = file.filepath">
                   <input
