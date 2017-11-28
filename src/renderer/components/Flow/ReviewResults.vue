@@ -4,18 +4,6 @@
     <!--result page begins-->
 
     <div class="sixteen wide column "><h1>Results</h1>
-      <div class="ui large bottom aligned divided relaxed animated list">
-        <template v-for="liveChange in Project.changes">
-          <div class="ui fluid item">
-            <div class="content"><!--<i class="info circle aligned primary icon"></i>-->
-              {{liveChange.change.name}}
-              <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
-              <i v-else="" class="right floated large warning circle orange icon"
-                 v-bind:data-content="liveChange.error"></i>
-            </div>
-          </div>
-        </template>
-      </div>
       <br/>
       <div class="ui segment">
         <div class="ui basic segment">
@@ -98,6 +86,20 @@
           </div>
         </div>
       </div>
+      <br/>
+      <div class="ui large bottom aligned divided relaxed animated list">
+        <template v-for="liveChange in Project.changes">
+          <div class="ui fluid item">
+            <div class="content"><!--<i class="info circle aligned primary icon"></i>-->
+              {{liveChange.change.name}}
+              <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
+              <i v-else="" class="right floated large warning circle orange icon"
+                 v-bind:data-content="liveChange.error"></i>
+            </div>
+          </div>
+        </template>
+      </div>
+
       <div id="snackbar">New Transaction Url Copied</div>
     </div>
   </div>
