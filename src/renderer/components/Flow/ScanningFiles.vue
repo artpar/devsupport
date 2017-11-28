@@ -260,7 +260,7 @@
           }
         });
 
-        console.log("last stage is ", lastStage)
+        console.log("last stage is ", lastStage);
         that.setLastStage(lastStage);
 
         that.loading = true;
