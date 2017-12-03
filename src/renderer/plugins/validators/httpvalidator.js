@@ -11,12 +11,12 @@ export default function (params, expectations) {
 
 
   that.evaluate = function () {
-    console.log("new http validation promise")
+    console.log("new http validation promise");
     return new Promise(function (resolve, reject) {
 
 
       if (!expectations || expectations.length === 0) {
-        console.log("http call has no expectation, then why make it ?")
+        console.log("http call has no expectation, then why make it ?");
         resolve({result: true});
         return
       }
@@ -36,7 +36,7 @@ export default function (params, expectations) {
             case "eq":
               actualValue = jp.query(res, expectation.field)[0];
               result = actualValue == expectation.value;
-              break
+              break;
             case "regex-find":
               actualValue = jp.query(res, expectation.field)[0];
               result = actualValue.match(new RegExp(expectation.value)) !== null;

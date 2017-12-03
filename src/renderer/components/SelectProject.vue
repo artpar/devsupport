@@ -116,6 +116,18 @@
                 "value": "index.php",
               }
             ]
+          },
+          {
+            "result": {
+              "language": "swift",
+              "stack": "frontend",
+            },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "Podfile",
+              }
+            ]
           }
         ]
       }
