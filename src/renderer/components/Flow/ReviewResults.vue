@@ -87,18 +87,31 @@
         </div>
       </div>
       <br/>
-      <div class="ui large bottom aligned divided relaxed animated list">
-        <template v-for="liveChange in Project.changes">
-          <div class="ui fluid item">
-            <div class="content"><!--<i class="info circle aligned primary icon"></i>-->
-              {{liveChange.change.name}}
-              <i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>
-              <i v-else="" class="right floated large warning circle orange icon"
-                 v-bind:data-content="liveChange.error"></i>
-            </div>
+      <div class="ui segment">
+        <div class="ui star rating" data-rating="5" data-max-rating="5"></div>
+        <form class="ui reply form">
+          <div class="field">
+            <textarea></textarea>
           </div>
-        </template>
+          <div class="ui blue labeled submit icon button">
+            <i class="icon edit"></i> Submit
+          </div>
+        </form>
       </div>
+
+      <!--&lt;!&ndash;this is checklist of changes on ui&ndash;&gt;-->
+      <!--<div class="ui large bottom aligned divided relaxed animated list">-->
+        <!--<template v-for="liveChange in Project.changes">-->
+          <!--<div class="ui fluid item">-->
+            <!--<div class="content">&lt;!&ndash;<i class="info circle aligned primary icon"></i>&ndash;&gt;-->
+              <!--{{liveChange.change.name}}-->
+              <!--<i v-if="liveChange.change.status=='Completed'" class="right floated large checkmark green icon"></i>-->
+              <!--<i v-else="" class="right floated large warning circle orange icon"-->
+                 <!--v-bind:data-content="liveChange.error"></i>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</template>-->
+      <!--</div>-->
 
       <div id="snackbar">New Transaction Url Copied</div>
     </div>
@@ -118,6 +131,9 @@
     },
     mounted() {
       console.log("entered review results")
+
+      jQuery('.ui.rating')
+        .rating();
 
       !function () {
         var t;

@@ -7,6 +7,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'email-input',
+      component: require('@/components/EmailInput'),
+    },
+    {
+      path: '/select-project',
       name: 'select-project',
       component: require('@/components/SelectProject'),
     },
