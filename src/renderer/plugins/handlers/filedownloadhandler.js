@@ -130,7 +130,7 @@ export default function (fileType, logger) {
 
 
             var targetBase = path.parse(zipEntry.entryName);
-            if (targetBase.ext != "") {
+            if (!zipEntry.isDirectory) {
               var zipEntryName = path.parse(zipEntry.entryName).base;
               console.log("target base", targetBase, zipEntryName);
 
