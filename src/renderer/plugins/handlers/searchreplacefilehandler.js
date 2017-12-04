@@ -30,7 +30,7 @@ export default function (fileType, logger) {
                 for (let i = 0; i < query.length; i++) {
                     const queryRegex = new RegExp(query[i]);
                     let matched = false;
-                    for (let u = currentLineIndex + 1; u < fileLines.length; u++) {
+                    for (let u = currentLineIndex; u < fileLines.length; u++) {
                         if (fileLines[u].match(queryRegex)) {
                             matched = true;
                             logger(file, "Query matched at line number " + (u + 1));
