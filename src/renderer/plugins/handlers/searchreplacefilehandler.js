@@ -9,7 +9,7 @@ export default function (fileType, logger) {
 
     that.applyChange = function (file, change, fileLines) {
         let u;
-        debugger;
+        // debugger;
         switch (change.changeType) {
             case "add.line":
                 logger(file, "Add line to file");
@@ -92,7 +92,7 @@ export default function (fileType, logger) {
     };
 
     that.doChange = function (file, changes) {
-        debugger;
+        // debugger;
 
 
         return new Promise(function (resolve, reject) {
