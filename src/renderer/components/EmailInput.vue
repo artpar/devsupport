@@ -53,6 +53,7 @@
          var that = this;
         console.log("button was clicked")
 
+
         var mailRegx =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var isValidMail = mailRegx.test(that.userEmail);
 
@@ -60,6 +61,9 @@
         if(isValidMail){
           console.log("its valid mail");
           that.setUserEmail(that.userEmail);
+
+          console.log("reading directly from state",that.Project.userEmail);
+
 
 //          this.$router.push({
 //          name: 'select-project'
@@ -83,6 +87,11 @@
 //        })
       }
      },
+    computed: {
+      ...mapState({
+        'Project': 'Project',
+      }),
+    },
     mounted() {
     }
   }
