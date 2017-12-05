@@ -235,6 +235,9 @@ const mutations = {
 };
 
 const actions = {
+  setUserEmail({commit}, userEmail) {
+    commit('SET_USER_EMAIL', userEmail);
+  },
   setError({commit}, error) {
     commit('SET_ERROR', error);
   },

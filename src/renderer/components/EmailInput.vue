@@ -10,7 +10,7 @@
       <!--<div class="heading">Before we start please enter your email so we can support you with issues</div>-->
       <div style="width: 80%" class="ui action input">
         <input type="text" v-model="userEmail" placeholder="Enter your email">
-        <div class="ui secondary button" @click="goProjectSelection">Proceed</div>
+        <div class="ui secondary button" @click="goToProjectSelection()">Proceed</div>
       </div>
 
 
@@ -34,7 +34,7 @@
 
 </template>
 <script>
-
+  import {mapState, mapActions} from 'vuex';
 
   export default {
     data() {
@@ -44,11 +44,12 @@
       }
     },
     methods: {
+      ...mapActions(['setUserEmail']),
       errModal(action) {
         jQuery('.ui.mini.modal').modal(action);
       },
 
-      goProjectSelection() {
+      goToProjectSelection() {
          var that = this;
         console.log("button was clicked")
 
@@ -58,8 +59,7 @@
 
         if(isValidMail){
           console.log("its valid mail");
-
-
+          that.setUserEmail(that.userEmail);
 
 //          this.$router.push({
 //          name: 'select-project'
