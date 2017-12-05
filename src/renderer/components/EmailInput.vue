@@ -57,12 +57,13 @@
 
 
         if(isValidMail){
-          console.log("its valid mail")
+          console.log("its valid mail");
 
 
-          this.$router.push({
-          name: 'select-project'
-        })
+
+//          this.$router.push({
+//          name: 'select-project'
+//        })
         }
         else {
           console.log("its not a valid mail")

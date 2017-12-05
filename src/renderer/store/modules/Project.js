@@ -6,6 +6,7 @@ const store = new Store();
 
 console.log("load projects store");
 const state = {
+  userEmail: null,
   faq: {
     visibility: false,
     merchant: false,
@@ -42,6 +43,10 @@ const mutations = {
       state.faq.merchant = merchant;
     }
 
+
+  },
+  SET_USER_EMAIL(state, userEmail) {
+    state.userEmail = userEmail;
 
   },
   SET_VARIABLE_VALIDATIONS(state, validations) {

@@ -88,12 +88,13 @@
       </div>
       <br/>
       <div class="ui segment">
+        <h3 class="devblue" style="font-size: 16px; font-weight: 700">Your feedback is valuable to us.</h3>
         <div class="ui star rating" data-rating="5" data-max-rating="5"></div>
-        <form class="ui reply form">
+        <form class="ui tiny reply form">
           <div class="field">
             <textarea></textarea>
           </div>
-          <div class="ui blue labeled submit icon button">
+          <div class="ui blue labeled submit icon button" @click="submitFeedback()">
             <i class="icon edit"></i> Submit
           </div>
         </form>
@@ -216,6 +217,10 @@
         } else {
           window.drift.api.showWelcomeMessage()
         }
+      },
+      submitFeedback() {
+        let rating = jQuery('.ui.rating').rating('get rating');
+        console.log(rating);
       },
       reset() {
         this.setProjectDir({
