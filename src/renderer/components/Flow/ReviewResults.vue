@@ -29,7 +29,7 @@
 
                   <button v-if="Project.currentProject.identification.stack ==='android'"
                           class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
-                          @click="resultStartIntegration('cb8c902e-b4d0-49de-a416-358bc4771487',Project.contextMap.new_transaction_url)">
+                          @click="resultStartIntegration('cb8c902e-b4d0-49de-a416-358bc4771487')">
                     <div class="visible content">
                       <i class="android icon" style="font-size: 1.3em;"></i>
                       Go to Android Integration
@@ -80,6 +80,17 @@
 
               <template v-else>
                 <div v-html="Project.reviewResultContent"></div>
+                <button v-for="nextIntegration in Project.nextIntegrations" v-if="Project.currentProject.identification.stack === nextIntegration.stack"
+                        class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
+                        @click="resultStartIntegration(nextIntegration.id)">
+                  <div class="visible content">
+                    <i class="android icon" style="font-size: 1.3em;"></i>
+                    Go to Android Integration
+                  </div>
+                  <div class="hidden content">
+                    <i class="right arrow icon" style="font-size: 1.3em;"></i>
+                  </div>
+                </button>
               </template>
 
             </div>
@@ -145,7 +156,8 @@
       jQuery('.orange.icon').popup()
     },
     methods: {
-      resultStartIntegration(integrationId, newTxnUrl) {
+      resultStartIntegration(integrationId) {
+//        console.log("new transaction url ", newTxnUrl);
 
         console.log("start integration ", integrationId);
         this.setError(null);
@@ -155,13 +167,9 @@
 
         // this.setSessionAction(null);
         let that = this;
-        setTimeout(function () {
-          that.$router.push({
-            name: 'ScanningFiles', params: {id: integrationId, newTxnUrl: newTxnUrl}
-          })
-        }, 1300)
-
-
+        that.$router.push({
+          name: 'ScanningFiles', params: {id: integrationId}
+        });
       },
       copyText(id) {
         console.log("can you pritn this", id);
