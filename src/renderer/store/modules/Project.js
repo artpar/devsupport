@@ -15,6 +15,7 @@ const state = {
   sessionAction: null,
   integration: null,
   reviewResultContent: null,
+  nextIntegrations: [],
   identification: null,
   variables: [],
   secondStageVariables: [],
@@ -183,6 +184,10 @@ const mutations = {
     state.reviewResultContent = content
 
   },
+  SET_NEXT_INTEGRATIONS(state, content) {
+    state.nextIntegrations = content
+
+  },
 
   ADD_PROJECT(state, projectProperties) {
     window.console.log("this is the state object", state);
@@ -288,6 +293,9 @@ const actions = {
   },
   setReviewResultContent({commit}, reviewResultsContent) {
     commit("SET_REVIEW_RESULT_CONTENT", reviewResultsContent)
+  },
+  setNextIntegrations({commit}, reviewResultsContent) {
+    commit("SET_NEXT_INTEGRATIONS", reviewResultsContent)
   },
   setSecondStageVariables({commit}, variables) {
     commit("SET_SECOND_STAGE_VARIABLES", variables)

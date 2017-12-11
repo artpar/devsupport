@@ -9,7 +9,7 @@ export default function (fileType, logger) {
 
     that.applyChange = function (file, change, fileLines) {
         let u;
-        debugger;
+        // debugger;
         switch (change.changeType) {
             case "add.line":
                 logger(file, "Add line to file");
@@ -30,7 +30,7 @@ export default function (fileType, logger) {
                 for (let i = 0; i < query.length; i++) {
                     const queryRegex = new RegExp(query[i]);
                     let matched = false;
-                    for (let u = currentLineIndex + 1; u < fileLines.length; u++) {
+                    for (let u = currentLineIndex; u < fileLines.length; u++) {
                         if (fileLines[u].match(queryRegex)) {
                             matched = true;
                             logger(file, "Query matched at line number " + (u + 1));
@@ -92,7 +92,7 @@ export default function (fileType, logger) {
     };
 
     that.doChange = function (file, changes) {
-        debugger;
+        // debugger;
 
 
         return new Promise(function (resolve, reject) {
