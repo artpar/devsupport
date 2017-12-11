@@ -68,6 +68,12 @@
     methods: {
       ...mapActions(['setProjectDir', 'setFaq']),
       setProject(project) {
+        let that = this;
+        if(that.Project.userEmail == null) {
+          //console.log("in the if condition"+that.Project.userEmail)
+          return;
+        }
+        //console.log("outside if condition"+that.Project.userEmail)
         this.setProjectDir({
           projectDir: project.location,
         });
