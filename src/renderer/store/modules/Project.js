@@ -115,19 +115,13 @@ const mutations = {
       trackerid = 'UA-103793943-3';
     }
 
+      //state.visitor = new Analytics(trackerid).debug();
+      state.visitor = new Analytics(trackerid, state.userEmail, {strictCidFormat: false}).debug();
+    console.log("state.userEmail:"+state.userEmail);
 
-    if (state.cid == null) {
-      state.visitor = new Analytics(trackerid).debug();
-      // production: UA-103793943-1, testing: UA-103570663-2
-
-      state.cid = state.visitor.cid;
-      console.log("cid length", state.cid.length, "\n cid:", state.cid);
-      store.set("cid", state.cid);
-    }
-    else {
-      state.visitor = new Analytics(trackerid, state.cid).debug();
-      console.log("cid from response:", state.visitor.cid, "\n cid from store:", state.cid);
-    }
+      // state.cid = state.visitor.cid;
+      // console.log("cid length", state.cid.length, "\n cid:", state.cid);
+      //store.set("cid", state.cid);
   },
 
 
@@ -237,7 +231,6 @@ const mutations = {
 const actions = {
   setUserEmail({commit}, userEmail) {
     commit('SET_USER_EMAIL', userEmail);
-    debugger;
   },
   setError({commit}, error) {
     commit('SET_ERROR', error);

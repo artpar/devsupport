@@ -78,7 +78,13 @@
     },
     methods: {
       startIntegration(integration) {
-        console.log("start integration ", integration.id);
+        console.log("start integration ", integration.name);
+        this.$store.commit('GA_EVENT',{
+          category: "Select-Integration",
+          action: integration.name,
+          label: "Select-Integration",
+        });
+        debugger;
         this.$router.push({
           name: 'ScanningFiles', params: {id: integration.id}
         })

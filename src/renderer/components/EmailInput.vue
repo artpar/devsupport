@@ -63,11 +63,12 @@
           that.setUserEmail(that.userEmail);
 
           console.log("reading directly from state",that.Project.userEmail);
+          this.$store.commit('SET_VISITOR');
 
 
-//          this.$router.push({
-//          name: 'select-project'
-//        })
+          this.$router.push({
+          name: 'select-project'
+        })
         }
         else {
           console.log("its not a valid mail")

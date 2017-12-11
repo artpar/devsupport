@@ -104,11 +104,14 @@
       }
 
 
-      this.$store.commit('SET_VISITOR');
-      console.log("store", this.$store);
-      this.setPageDesc("/app", "home");
-      console.log("pageDesc", this.pageDesc);
-      this.$store.commit('PAGE_VIEW', this.pageDesc);
+
+
+
+//      this.setPageDesc("/app", "home");
+//      console.log("pageDesc", this.pageDesc);
+//      this.$store.commit('PAGE_VIEW', this.pageDesc);
+
+
 
 //      this.$store.state.Project.visitor.event("Event Category", "Event Action").send();
       console.log("projects", app.getPath)

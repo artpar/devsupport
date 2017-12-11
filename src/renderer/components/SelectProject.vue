@@ -244,6 +244,7 @@
       }),
     },
     mounted() {
+      this.$store.commit('PAGE_VIEW', {path: "/app/selectProject", title: "SelectProject"});
       setTimeout(function () {
         console.log("input file", jQuery("input[type=file]"))
         jQuery("input[type=file]").attr("webkitdirectory", "true")
