@@ -1,0 +1,45 @@
+{
+  "Tables": [
+    {
+      "TableName": "feedback",
+      "DefaultPermission": 127035000,
+      "Columns": [
+        {
+          "Name": "rating",
+          "ColumnName": "rating",
+          "ColumnType": "measurement",
+          "DataType": "int(2)"
+        },
+        {
+          "Name": "user_email",
+          "ColumnName": "user_email",
+          "ColumnType": "label",
+          "DataType": "varchar(100)"
+        },
+        {
+          "Name": "feedback_content",
+          "ColumnName": "feedback_content",
+          "ColumnType": "content",
+          "DataType": "text"
+        }
+      ],
+      "Relations": [
+        {
+          "Subject": "feedback",
+          "Object": "integration",
+          "Relation": "belongs_to"
+        }
+      ],
+      "Validations": [
+        {
+          "ColumnName": "user_email",
+          "Tags": "email"
+        },
+        {
+          "ColumnName": "rating",
+          "Tags": "required,gte=1,lte=5"
+        }
+      ]
+    }
+  ]
+}
