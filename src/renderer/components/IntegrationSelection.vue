@@ -84,7 +84,7 @@
           action: integration.name,
           label: "Select-Integration",
         });
-        debugger;
+        //debugger;
         this.$router.push({
           name: 'ScanningFiles', params: {id: integration.id}
         })
