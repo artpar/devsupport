@@ -4,8 +4,7 @@
     <!--result page begins-->
 
     <div class="sixteen wide column "><h1>Results</h1>
-      <br/>
-      <div class="ui segment">
+      <div class="ui segment" style="width: 95%;">
         <div class="ui basic segment">
           <div class="ui basic segment">
             <div class="ui centered grid">
@@ -98,7 +97,7 @@
         </div>
       </div>
       <br/>
-      <div class="ui segment">
+      <div class="ui segment" style="width: 95%;">
         <h3 class="devblue" style="font-size: 16px; font-weight: 700">Your feedback is valuable to us.</h3>
         <div class="ui star rating" data-rating="5" data-max-rating="5"></div>
         <form class="ui tiny reply form">
