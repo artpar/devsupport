@@ -85,8 +85,7 @@
                         class="ui animated secondary button" style="margin-top: 1.4em; margin-bottom: 1.2em"
                         @click="resultStartIntegration(nextIntegration.id)">
                   <div class="visible content">
-                    <i class="android icon" style="font-size: 1.3em;"></i>
-                    Go to Android Integration
+                    Go to {{nextIntegration.stack}} integration
                   </div>
                   <div class="hidden content">
                     <i class="right arrow icon" style="font-size: 1.3em;"></i>
