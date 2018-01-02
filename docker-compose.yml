@@ -2,7 +2,7 @@ version: '2'
 
 services:
   goms:
-    image: goms/goms
+    image: daptin/daptin
     ports:
       - 8085:8080
     restart: always
@@ -22,5 +22,3 @@ services:
         - MYSQL_ROOT_PASSWORD=devrootsupport
         - MYSQL_USER=devsuser
         - MYSQL_PASSWORD=devspassword
-    volumes:
-        - /home/artpar/devs-mysql:/var/lib/mysql
