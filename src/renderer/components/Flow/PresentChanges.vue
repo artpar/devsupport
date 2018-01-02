@@ -109,10 +109,10 @@
   import fs from 'fs';
 
   var path = require('path');
-  var pathSep = path.sep;
 
 
   let mkdirSync = function (path) {
+      var pathSep = path.sep;
 
     var dirs = path.split(pathSep);
     var root = "";

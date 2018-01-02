@@ -143,6 +143,7 @@ export default function (fileType, logger) {
     };
 
 
+
     that.applyAllChanges = function (file, changes, fileLines) {
 
         return new Promise(function (resolve, reject) {
