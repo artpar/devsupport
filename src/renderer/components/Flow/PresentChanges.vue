@@ -8,7 +8,8 @@
             <label :for="item.name">
               <h3 style="margin-top: 1em;">
                 {{item.change.name}}
-              <span v-if="item.change.changeType === 'fileSave'" style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
+                <span v-if="item.change.changeType === 'fileSave'"
+                      style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
                 <i class="download_as_file_button c-pointer material-icons" @click="saveFiles(item)">file_download</i>
               </span></h3>
 
@@ -28,11 +29,11 @@
                 <div class="ui radio checkbox"
                      @click="item.selectedFilePath = file.filepath">
                   <input
-                      class="hidden"
-                      type="radio"
-                      :name="item.name"
-                      v-model="item.selectedFilePath"
-                      :value="file.filepath">
+                    class="hidden"
+                    type="radio"
+                    :name="item.name"
+                    v-model="item.selectedFilePath"
+                    :value="file.filepath">
                   <label>
                     <div class="devblue">{{file.relative}}</div>
                   </label>
@@ -44,16 +45,17 @@
                         :content="item.change.change[0].line" :lang="'html'"></editor>
               </div>
               <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
-                {{item.change.fileName}}
+                File name: <b>{{item.change.fileName}}</b>
                 <i class="download_as_file_button c-pointer material-icons"
                    @click="downloadAsFile(item)">file_download</i>
+                <small>Download this file</small>
               </div>
 
-              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue" >
+              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue">
                 <ul class="ui bulleted relaxed list">
-                <li class="item" v-for="fileToSave in item.change.change">
-                  {{fileToSave.fileName}}
-                </li>
+                  <li class="item" v-for="fileToSave in item.change.change">
+                    {{fileToSave.fileName}}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -93,7 +95,7 @@
 
 
     <div class="sixteen wide column">
-      <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+      <button :disabled="nextDisabled" class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
       <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
       </button>
       <button class="ui large orange button left floated" @click="goBackStage">Back</button>
@@ -112,7 +114,7 @@
 
 
   let mkdirSync = function (path) {
-      var pathSep = path.sep;
+    var pathSep = path.sep;
 
     var dirs = path.split(pathSep);
     var root = "";
@@ -154,8 +156,8 @@
 
             console.log("check dir exists", targetBase);
             if (!fs.existsSync(targetBase)) {
-              console.log("Target base doesnt exist, create one")
-              var resss  = mkdirSync(targetBase);
+              console.log("Target base doesnt exist, create one");
+              var resss = mkdirSync(targetBase);
               console.log("makdir result", resss)
             }
 
@@ -181,12 +183,46 @@
       ...mapActions(["setStage"]),
       downloadAsFile(liveChange) {
         console.log("download file as contents", liveChange);
-        this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName)
+        this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName);
+
+        liveChange.status = true;
+        var allDone = true;
+        for (var i = 0; i < this.changes.length; i++) {
+          var liveChange = this.changes[i];
+          if (liveChange.change.changeType == "fileSave") {
+            if (!liveChange.status) {
+              console.log("live change incomplete", liveChange);
+              allDone = false;
+              break;
+            }
+          }
+        }
+
+        if (allDone) {
+          this.nextDisabled = false;
+        }
       },
       saveFiles(liveChange) {
         console.log("save file changes", liveChange);
         this.fileSaver = liveChange;
         document.getElementById("folderChooser").click();
+
+        liveChange.status = true;
+        var allDone = true;
+        for (var i = 0; i < this.changes.length; i++) {
+          var liveChange = this.changes[i];
+          if (liveChange.change.changeType == "fileSave") {
+            if (!liveChange.status) {
+              console.log("live change incomplete", liveChange);
+              allDone = false;
+              break;
+            }
+          }
+        }
+
+        if (allDone) {
+          this.nextDisabled = false;
+        }
       },
       downloadURI(uri, name) {
         var link = document.createElement("a");
@@ -229,7 +265,9 @@
         lastStage: false,
         changes: [],
         downloadNum: 0,
+        nextDisabled: true,
         fileSaver: null,
+        downloadsDone: {},
         options: {
           fontSize: '10pt'
         }
@@ -260,16 +298,29 @@
         }
         return
       }
+      var hasFileDownload = false;
       for (let i = 0; i < that.changes.length; i++) {
-        console.log("check for file download changes", that.changes[i].change.changeType)
+        console.log("check for file download changes", that.changes[i].change.changeType);
         if (
-            that.changes[i].change.changeType == 'fileDownload'
-            || that.changes[i].change.changeType == 'fileAdd'
-            || that.changes[i].change.changeType == 'fileShow'
-            || that.changes[i].change.changeType == 'fileSave'
+          that.changes[i].change.changeType == 'fileDownload'
+          || that.changes[i].change.changeType == 'fileAdd'
+          || that.changes[i].change.changeType == 'fileShow'
+          || that.changes[i].change.changeType == 'fileSave'
         ) {
           that.downloadNum = 1;
         }
+        if (that.changes[i].change.changeType == 'fileDownload'
+          || that.changes[i].change.changeType == 'fileSave'
+        ) {
+          hasFileDownload = true;
+        }
+      }
+      if (hasFileDownload) {
+        console.log("has file download", hasFileDownload);
+        this.nextDisabled = true;
+      } else {
+        console.log("has no download, enable next button", hasFileDownload);
+        this.nextDisabled = false;
       }
     },
     computed: {
