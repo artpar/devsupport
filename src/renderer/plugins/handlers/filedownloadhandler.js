@@ -143,7 +143,7 @@ export default function (fileType, logger) {
 
 
                         var targetBase = path.parse(zipEntry.entryName);
-                        if (!zipEntry.isDirectory && [".java", ".xml", ".php", ".html", ".cs", ".gradle", ".yml", ".yaml", ".json", ".go", "."].indexOf(targetBase.ext) > -1) {
+                        if (!zipEntry.isDirectory && [".ts", ".js", ".java", ".xml", ".php", ".html", ".cs", ".gradle", ".yml", ".yaml", ".json", ".go", "."].indexOf(targetBase.ext) > -1) {
                             var zipEntryName = path.parse(zipEntry.entryName).base;
                             console.log("target base", targetBase, zipEntryName);
 

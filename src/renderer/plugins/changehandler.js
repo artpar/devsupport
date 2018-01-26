@@ -31,6 +31,10 @@ const FileProcessorFactor = {
         return NewDownloadHandler(fileType, logger);
       case "php":
         return NewSearchAndReplace(fileType, logger);
+      case "json":
+        return NewSearchAndReplace(fileType, logger);
+      case "ts":
+        return NewSearchAndReplace(fileType, logger);
       case "text":
         return NewSearchAndReplace(fileType, logger);
         // return NewPhpFileHandler(fileType, logger);
