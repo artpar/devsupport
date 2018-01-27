@@ -71,6 +71,18 @@
           },
           {
             "result": {
+              "language": "javascript",
+              "stack": "nodejs",
+            },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                  "value": "package.json",
+              }
+            ]
+          },
+          {
+            "result": {
               "language": "php",
               "stack": "backend",
             },
