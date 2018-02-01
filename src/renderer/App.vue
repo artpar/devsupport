@@ -96,12 +96,19 @@
       window.onkeyup = function(e) {
         var key = e.keyCode ? e.keyCode : e.which;
 //        console.log("key pressed", key)
-        if (key == 52) {
+        if (key == 52 && e.shiftKey && e.altKey) {
           that.$router.push({
             name: 'JavaCreator'
           })
         }
-      }
+        if (key == 51 && e.shiftKey && e.altKey) {
+          that.$router.push({
+            name: 'select-project'
+          });
+        }
+
+      };
+
 
 
 
