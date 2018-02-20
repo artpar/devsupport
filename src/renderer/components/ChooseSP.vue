@@ -67,6 +67,7 @@
         loading: false,
         newsp: [],
         newspId: [],
+        lastQuery: "",
         message: "",
         pageDesc: [
           {
@@ -116,10 +117,21 @@
       remoteMethod(query) {
         var that = this;
 
+        if (query == "") {
+          this.selectedSP = this.options4[0];
+          return;
+        }
+
+        if (this.options4.length > 0 && query.indexOf(that.lastQuery) > -1) {
+          return;
+        }
+        console.log("input box active", query, this.lastQuery, this.selectedSP);
+
+        that.lastQuery = query;
+
         if ((!query || query == "") && this.selectedSP && this.selectedSP.name && this.selectedSP != ""){
           query = this.selectedSP.name;
         }
-        console.log("input box active", query, this.selectedSP);
 
 
         if (query && query !== '') {
@@ -143,6 +155,8 @@
           this.options4 = [];
 //          that.reloadMerchantList();
         }
+
+
       },
       searchButton(){
         let that = this;
