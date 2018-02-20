@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <loading v-if="loading"></loading>
-  </div>
+    <div>
+        <loading v-if="loading"></loading>
+    </div>
 </template>
 <script>
   import {mapState} from 'vuex';
@@ -21,7 +21,7 @@
       this.applyChanges();
     },
     methods: {
-      ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage", "setResults"]),
+      ...mapActions(["setContextMap", "runVariableValidations", "setError", "doChanges", "setStage", "setResults", "doStageChanges"]),
       applyChanges() {
 
         var that = this;
@@ -52,10 +52,10 @@
 
         console.log("start doing changes");
 
-        that.doChanges(function (result) {
+        that.doStageChanges(function (result) {
           console.log("Completed all changes", result);
-          that.callbackChangeComplete(result);
-        })
+          that.callbackChangeComplete();
+        });
 
 
         this.$store.commit('PAGE_VIEW', getPageDesc("/app/results", "Results"));

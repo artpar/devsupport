@@ -37,7 +37,7 @@ const mutations = {
     if (merchant === null) {
       state.faq.visibility = false;
       state.faq.merchant = false;
-      return;
+
     }
     else {
       state.faq.visibility = true;
@@ -107,22 +107,21 @@ const mutations = {
     state.integration = action
   },
   SET_VISITOR(state) {
-    let trackerid
-    if(process.env.NODE_ENV==='development')
-    {
-     trackerid = 'UA-103793943-1';
+    let trackerid;
+    if (process.env.NODE_ENV === 'development') {
+      trackerid = 'UA-103793943-1';
     }
     else {
       trackerid = 'UA-103793943-3';
     }
 
-      //state.visitor = new Analytics(trackerid).debug();
-      state.visitor = new Analytics(trackerid, state.userEmail, {strictCidFormat: false}).debug();
-    console.log("state.userEmail:"+state.userEmail);
+    //state.visitor = new Analytics(trackerid).debug();
+    state.visitor = new Analytics(trackerid, state.userEmail, {strictCidFormat: false}).debug();
+    console.log("state.userEmail:" + state.userEmail);
 
-      // state.cid = state.visitor.cid;
-      // console.log("cid length", state.cid.length, "\n cid:", state.cid);
-      //store.set("cid", state.cid);
+    // state.cid = state.visitor.cid;
+    // console.log("cid length", state.cid.length, "\n cid:", state.cid);
+    //store.set("cid", state.cid);
   },
 
 
@@ -151,7 +150,7 @@ const mutations = {
   },
   DO_CHANGES(state, callback) {
 
-    var resultMap = {}
+    var resultMap = {};
 
     function doIndex(ith, doIndex) {
       if (state.changes.length == ith) {
@@ -162,14 +161,50 @@ const mutations = {
       }
       console.log("do change", ith);
       state.changes[ith].doChanges(state.contextMap).then(function () {
-        resultMap[ith] = true
+        resultMap[ith] = true;
         doIndex(ith + 1, doIndex);
       }).catch(function (err) {
         console.log("change failed", arguments);
         state.changes[ith].error = err;
-        resultMap[ith] = false
+        resultMap[ith] = false;
         doIndex(ith + 1, doIndex);
       });
+    }
+
+    doIndex(0, doIndex);
+
+  },
+  DO_STAGE_CHANGES(state, callback) {
+    console.log("do stage changes", state.stage);
+    var resultMap = {};
+
+    function doIndex(ith, doIndex) {
+
+      if (state.changes.length == ith) {
+        if (callback) {
+          callback(resultMap);
+        }
+        return;
+      }
+
+      if (state.changes[ith].change.stage != state.stage) {
+        doIndex(ith + 1, doIndex);
+        return;
+      }
+
+      console.log("do change", ith);
+
+
+      state.changes[ith].doChanges(state.contextMap).then(function () {
+        resultMap[ith] = true;
+        doIndex(ith + 1, doIndex);
+      }).catch(function (err) {
+        console.log("change failed", arguments);
+        state.changes[ith].error = err;
+        resultMap[ith] = false;
+        doIndex(ith + 1, doIndex);
+      });
+
     }
 
     doIndex(0, doIndex);
@@ -278,6 +313,9 @@ const actions = {
   },
   setStage({commit}, stage) {
     commit("SET_STAGE", stage)
+  },
+  doStageChanges({commit}, callback) {
+    commit("DO_STAGE_CHANGES", callback)
   },
   setChanges({commit}, changes) {
     commit("SET_CHANGES", changes);

@@ -1,106 +1,112 @@
 <template>
-  <div class="ui grid" style="padding: 0 5em">
-    <input type="file" style="display: none" id="folderChooser" webkitdirectory directory @change="folderSelected">
-    <div class="sixteen wide column">
-      <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
-        <div class="ui relaxed divided list">
-          <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
-            <label :for="item.name">
-              <h3 style="margin-top: 1em;">
-                {{item.change.name}}
-                <span v-if="item.change.changeType === 'fileSave'"
-                      style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
+    <div>
+        <div v-if='loading'>
+            <loading></loading>
+        </div>
+        <div class="ui grid" style="padding: 0 5em">
+            <input type="file" style="display: none" id="folderChooser" webkitdirectory directory @change="folderSelected">
+            <div class="sixteen wide column">
+                <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
+                    <div class="ui relaxed divided list">
+                        <div class="item" v-for="item in changes" style="margin-top: 0.3em;">
+                            <label :for="item.name">
+                                <h3 style="margin-top: 1em;">
+                                    {{item.change.name}}
+                                    <span v-if="item.change.changeType === 'fileSave'"
+                                          style="font-size: 0.75em; margin-left: 1em; vertical-align: text-bottom;">
                 <i class="download_as_file_button c-pointer material-icons" @click="saveFiles(item)">file_download</i>
               </span></h3>
 
-            </label>
-            <div class="relaxed list" style="padding-left: 1em;">
-              <div v-if="item.selectedFiles=='' && item.change.changeType == 'fileEdit'" class="item">
+                            </label>
+                            <div class="relaxed list" style="padding-left: 1em;">
+                                <div v-if="item.selectedFiles=='' && item.change.changeType == 'fileEdit'" class="item">
 
-                <div class="ui icon message">
-                  <i class="material-icons" style="margin-right: 0.5em;">warning</i>
-                  <div class="content devblue">
-                    Cant {{item.change.name}} because either no suitable files were found or they already have the required changes.
-                  </div>
+                                    <div class="ui icon message">
+                                        <i class="material-icons" style="margin-right: 0.5em;">warning</i>
+                                        <div class="content devblue">
+                                            Cant {{item.change.name}} because either no suitable files were found or they already have the required changes.
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="item" v-for="file in item.selectedFiles" v-if="['fileEdit', 'fileAdd'].indexOf(item.change.changeType) > -1">
+                                    <div class="ui radio checkbox"
+                                         @click="item.selectedFilePath = file.filepath">
+                                        <input
+                                          class="hidden"
+                                          type="radio"
+                                          :name="item.name"
+                                          v-model="item.selectedFilePath"
+                                          :value="file.filepath">
+                                        <label>
+                                            <div class="devblue">{{file.relative}}</div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
+
+                                    <editor :options="options" style="width: 100%; height: 50vh" rows="10"
+                                            :content="item.change.change[0].line" :lang="'html'"></editor>
+                                </div>
+                                <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
+                                    File name: <b>{{item.change.fileName}}</b>
+                                    <i class="download_as_file_button c-pointer material-icons"
+                                       @click="downloadAsFile(item)">file_download</i>
+                                    <small>Download this file</small>
+                                </div>
+
+                                <div v-if="item.change.changeType == 'fileSave'" class="field download devblue">
+                                    <ul class="ui bulleted relaxed list">
+                                        <li class="item" v-for="fileToSave in item.change.change">
+                                            {{fileToSave.fileName}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
+                    <div v-if="downloadNum > 0" class="ui icon message">
+                        <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
+                        <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
+                            <ul class="list">
+
+
+                                <li v-for="item in changes" v-html="item.change.help">
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>-->
+                    <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" class="ui icon message">-->
+                    <!--<i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>-->
+                    <!--<div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">-->
+                    <!--<ul class="list">-->
+
+                    <!--<li v-for="item in changes">{{changes[0].change.help}}</li>-->
+
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+
                 </div>
-
-              </div>
-              <div class="item" v-for="file in item.selectedFiles" v-if="['fileEdit', 'fileAdd'].indexOf(item.change.changeType) > -1">
-                <div class="ui radio checkbox"
-                     @click="item.selectedFilePath = file.filepath">
-                  <input
-                    class="hidden"
-                    type="radio"
-                    :name="item.name"
-                    v-model="item.selectedFilePath"
-                    :value="file.filepath">
-                  <label>
-                    <div class="devblue">{{file.relative}}</div>
-                  </label>
-                </div>
-              </div>
-              <div v-if="item.change.changeType == 'fileShow'" class="field download devblue">
-
-                <editor :options="options" style="width: 100%; height: 50vh" rows="10"
-                        :content="item.change.change[0].line" :lang="'html'"></editor>
-              </div>
-              <div v-if="item.change.changeType == 'fileDownload'" class="field download devblue">
-                File name: <b>{{item.change.fileName}}</b>
-                <i class="download_as_file_button c-pointer material-icons"
-                   @click="downloadAsFile(item)">file_download</i>
-                <small>Download this file</small>
-              </div>
-
-              <div v-if="item.change.changeType == 'fileSave'" class="field download devblue">
-                <ul class="ui bulleted relaxed list">
-                  <li class="item" v-for="fileToSave in item.change.change">
-                    {{fileToSave.fileName}}
-                  </li>
-                </ul>
-              </div>
             </div>
-          </div>
+
+
+            <div class="sixteen wide column">
+                <button :disabled="nextDisabled" class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
+                <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+                </button>
+                <button class="ui large orange button left floated" @click="goBackStage">Back</button>
+            </div>
         </div>
-
-        <div v-if="downloadNum > 0" style="margin-bottom: 1.7em"></div>
-        <div v-if="downloadNum > 0" class="ui icon message">
-          <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
-          <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
-            <ul class="list">
-
-
-              <li v-for="item in changes" v-html="item.change.help">
-              </li>
-
-            </ul>
-          </div>
-        </div>
-
-
-        <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" style="margin-bottom: 1.7em"></div>-->
-        <!--<div v-if="changes[0] && changes[0].change.changeType == 'fileShow'" class="ui icon message">-->
-        <!--<i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>-->
-        <!--<div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">-->
-        <!--<ul class="list">-->
-
-        <!--<li v-for="item in changes">{{changes[0].change.help}}</li>-->
-
-        <!--</ul>-->
-        <!--</div>-->
-        <!--</div>-->
-
-
-      </div>
     </div>
 
-
-    <div class="sixteen wide column">
-      <button :disabled="nextDisabled" class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-      <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
-      </button>
-      <button class="ui large orange button left floated" @click="goBackStage">Back</button>
-    </div>
-  </div>
 </template>
 <script>
   import {mapActions} from 'vuex';
@@ -180,7 +186,7 @@
           name: "ApplyChanges"
         })
       },
-      ...mapActions(["setStage"]),
+      ...mapActions(["setStage", "doStageChanges"]),
       downloadAsFile(liveChange) {
         console.log("download file as contents", liveChange);
         this.downloadURI("data:text/csv;base64," + window.btoa(liveChange.change.change[0].line), liveChange.change.fileName);
@@ -248,15 +254,20 @@
         })
       },
       nextStage() {
-
         var that = this;
-        if (that.changes.length > 0) {
-          that.setStage(that.Project.stage + 1);
-        }
+        that.loading = true;
+        that.doStageChanges(function (result) {
+          console.log("stage change result", result);
+          if (that.changes.length > 0) {
+            that.setStage(that.Project.stage + 1);
+          }
 
-        that.$router.push({
-          name: "VariableInputs"
-        })
+          that.$router.push({
+            name: "VariableInputs"
+          });
+
+        });
+
 
       },
     },
@@ -266,6 +277,7 @@
         changes: [],
         downloadNum: 0,
         nextDisabled: true,
+        loading: false,
         fileSaver: null,
         downloadsDone: {},
         options: {

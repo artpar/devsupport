@@ -212,7 +212,7 @@
                     name: "PresentChanges"
                 })
             },
-            ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidations", "setError", "setStage"]),
+            ...mapActions(["setContextMap", "evaluateTemplates", "runVariableValidations", "setError", "setStage", "doStageChanges"]),
             nextStage() {
                 console.log("validations before next stage");
                 var that = this;
@@ -226,22 +226,32 @@
                 that.evaluateTemplates();
 
                 that.loading = true;
+
                 that.runVariableValidations({
                     filteredValidations: this.filteredValidations,
                     callback: function (response) {
                         console.log("variable validation response", response);
 
 
+
                         if (typeof response == "object" && !(response instanceof Array)) {
 
                             if (response.result) {
+
+
+                              that.doStageChanges(function (result) {
                                 that.loading = false;
+                                console.log("stage change result", result);
                                 if (that.variables.length > 0) {
                                     that.setStage(that.Project.stage + 1);
                                 }
+
                                 that.$router.push({
                                     name: "PresentChanges",
-                                })
+                                });
+
+                              });
+
                             } else {
                                 that.loading = false;
                                 if (!response.validation) {
@@ -270,13 +280,18 @@
                             }
 
                             if (finalResult) {
+
+
+                              that.doStageChanges(function (result) {
+                                console.log("stage change result", result);
                                 that.loading = false;
                                 if (that.variables.length > 0) {
                                     that.setStage(that.Project.stage + 1);
                                 }
                                 that.$router.push({
                                     name: "PresentChanges",
-                                })
+                                });
+                              });
 
                             } else {
                                 that.loading = false;
