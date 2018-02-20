@@ -3,7 +3,7 @@
         <div v-if='loading'>
             <loading></loading>
         </div>
-        <div class="ui grid" style="padding: 0 5em">
+        <div v-else-if='!loading' class="ui grid" style="padding: 0 5em">
             <input type="file" style="display: none" id="folderChooser" webkitdirectory directory @change="folderSelected">
             <div class="sixteen wide column">
                 <div style="overflow-y: auto; max-height: calc(100vh - 190px);">
@@ -334,6 +334,7 @@
         console.log("has no download, enable next button", hasFileDownload);
         this.nextDisabled = false;
       }
+      that.loading = false;
     },
     computed: {
       ...mapState(["Project"])
