@@ -2,13 +2,11 @@ import NewSearchAndReplace from './handlers/searchreplacefilehandler'
 import NewXmlFileHandler from './handlers/xmlfilehandler'
 import NewJavaFileHandler from './handlers/javafilehandler'
 import NewDownloadHandler from './handlers/filedownloadhandler'
-// import NewPhpFileHandler from './handlers/phpfilehandler'
-
-
 import NewHttpValidator from './validators/httpvalidator';
 import NewContextVariableValidator from './validators/contextvariablevalidator';
 
 import dot from 'dot';
+// import NewPhpFileHandler from './handlers/phpfilehandler'
 
 var sha512 = require('js-sha512').sha512;
 window.sha512 = sha512;
@@ -37,8 +35,8 @@ const FileProcessorFactor = {
         return NewSearchAndReplace(fileType, logger);
       case "text":
         return NewSearchAndReplace(fileType, logger);
-        // return NewPhpFileHandler(fileType, logger);
-        // return NewJavaFileHandler(fileType, logger);
+      // return NewPhpFileHandler(fileType, logger);
+      // return NewJavaFileHandler(fileType, logger);
       case "xml":
         return NewSearchAndReplace(fileType, logger);
         return NewXmlFileHandler(fileType, logger);
@@ -161,6 +159,9 @@ const FileProcessorFactor = {
 
         const tempFn = dot.template(line);
         change.change[i].line = tempFn(contextMap);
+        if (change.change[i].query) {
+          change.change[i].query = dot.template(change.change[i].query)(contextMap);
+        }
         // console.log("evaluated template: ", change.change[i])
       }
     };

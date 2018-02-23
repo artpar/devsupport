@@ -53,6 +53,8 @@ export default function (fileType, logger) {
                     fileLines.splice(currentLineIndex + 1, 0, " ".repeat(indentation) + line);
                 } else if (action === "appendInline") {
                     fileLines[currentLineIndex] = fileLines[currentLineIndex] + line;
+                }  else if (action === "prependInline") {
+                    fileLines[currentLineIndex] = line + fileLines[currentLineIndex];
                 } else if (action === "replace") {
                     fileLines[currentLineIndex] = " ".repeat(indentation) + line;
                 } else if (action === "delete") {

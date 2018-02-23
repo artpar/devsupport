@@ -1,10 +1,10 @@
 <template>
-  <div class="ui grid" style="padding: 0 5em">
+    <div class="ui grid" style="padding: 0 5em">
 
-    <div class="sixteen wide column">
-      <loading v-if="loading"></loading>
+        <div class="sixteen wide column">
+            <loading v-if="loading"></loading>
+        </div>
     </div>
-  </div>
 </template>
 <script>
   import jsonApi from '../../plugins/jsonApi'
@@ -114,6 +114,18 @@
           ]
         }, {
           matchConditions: [
+            new RegExp(".h$")
+          ]
+        }, {
+          matchConditions: [
+            new RegExp(".m$")
+          ]
+        }, {
+          matchConditions: [
+            new RegExp(".xib$")
+          ]
+        }, {
+          matchConditions: [
             new RegExp(".plist$")
           ]
         }];
@@ -149,7 +161,24 @@
 
         console.log("begin recurse dir for ", that.Project.projectDir);
         fs.recurse(that.Project.projectDir,
-          ['**/*.java', '!**/node_modules/**', '**/*.xml', '**/*.gradle', '**/*.php', '**/*.html', '*', '**/*.swift', '**/*.plist', '**/*.json', '**/*.ts'], function (filepath, relative, filename) {
+          [
+            '**/*.java',
+            '!**/node_modules/**',
+            '!**/Pods/**',
+            '!Pods/**',
+            '**/*.xml',
+            '**/*.gradle',
+            '**/*.php',
+            '**/*.html',
+            '**/*.m',
+            '**/*.h',
+            '**/*.xib',
+            '*',
+            '**/*.swift',
+            '**/*.plist',
+            '**/*.json',
+            '**/*.ts'
+          ], function (filepath, relative, filename) {
 
             if (filepath.indexOf("node_modules/") > -1) {
               return;
