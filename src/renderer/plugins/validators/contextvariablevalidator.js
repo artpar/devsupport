@@ -18,7 +18,7 @@ export default function (params, expectations) {
 
       //params["timeout"] = 5000;
 
-      console.log("creating new contextvariable promise", params.url);
+      console.log("creating new contextvariable promise", params);
       var finalResult = true;
       var failure = null;
       for (var i = 0; i < expectations.length; i++) {
@@ -33,7 +33,7 @@ export default function (params, expectations) {
           case "regex-find":
             actualValue = expectation.field;
             result = actualValue.match(new RegExp(expectation.value)) !== null;
-            break
+            break;
           case "length":
             actualValue = expectation.field;
             result = actualValue.length == expectation.value;

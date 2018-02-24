@@ -122,6 +122,10 @@
           ]
         }, {
           matchConditions: [
+            new RegExp(".pbxproj$")
+          ]
+        }, {
+          matchConditions: [
             new RegExp(".xib$")
           ]
         }, {
@@ -172,6 +176,7 @@
             '**/*.html',
             '**/*.m',
             '**/*.h',
+            '**/*.pbxproj',
             '**/*.xib',
             '*',
             '**/*.swift',
@@ -181,6 +186,10 @@
           ], function (filepath, relative, filename) {
 
             if (filepath.indexOf("node_modules/") > -1) {
+              return;
+            }
+
+            if (filepath.indexOf("Pods/") > -1) {
               return;
             }
 

@@ -168,7 +168,7 @@ const FileProcessorFactor = {
 
     that.validateVariable = function (validation) {
 
-      console.log("Creating new variable validation promise", validation)
+      console.log("Creating new variable validation promise", validation);
 
       return new Promise(function (resolve, reject) {
         let validatorInstance = null;
@@ -253,11 +253,11 @@ const FileProcessorFactor = {
 
         console.log("execute change", that.change, contextMap);
         if (!that.chosenFile) {
-          console.log("no chosen file - resolving", change)
+          console.log("no chosen file - resolving", change);
           // that.chosenFile = {
           //   relative: ''
           // };
-          that.change.status = "Completed"
+          that.change.status = "Completed";
           resolve();
           return;
         }
@@ -272,7 +272,7 @@ const FileProcessorFactor = {
           resolve();
         }, function (err) {
           console.log("change failed", err);
-          that.change.status = "Failed"
+          that.change.status = "Failed";
           reject(err);
         });
 
