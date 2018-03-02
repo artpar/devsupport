@@ -72,6 +72,8 @@
         that.integrations = r;
         jQuery('#myInfo').show()
 
+      }, function(){
+          console.log("failed", arguments);
       });
 
 

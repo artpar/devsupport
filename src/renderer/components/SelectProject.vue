@@ -69,7 +69,28 @@
               }
             ]
           },
-          {
+            {
+                "result": {
+                    "language": "csharp",
+                    "stack": "backend",
+                },
+                "checks": [
+                    {
+                        "checkType": "folderExists",
+                        "value": "Controllers",
+                    },
+                    {
+                        "checkType": "folderExists",
+                        "value": "bin",
+                    },
+                    {
+                        "checkType": "fileExists",
+                        "value": "packages.config",
+                    }
+                ]
+            },
+
+            {
             "result": {
               "language": "javascript",
               "stack": "nodejs",

@@ -40,6 +40,8 @@ const FileProcessorFactor = {
       case "xml":
         return NewSearchAndReplace(fileType, logger);
         return NewXmlFileHandler(fileType, logger);
+      case "csproj":
+        return NewSearchAndReplace(fileType, logger);
     }
   },
   ChangeHandler: function (change) {

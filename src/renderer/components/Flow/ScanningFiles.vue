@@ -85,6 +85,15 @@
             new RegExp(".gradle")
           ]
         }, {
+            matchConditions: [
+                new RegExp(".sln")
+            ]
+        },
+            {
+                matchConditions: [
+                    new RegExp(".csproj")
+                ]
+            },{
           matchConditions: [
             new RegExp(".xml")
           ]
@@ -171,6 +180,7 @@
             '!**/Pods/**',
             '!Pods/**',
             '**/*.xml',
+              '**/*.csproj',
             '**/*.gradle',
             '**/*.php',
             '**/*.html',
