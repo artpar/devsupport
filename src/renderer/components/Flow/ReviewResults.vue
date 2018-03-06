@@ -100,14 +100,19 @@
       <div class="ui segment" style="width: 95%;">
         <h3 class="devblue" style="font-size: 16px; font-weight: 700">Your feedback is valuable to us.</h3>
         <div class="ui star rating" data-rating="5" data-max-rating="5"></div>
-        <form class="ui tiny reply form">
+        <form class="ui small reply form">
           <div class="field">
-            <textarea id="feedback_ta" v-model="feedback_content"></textarea>
+            <textarea rows="4" id="feedback_ta" v-model="feedback_content"></textarea>
           </div>
-          <div class="ui blue labeled submit icon button" @click="submitFeedback()">
+          <div class="ui tiny blue labeled submit icon button" @click="submitFeedback()">
             <i class="icon edit"></i> Submit
           </div>
         </form>
+      </div>
+      <div class="ui segment" style="width: 95%">
+        <h3 class="devblue" style="font-size: 16px; font-weight: 700">What Integration would you like to see in this app</h3>
+        <img class="ui avatar image" src="~@/images/launch.png">
+        <span>Firebase</span>
       </div>
 
       <!--&lt;!&ndash;this is checklist of changes on ui&ndash;&gt;-->
