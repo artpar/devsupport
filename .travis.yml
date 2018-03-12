@@ -20,6 +20,7 @@ addons:
     packages:
     - libgnome-keyring-dev
     - icnsutils
+    - rpmbuild
     #- xvfb
 before_install:
 - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-$([
