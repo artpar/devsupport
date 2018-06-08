@@ -234,7 +234,7 @@ const FileProcessorFactor = {
         const variableValidations = validations;
         if (variableValidations && variableValidations instanceof Array) {
           const results = variableValidations.map(function (variableValidation, i) {
-            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap), i*200)
+            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap), i*1000)
           });
           Promise.all(results).then(function (validationResults) {
             console.log("validation results", validationResults);
