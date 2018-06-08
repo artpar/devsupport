@@ -168,7 +168,7 @@ const FileProcessorFactor = {
       }
     };
 
-    that.validateVariable = function (validation) {
+    that.validateVariable = function (validation, delay) {
 
       console.log("Creating new variable validation promise", validation);
 
@@ -185,11 +185,13 @@ const FileProcessorFactor = {
             validatorInstance = new NewContextVariableValidator(validationParams, expectations);
             break;
         }
-        validatorInstance.evaluate().then(function (res) {
-          resolve(res);
-        }).catch(function (res) {
-          reject({result: false, validation: validation, failedExpectation: res})
-        })
+        setTimeout(delay, function(){
+          validatorInstance.evaluate().then(function (res) {
+            resolve(res);
+          }).catch(function (res) {
+            reject({result: false, validation: validation, failedExpectation: res})
+          })
+        });
       });
 
 
@@ -231,11 +233,11 @@ const FileProcessorFactor = {
       return new Promise(function (resolve, reject) {
         const variableValidations = validations;
         if (variableValidations && variableValidations instanceof Array) {
-          const results = variableValidations.map(function (variableValidation) {
-            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap))
+          const results = variableValidations.map(function (variableValidation, i) {
+            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap), i*200)
           });
           Promise.all(results).then(function (validationResults) {
-            console.log("valiation results", validationResults);
+            console.log("validation results", validationResults);
             resolve(results);
           }).catch(function (failures) {
             console.log("validation failures", failures);
