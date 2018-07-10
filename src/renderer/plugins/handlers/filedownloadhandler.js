@@ -191,12 +191,92 @@ export default function (fileType, logger) {
 
   };
 
-  that.validate = function (file, validations) {
-    return new Promise(function (resolve, reject) {
+  that.validateSingle = function (file, validation, fileLines) {
+    logger(file, "Check line: " + validation.query);
+    let u;
+    switch (validation.checkType) {
+      case "positive":
+        let fileUpdated = false;
+        let query = validation.query;
+        let queryRegex = new RegExp(query);
+        for (u = 0; u < fileLines.length; u++) {
+          if (fileLines[u].match(queryRegex)) {
+            logger(file, "Validation success, found <b>" + query + "</b>");
+            logger(file, "SearchAndReplace, Validation Failed [Positive]" + query);
+            return true;
+          }
+        }
+        return false;
+        break;
 
-    });
+      case "negative":
+        fileUpdated = false;
+        query = validation.query;
+        queryRegex = new RegExp(query);
+        for (u = 0; u < fileLines.length; u++) {
+          if (fileLines[u].match(queryRegex)) {
+            logger(file, "Validation failed, found " + query);
+            logger(file, "SearchAndReplace, Validation Failed [Negative]" + query);
+            return false;
+          }
+        }
+        return true;
+        break;
+
+      default:
+        logger(file, "Unknown validation type", validation.checkType);
+        return false;
+    }
   }
 
+  that.validate = function (file, validations) {
+    console.log("search and replace handler do validation", validations);
+    return new Promise(function (resolve, reject) {
+
+      if (!(validations instanceof Array)) {
+        validations = [validations];
+      }
+      logger(file, "Validate file against " + validations.length + " validations");
+
+      fs.readFile(file.filepath, "utf8", function (err, data) {
+        // logger(file, "Read complete for validation");
+        if (err) {
+          logger(file, "Error in reading file");
+
+          reject("Error in reading file");
+          return;
+        }
+
+        const str = data.toString("utf8", 0, data.length);
+        // logger(file, "Parser created");
+
+        const fileLines = str.split(/\n/);
+        // logger(file, "Line count: " + fileLines.length);
+
+
+        let goodCount = 0;
+        let badCount = 0;
+
+        for (let i = 0; i < validations.length; i++) {
+          const validation = validations[i];
+          logger(file, "Validation check type: " + validation.checkType);
+          let res = that.validateSingle(file, validation, fileLines);
+          if (!res) {
+            badCount += 1;
+            reject("Validation failed [" + validation.checkType + "]: " + validation.query);
+            return;
+          } else {
+            goodCount += 1;
+          }
+        }
+        logger(file, "Resolve from search and replace 2");
+        resolve({
+          success: goodCount,
+          failed: badCount
+        });
+      })
+    })
+  }
   return that;
 
 

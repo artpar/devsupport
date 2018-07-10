@@ -1,46 +1,46 @@
 <template>
 
-  <div class="ui column centered grid">
-    <div class="super-coder">
-      <img src="~@/images/superhero_home.png" alt="image?">
-    </div>
-
-    <div class="get-source-folder">
-      <div class="heading">Before we start please link your source folder here</div>
-      <el-upload
-          class="upload-demo box" :file-list="selectionList"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
-          :auto-upload="false"
-          drag>
-        <!--<i class="el-icon-upload"></i>-->
-        <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">
-          Drop your source folder here <br>or<br>Click here to locate the folder
+    <div class="ui column centered grid">
+        <div class="super-coder">
+            <img src="~@/images/superhero_home.png" alt="image?">
         </div>
 
-        <!--skip project selection line-->
+        <div class="get-source-folder">
+            <div class="heading">Before we start please link your source folder here</div>
+            <el-upload
+              class="upload-demo box" :file-list="selectionList"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="folderSelect" :before-upload="folderSelect" :on-change="folderSelect"
+              :auto-upload="false"
+              drag>
+                <!--<i class="el-icon-upload"></i>-->
+                <div class="el-upload__text" style="margin-top: 35px; color: #515151; font-size: 16px">
+                    Drop your source folder here <br>or<br>Click here to locate the folder
+                </div>
 
-        <!--<div class="el-upload__tip" slot="tip">-->
-        <!--Root folder of your project OR -->
-        <!--<span class="skip" @click="skip()">Skip</span>-->
-        <!--</div>-->
+                <!--skip project selection line-->
 
-      </el-upload>
-    </div>
-    <div class="ui mini modal">
-      <div class="header">
-        <h3>Unknown project type</h3>
-      </div>
-      <div class="content">
-        <div class="description">
-          Unable to identify project. Try something else.
+                <!--<div class="el-upload__tip" slot="tip">-->
+                <!--Root folder of your project OR -->
+                <!--<span class="skip" @click="skip()">Skip</span>-->
+                <!--</div>-->
+
+            </el-upload>
         </div>
-      </div>
-      <div class="actions">
-        <div class="ui secondary button" @click="errModal3('hide')">OK</div>
-      </div>
+        <div class="ui mini modal">
+            <div class="header">
+                <h3>Unknown project type</h3>
+            </div>
+            <div class="content">
+                <div class="description">
+                    Unable to identify project. Try something else.
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui secondary button" @click="errModal3('hide')">OK</div>
+            </div>
+        </div>
     </div>
-  </div>
 
 </template>
 
@@ -68,29 +68,40 @@
                 "value": "build.gradle",
               }
             ]
-          },
-            {
-                "result": {
-                    "language": "csharp",
-                    "stack": "backend",
-                },
-                "checks": [
-                    {
-                        "checkType": "folderExists",
-                        "value": "Controllers",
-                    },
-                    {
-                        "checkType": "folderExists",
-                        "value": "bin",
-                    },
-                    {
-                        "checkType": "fileExists",
-                        "value": "packages.config",
-                    }
-                ]
+          },{
+            "result": {
+              "language": "java",
+              "stack": "java",
             },
+            "checks": [
+              {
+                "checkType": "fileExists",
+                "value": "pom.xml",
+              }
+            ]
+          },
+          {
+            "result": {
+              "language": "csharp",
+              "stack": "backend",
+            },
+            "checks": [
+              {
+                "checkType": "folderExists",
+                "value": "Controllers",
+              },
+              {
+                "checkType": "folderExists",
+                "value": "bin",
+              },
+              {
+                "checkType": "fileExists",
+                "value": "packages.config",
+              }
+            ]
+          },
 
-            {
+          {
             "result": {
               "language": "javascript",
               "stack": "nodejs",
@@ -98,7 +109,7 @@
             "checks": [
               {
                 "checkType": "fileExists",
-                  "value": "package.json",
+                "value": "package.json",
               }
             ]
           },

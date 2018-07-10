@@ -162,7 +162,14 @@ const FileProcessorFactor = {
         const tempFn = dot.template(line);
         change.change[i].line = tempFn(contextMap);
         if (change.change[i].query) {
-          change.change[i].query = dot.template(change.change[i].query)(contextMap);
+          if (change.change[i].query instanceof Array) {
+            const len = change.change[i].query.length;
+            for (let e = 0; e < len; e++) {
+              change.change[i].query[e] = dot.template(change.change[i].query[e])(contextMap);
+            }
+          } else {
+            change.change[i].query = dot.template(change.change[i].query)(contextMap);
+          }
         }
         // console.log("evaluated template: ", change.change[i])
       }
@@ -185,13 +192,13 @@ const FileProcessorFactor = {
             validatorInstance = new NewContextVariableValidator(validationParams, expectations);
             break;
         }
-        setTimeout(function(){
+        setTimeout(function () {
           validatorInstance.evaluate().then(function (res) {
             resolve(res);
           }).catch(function (res) {
             reject({result: false, validation: validation, failedExpectation: res})
           })
-        },delay);
+        }, delay);
       });
 
 
@@ -234,7 +241,7 @@ const FileProcessorFactor = {
         const variableValidations = validations;
         if (variableValidations && variableValidations instanceof Array) {
           const results = variableValidations.map(function (variableValidation, i) {
-            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap), i*1000)
+            return that.validateVariable(that.evaluateTemplatesInObject(variableValidation, contextMap), i * 1000)
           });
           Promise.all(results).then(function (validationResults) {
             console.log("validation results", validationResults);
