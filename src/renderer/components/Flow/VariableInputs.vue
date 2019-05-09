@@ -31,7 +31,8 @@
                     </div>
                     <div style="margin-bottom: 1.7em"></div>
                     <div class="ui icon message">
-                        <i class="material-icons devblue" style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
+                        <i class="material-icons devblue"
+                           style="margin-right: 0.5em; font-size: 3.5em;">info_outline</i>
                         <div class="content devblue" style="font-family: 'Raleway',sans-serif; font-size: medium">
                             <ul class="list">
                                 <li v-for="variable in variables" v-html="variable.description"></li>
@@ -42,10 +43,13 @@
                 </div>
 
                 <div class="sixteen wide column">
-                    <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next</button>
-                    <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply changes
+                    <button class="ui large secondary button right floated" v-if="!lastStage" @click="nextStage">Next
                     </button>
-                    <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back</button>
+                    <button class="ui large secondary button right floated" v-if="lastStage" @click="applyChanges">Apply
+                        changes
+                    </button>
+                    <button class="ui large orange button left floated" v-if="!firstStage" @click="goBackStage">Back
+                    </button>
                 </div>
 
                 <div class="ui mini modal">
@@ -99,16 +103,6 @@
             }
         },
         methods: {
-//      closeError(){
-//        jquery('.message .close')
-//        .on('click', function() {
-//          $(this)
-//            .closest('.message')
-//            .transition('fade')
-//          ;
-//        });
-//
-//      },
             updateVariables() {
                 var that = this;
 
@@ -233,24 +227,23 @@
                         console.log("variable validation response", response);
 
 
-
                         if (typeof response == "object" && !(response instanceof Array)) {
 
                             if (response.result) {
 
 
-                              that.doStageChanges(function (result) {
-                                that.loading = false;
-                                console.log("stage change result", result);
-                                if (that.variables.length > 0) {
-                                    that.setStage(that.Project.stage + 1);
-                                }
+                                that.doStageChanges(function (result) {
+                                    that.loading = false;
+                                    console.log("stage change result", result);
+                                    if (that.variables.length > 0) {
+                                        that.setStage(that.Project.stage + 1);
+                                    }
 
-                                that.$router.push({
-                                    name: "PresentChanges",
+                                    that.$router.push({
+                                        name: "PresentChanges",
+                                    });
+
                                 });
-
-                              });
 
                             } else {
                                 that.loading = false;
@@ -282,16 +275,16 @@
                             if (finalResult) {
 
 
-                              that.doStageChanges(function (result) {
-                                console.log("stage change result", result);
-                                that.loading = false;
-                                if (that.variables.length > 0) {
-                                    that.setStage(that.Project.stage + 1);
-                                }
-                                that.$router.push({
-                                    name: "PresentChanges",
+                                that.doStageChanges(function (result) {
+                                    console.log("stage change result", result);
+                                    that.loading = false;
+                                    if (that.variables.length > 0) {
+                                        that.setStage(that.Project.stage + 1);
+                                    }
+                                    that.$router.push({
+                                        name: "PresentChanges",
+                                    });
                                 });
-                              });
 
                             } else {
                                 that.loading = false;

@@ -8,7 +8,6 @@ export default function (fileType, logger) {
     that.fileType = fileType;
 
     that.applyChange = function (file, change, fileLines) {
-        let u;
         // debugger;
         switch (change.changeType) {
             case "add.line":
@@ -19,24 +18,30 @@ export default function (fileType, logger) {
 
 
                 const lineNoToEdit = -1;
-                let indentation = 0;
 
                 if (!(query instanceof Array)) {
                     query = [query];
                 }
 
-                let currentLineIndex = 0;
+                let matchesLines = [];
 
-                for (let i = 0; i < query.length; i++) {
+                for (var i = 0; i < 1; i++) {
                     const queryRegex = new RegExp(query[i]);
                     let matched = false;
-                    for (let u = currentLineIndex; u < fileLines.length; u++) {
+                    for (let u = 0; u < fileLines.length; u++) {
                         if (fileLines[u].match(queryRegex)) {
                             matched = true;
                             logger(file, "Query matched at line number " + (u + 1));
+                            var currentLineIndex;
+                            var indentation;
                             currentLineIndex = u;
-                            indentation = fileLines[u].match(/[^ ]/).index +  fileLines[u].match(/[^\t]/).index * 4;
-                            break;
+                            indentation = fileLines[u].match(/[^ ]/).index + fileLines[u].match(/[^\t]/).index * 4;
+                            matchesLines.push({
+                                number: u,
+                                indentation: indentation
+                            })
+                            // matchesLines[i].number = u;
+                            // matchesLines[i].indentation = indentation
                         }
                     }
                     if (!matched) {
@@ -45,21 +50,50 @@ export default function (fileType, logger) {
                     }
                 }
 
-                logger(file, "Line number to change " + currentLineIndex, " at indentation ", indentation);
-
-                if (action === "prepend") {
-                    fileLines.splice(currentLineIndex, 0, " ".repeat(indentation) + line);
-                } else if (action === "append") {
-                    fileLines.splice(currentLineIndex + 1, 0, " ".repeat(indentation) + line);
-                } else if (action === "appendInline") {
-                    fileLines[currentLineIndex] = fileLines[currentLineIndex] + line;
-                }  else if (action === "prependInline") {
-                    fileLines[currentLineIndex] = line + fileLines[currentLineIndex];
-                } else if (action === "replace") {
-                    fileLines[currentLineIndex] = " ".repeat(indentation) + line;
-                } else if (action === "delete") {
-                    fileLines.splice(currentLineIndex, 1);
+                for (var i = 1; i < query.length; i++) {
+                    const queryRegex = new RegExp(query[i]);
+                    let matched = false;
+                    for (let u = matchesLines[i].number; u < fileLines.length; u++) {
+                        if (fileLines[u].match(queryRegex)) {
+                            matched = true;
+                            logger(file, "Query matched at line number " + (u + 1));
+                            var currentLineIndex;
+                            var indentation;
+                            currentLineIndex = u;
+                            indentation = fileLines[u].match(/[^ ]/).index + fileLines[u].match(/[^\t]/).index * 4;
+                            matchesLines[i].number = u;
+                            matchesLines[i].indentation = indentation
+                        }
+                    }
+                    if (!matched) {
+                        logger(file, "Query didn't match for file: ", query[i]);
+                        return fileLines;
+                    }
                 }
+
+                for (var i = 0; i < matchesLines.length; i++) {
+                    currentLineIndex = matchesLines[i].number;
+                    indentation = matchesLines[i].indentation;
+                    logger(file, "Line number to change " + currentLineIndex, " at indentation ", indentation);
+
+                    if (action === "prepend") {
+                        fileLines.splice(currentLineIndex, 0, " ".repeat(indentation) + line);
+                    } else if (action === "append") {
+                        fileLines.splice(currentLineIndex + 1, 0, " ".repeat(indentation) + line);
+                    } else if (action === "appendInline") {
+                        fileLines[currentLineIndex] = fileLines[currentLineIndex] + line;
+                    } else if (action === "prependInline") {
+                        fileLines[currentLineIndex] = line + fileLines[currentLineIndex];
+                    } else if (action === "replace") {
+                        fileLines[currentLineIndex] = " ".repeat(indentation) + line;
+                    } else if (action === "replaceMatched") {
+                        fileLines[currentLineIndex] = fileLines[currentLineIndex].replace(new RegExp(query[query.length - 1], "g"), line);
+                    } else if (action === "delete") {
+                        fileLines.splice(currentLineIndex, 1);
+                    }
+                }
+
+
                 return fileLines;
             default:
                 logger(file, "Unknown change type", change.changeType);
@@ -143,7 +177,6 @@ export default function (fileType, logger) {
         });
 
     };
-
 
 
     that.applyAllChanges = function (file, changes, fileLines) {

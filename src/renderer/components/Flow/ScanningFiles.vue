@@ -159,7 +159,7 @@
                     console.log("set context map", captureMap);
                     that.setContextMap(captureMap);
                     that.$router.push({
-                        name: 'VariableInputs',
+                        name: 'PresentChanges',
                     })
                 }
 
