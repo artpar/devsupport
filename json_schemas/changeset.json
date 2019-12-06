@@ -132,7 +132,7 @@
 					"format": "php"
 				},
 				"url": {
-					"type": "string",
+					"type": "string"
 				},
 				"action": {
 					"type": "string",
