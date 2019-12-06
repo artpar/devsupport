@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/artpar/devsupport.svg?branch=master)](https://travis-ci.org/artpar/devsupport)
 
-#### Build Setup
+## Build Setup
 
 ``` bash
 # install dependencies
