@@ -65,7 +65,7 @@
       jsonApi.one("merchant", merchantReferenceId).all("integration_id").get({
         page: {
           number: 1,
-          size: 10,
+          size: 50,
         }
       }).then(function (r) {
         console.log("all integrations", r);

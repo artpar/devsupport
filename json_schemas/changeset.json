@@ -98,7 +98,7 @@
 				}
 			}
 		},
-		"individialChange": {
+		"individualChange": {
 			"type": "object",
 			"headerTemplate": "{{self.changeType}}",
 			"properties": {

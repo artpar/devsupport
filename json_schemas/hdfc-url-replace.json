@@ -1,0 +1,106 @@
+{
+  "name": "HDFC In House Payment Gateway Migration",
+  "variables": [],
+  "variableValidations": [],
+  "changes": [
+    {
+      "name": "Endpoint Update",
+      "fileSelector": ".+.(html|php|java|js|asp|go|py|rb|jsp|xml|json|yml)$",
+      "changeType": "fileEdit",
+      "stage": 1,
+      "fileType": "text",
+      "modifyAllMatchedFiles": true,
+      "help": "Endpoints for the services will be updated in place",
+      "description": "Endpoints for the services will be updated in place",
+      "change": [
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/PaymentInitHTTPServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/PaymentInitHTTPServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/PaymentInitHTTPServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/TranPortalXMLServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/TranPortalXMLServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/TranPortalXMLServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/MPIVerifyEnrollmentXMLServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/MPIVerifyEnrollmentXMLServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/MPIVerifyEnrollmentXMLServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/MPIPayerAuthenticationXMLServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/MPIPayerAuthenticationXMLServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/MPIPayerAuthenticationXMLServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/IVRXMLServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/IVRXMLServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/IVRXMLServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/IVRMPIPayerAuthenticationServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/IVRMPIPayerAuthenticationServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/IVRMPIPayerAuthenticationServlet"
+            }
+          ]
+        },
+        {
+          "changeType": "add.line",
+          "line": "https://securepaymentstest.hdfcbank.com/PG/servlet/PreAuthenticationXMLServlet",
+          "action": "replaceMatched",
+          "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/PreAuthenticationXMLServlet",
+          "validations": [
+            {
+              "checkType": "positive",
+              "query": "https://securepgtest.fssnet.co.in/ipayb/servlet/PreAuthenticationXMLServlet"
+            }
+          ]
+        }
+      ],
+      "validations": []
+    }
+  ],
+  "nextIntegrations": [],
+  "reviewResultContent": "<div>\n  <h3 class=\"devblue\" style=\"font-size: 16px; font-weight: 700\">Hey, your integration is\n    done!</h3>\n  <div class=\"ui divider\"></div>\n  <br>\n  <div class=\"devblue\" style=\"font-size: 16px;\"></div>\n</div>"
+}
