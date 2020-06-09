@@ -62,17 +62,22 @@ export default function (params, expectations) {
           const expectation = expectations[i];
           var result = false;
           let actualValue = "";
-          switch (expectation.operator) {
-            case "eq":
-              actualValue = jp.query(res, expectation.field)[0];
-              result = actualValue == expectation.value;
-              break;
-            case "regex-find":
-              actualValue = jp.query(res, expectation.field)[0];
-              result = actualValue.match(new RegExp(expectation.value)) !== null;
-              break
-          }
+          try {
 
+
+            switch (expectation.operator) {
+              case "eq":
+                actualValue = jp.query(res, expectation.field)[0];
+                result = actualValue == expectation.value;
+                break;
+              case "regex-find":
+                actualValue = jp.query(res, expectation.field)[0];
+                result = actualValue.match(new RegExp(expectation.value)) !== null;
+                break
+            }
+          } catch(e) {
+            console.log("Failed to evaluate value after http call failure", e)
+          }
           if (!result) {
             failure = expectation;
             finalResult = false;
