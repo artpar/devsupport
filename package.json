@@ -70,7 +70,7 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "antlr4": "^4.7.0",
-    "axios": "^0.16.1",
+    "axios": "^0.21.1",
     "bootstrap": "4.0.0-alpha.6",
     "devour-client": "^1.4.3",
     "diff": "^3.3.0",
